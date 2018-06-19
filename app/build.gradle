@@ -41,10 +41,6 @@ dependencies {
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.3'
     //图片加载
     implementation 'com.github.bumptech.glide:glide:3.7.0'
-    //noinspection GradleCompatible
-    implementation 'com.android.support:support-v4:26.1.0'
-    //ConstraintLayout布局
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     //ScreenAdaptation屏幕ui适配
     implementation 'me.yatoooon:screenadaptation:1.1.1'
 }

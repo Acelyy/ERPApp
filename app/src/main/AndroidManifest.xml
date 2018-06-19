@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.huangxinhui.erpapp">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +11,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <meta-data
+            android:name="designwidth"
+            android:value="1080" />
+        <meta-data
+            android:name="designdpi"
+            android:value="480" />
+        <meta-data
+            android:name="fontsize"
+            android:value="1.0" />
+        <meta-data
+            android:name="unit"
+            android:value="dp" />
+
+        <activity android:name=".LoginActivity">
+
+        </activity>
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".SelcetActivity" />
+        <activity android:name=".InformationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
