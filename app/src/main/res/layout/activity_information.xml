@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".InformationActivity">
+
     <LinearLayout
         android:id="@+id/image_top"
         android:layout_width="match_parent"
@@ -12,42 +13,48 @@
         android:layout_alignParentTop="true"
         android:background="@mipmap/banner_top"
         android:paddingTop="10dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <ImageView
-                android:layout_marginLeft="20dp"
                 android:id="@+id/back"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@mipmap/back"/>
+                android:layout_marginLeft="20dp"
+                android:src="@mipmap/back" />
+
             <TextView
-                android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
+                android:layout_centerHorizontal="true"
                 android:gravity="center_vertical"
+                android:text="111111111"
                 android:textColor="#fff"
-                android:textStyle="bold"
                 android:textSize="11pt"
-                android:text="111111111"/>
+                android:textStyle="bold" />
         </RelativeLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/image_top"
         android:layout_above="@+id/image_button"
+        android:layout_below="@+id/image_top"
         android:orientation="vertical">
+
         <ExpandableListView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
     <ImageView
         android:id="@+id/image_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
         android:layout_alignParentBottom="true"
-        android:src="@mipmap/banner_bottom"/>
+        android:scaleType="centerCrop"
+        android:src="@mipmap/banner_bottom" />
 </RelativeLayout>

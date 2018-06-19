@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SelcetActivity">
+
     <LinearLayout
         android:id="@+id/image_top"
         android:layout_width="match_parent"
@@ -12,111 +13,123 @@
         android:layout_alignParentTop="true"
         android:background="@mipmap/banner_top"
         android:paddingTop="10dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <ImageView
-                android:layout_marginLeft="20dp"
                 android:id="@+id/back"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@mipmap/back"/>
+                android:layout_marginLeft="20dp"
+                android:src="@mipmap/back" />
+
             <TextView
-                android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
+                android:layout_centerHorizontal="true"
                 android:gravity="center_vertical"
+                android:text="钢柸信息查询"
                 android:textColor="#fff"
-                android:textStyle="bold"
                 android:textSize="11pt"
-                android:text="钢柸信息查询"/>
+                android:textStyle="bold" />
         </RelativeLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/image_top"
         android:layout_above="@+id/image_button"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:layout_below="@+id/image_top"
+        android:gravity="center"
+        android:orientation="vertical">
+
         <LinearLayout
-            android:layout_gravity="center_horizontal"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_vertical">
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="请输入要查询的炉号"
                 android:textColor="@color/colorPrimary"
-                android:textSize="9pt"
-                android:text="请输入要查询的炉号"/>
+                android:textSize="9pt" />
+
             <EditText
                 android:id="@+id/furnace_code"
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@drawable/bg_border"
-                />
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border" />
         </LinearLayout>
+
         <LinearLayout
-            android:layout_gravity="center_horizontal"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:orientation="vertical"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="请输入连铸机号"
                 android:textColor="@color/colorPrimary"
-                android:textSize="9pt"
-                android:text="请输入连铸机号"/>
+                android:textSize="9pt" />
+
             <EditText
                 android:id="@+id/derice_number"
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@drawable/bg_border"
-                />
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border" />
         </LinearLayout>
+
         <LinearLayout
-            android:layout_gravity="center_horizontal"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:orientation="vertical"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="请输入要查询的生产日期"
                 android:textColor="@color/colorPrimary"
-                android:textSize="9pt"
-                android:text="请输入要查询的生产日期"/>
+                android:textSize="9pt" />
+
             <Spinner
                 android:id="@+id/produced_date"
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@drawable/bg_border">
-            </Spinner>
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border"></Spinner>
         </LinearLayout>
+
         <Button
-            android:layout_gravity="center_horizontal"
             android:id="@+id/select"
-            android:layout_marginTop="30dp"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
             android:background="@drawable/bg_round"
+            android:text="查询"
             android:textColor="#fff"
-            android:textStyle="bold"
-            android:text="查询"/>
+            android:textStyle="bold" />
     </LinearLayout>
+
     <ImageView
         android:id="@+id/image_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
         android:layout_alignParentBottom="true"
-        android:src="@mipmap/banner_bottom"/>
+        android:scaleType="centerCrop"
+        android:src="@mipmap/banner_bottom" />
 </RelativeLayout>

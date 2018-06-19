@@ -6,148 +6,168 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".HomeActivity">
+
     <ImageView
         android:id="@+id/image_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
-        android:src="@mipmap/banner_top"/>
+        android:src="@mipmap/banner_top" />
+
     <LinearLayout
-        android:layout_below="@+id/image_top"
-        android:layout_above="@+id/image_button"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/image_button"
+        android:layout_below="@+id/image_top"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center">
+
             <LinearLayout
                 android:id="@+id/select"
-                android:gravity="right"
-                android:layout_marginRight="32dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="32dp"
+                android:gravity="right"
                 android:orientation="vertical">
+
                 <ImageView
                     android:layout_width="110dp"
                     android:layout_height="110dp"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/select_library"/>
+                    android:src="@mipmap/select_library" />
+
                 <TextView
-                    android:layout_marginTop="10dp"
                     android:layout_width="110dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
+                    android:text="钢柸信息查询"
                     android:textColor="@color/colorPrimary"
-                    android:textStyle="bold"
-                    android:text="钢柸信息查询"/>
+                    android:textStyle="bold" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/receive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <ImageView
                     android:layout_width="110dp"
                     android:layout_height="110dp"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/receive_library"/>
+                    android:src="@mipmap/receive_library" />
+
                 <TextView
-                    android:layout_marginTop="10dp"
                     android:layout_width="110dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
+                    android:text="钢柸接收入库"
                     android:textColor="@color/colorPrimary"
-                    android:textStyle="bold"
-                    android:text="钢柸接收入库"/>
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center">
+
             <LinearLayout
                 android:id="@+id/out"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginRight="32dp"
                 android:gravity="right"
-                android:layout_marginRight="32dp">
+                android:orientation="vertical">
+
                 <ImageView
                     android:layout_width="110dp"
                     android:layout_height="110dp"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/out_library"/>
+                    android:src="@mipmap/out_library" />
+
                 <TextView
-                    android:layout_marginTop="10dp"
                     android:layout_width="110dp"
-                    android:gravity="center"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="钢柸出库"
                     android:textColor="@color/colorPrimary"
-                    android:textStyle="bold"
-                    android:text="钢柸出库"/>
+                    android:textStyle="bold" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/into"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <ImageView
                     android:layout_width="110dp"
                     android:layout_height="110dp"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/into_library"/>
+                    android:src="@mipmap/into_library" />
+
                 <TextView
-                    android:layout_marginTop="10dp"
                     android:layout_width="110dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
+                    android:text="钢柸出库"
                     android:textColor="@color/colorPrimary"
-                    android:textStyle="bold"
-                    android:text="钢柸出库"/>
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center">
+
             <LinearLayout
                 android:id="@+id/delete"
-                android:gravity="right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginRight="32dp"
-                >
+                android:gravity="right"
+                android:orientation="vertical">
+
                 <ImageView
                     android:layout_width="110dp"
                     android:layout_height="110dp"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/delete_library"/>
+                    android:src="@mipmap/delete_library" />
+
                 <TextView
-                    android:layout_marginTop="5dp"
                     android:layout_width="110dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:gravity="center"
+                    android:text="钢柸删除"
                     android:textColor="@color/colorPrimary"
-                    android:textStyle="bold"
-                    android:text="钢柸删除"/>
+                    android:textStyle="bold" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
+
     <ImageView
         android:id="@+id/image_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
         android:layout_alignParentBottom="true"
-        android:src="@mipmap/banner_bottom"/>
+        android:scaleType="centerCrop"
+        android:src="@mipmap/banner_bottom" />
 </RelativeLayout>
