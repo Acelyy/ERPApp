@@ -8,7 +8,7 @@
     tools:context=".LoginActivity">
 
     <ImageView
-        android:id="@+id/image_top"
+        android:id="@+id/imageTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -18,8 +18,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/image_button"
-        android:layout_below="@+id/image_top"
+        android:layout_above="@+id/imageButton"
+        android:layout_below="@+id/imageTop"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingBottom="12dp">
@@ -175,7 +175,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/image_button"
+        android:id="@+id/imageButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

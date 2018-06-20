@@ -8,12 +8,12 @@
     tools:context=".IntoActivity">
 
     <LinearLayout
-        android:id="@+id/image_top"
+        android:id="@+id/imageTop"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_alignParentTop="true"
         android:background="@mipmap/banner_top"
-        android:paddingTop="10dp">
+        android:gravity="center_vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -41,8 +41,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/image_button"
-        android:layout_below="@+id/image_top"
+        android:layout_above="@+id/imageButton"
+        android:layout_below="@+id/imageTop"
         android:paddingTop="50dp"
         android:orientation="vertical">
 
@@ -64,7 +64,7 @@
                 android:singleLine="true"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:id="@+id/into_code"
+                android:id="@+id/intoCode"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -90,7 +90,7 @@
                 android:singleLine="true"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:id="@+id/brevity_code"
+                android:id="@+id/brevityCode"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -98,7 +98,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/select"
+            android:id="@+id/query"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -110,7 +110,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/image_button"
+        android:id="@+id/imageButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

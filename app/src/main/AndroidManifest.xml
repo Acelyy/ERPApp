@@ -27,13 +27,14 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".QueryActivity" />
-        <activity android:name=".QueryInformationActivity" />
-        <activity android:name=".ReceiveActivity">
+        <activity android:name=".QueryInformationActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".ReceiveActivity">
         </activity>
         <activity android:name=".ReceiveInformationActivity" />
         <activity android:name=".OutActivity" />
@@ -41,7 +42,7 @@
         <activity android:name=".DeleteActivity" />
         <activity android:name=".IntoInformationActivity" />
         <activity android:name=".OutInformationActivity" />
-        <activity android:name=".DeleteInformationActivity"></activity>
+        <activity android:name=".DeleteInformationActivity"/>
     </application>
 
 </manifest>

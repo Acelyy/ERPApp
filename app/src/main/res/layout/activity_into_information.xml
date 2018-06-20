@@ -7,12 +7,12 @@
     android:background="#fff"
     tools:context=".IntoInformationActivity">
     <LinearLayout
-        android:id="@+id/image_top"
+        android:id="@+id/imageTop"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_alignParentTop="true"
         android:background="@mipmap/banner_top"
-        android:paddingTop="10dp">
+        android:gravity="center_vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -26,6 +26,7 @@
                 android:src="@mipmap/back" />
 
             <TextView
+                android:id="@+id/titleName"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_centerHorizontal="true"
@@ -40,8 +41,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/image_button"
-        android:layout_below="@+id/image_top"
+        android:layout_above="@+id/imageButton"
+        android:layout_below="@+id/imageTop"
         android:orientation="vertical">
 
         <ExpandableListView
@@ -51,7 +52,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/image_button"
+        android:id="@+id/imageButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
