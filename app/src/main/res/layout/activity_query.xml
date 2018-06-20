@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SelcetActivity">
+    tools:context=".QueryActivity">
 
     <LinearLayout
         android:id="@+id/image_top"
@@ -42,7 +42,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/image_button"
         android:layout_below="@+id/image_top"
-        android:gravity="center"
+        android:paddingTop="50dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -57,13 +57,16 @@
                 android:layout_height="wrap_content"
                 android:text="请输入要查询的炉号"
                 android:textColor="@color/colorPrimary"
-                android:textSize="9pt" />
+                android:textSize="8pt" />
 
             <EditText
+                android:singleLine="true"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:id="@+id/furnace_code"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/bg_border" />
         </LinearLayout>
 
@@ -71,7 +74,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="12dp"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
@@ -80,13 +83,16 @@
                 android:layout_height="wrap_content"
                 android:text="请输入连铸机号"
                 android:textColor="@color/colorPrimary"
-                android:textSize="9pt" />
+                android:textSize="8pt" />
 
             <EditText
+                android:singleLine="true"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:id="@+id/derice_number"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/bg_border" />
         </LinearLayout>
 
@@ -94,7 +100,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="12dp"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
@@ -103,13 +109,13 @@
                 android:layout_height="wrap_content"
                 android:text="请输入要查询的生产日期"
                 android:textColor="@color/colorPrimary"
-                android:textSize="9pt" />
+                android:textSize="8pt" />
 
             <Spinner
                 android:id="@+id/produced_date"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/bg_border"></Spinner>
         </LinearLayout>
 

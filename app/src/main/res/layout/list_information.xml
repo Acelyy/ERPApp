@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:background="#f2f2f2"
-    android:gravity="center"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -18,11 +17,11 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:text="C"
-            android:textSize="10pt"
+            android:textSize="9pt"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/edit"
+            android:id="@+id/num"
             android:layout_width="220dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
@@ -32,7 +31,8 @@
     </RelativeLayout>
 
     <TextView
-        android:layout_width="329dp"
-        android:layout_height="2dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="320dp"
+        android:layout_height="3dp"
         android:background="#dedfe0" />
 </LinearLayout>
