@@ -93,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             startActivity(intent);
+                            finish();
                         } else {
                             Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
                         }
@@ -108,7 +109,10 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.login)
     public void onViewClicked() {
-        new Thread(new LoginThread(user.getText().toString().trim(), pwd.getText().toString())).start();
+//        new Thread(new LoginThread(user.getText().toString().trim(), pwd.getText().toString())).start();
+        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 
