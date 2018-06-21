@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
-    tools:context=".Function.DeleteActivity">
+    tools:context=".Function.MoveActivity">
 
     <LinearLayout
         android:id="@+id/imageTop"
@@ -31,7 +31,7 @@
                 android:layout_height="30dp"
                 android:layout_centerHorizontal="true"
                 android:gravity="center_vertical"
-                android:text="钢柸删除"
+                android:text="钢柸倒剁"
                 android:textColor="#fff"
                 android:textSize="11pt"
                 android:textStyle="bold" />

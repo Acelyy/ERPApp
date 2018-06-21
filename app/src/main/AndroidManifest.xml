@@ -40,8 +40,8 @@
         <activity android:name=".Information.OutInformationActivity" />
         <activity android:name=".Function.IntoActivity" />
         <activity android:name=".Information.IntoInformationActivity" />
-        <activity android:name=".Function.DeleteActivity" />
-        <activity android:name=".Information.DeleteInformationActivity" />
+        <activity android:name=".Function.MoveActivity" />
+        <activity android:name=".Information.MoveInformationActivity" />
     </application>
 
 </manifest>

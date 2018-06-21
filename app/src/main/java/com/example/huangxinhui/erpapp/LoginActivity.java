@@ -9,11 +9,17 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.example.huangxinhui.erpapp.JavaBean.GroupBean;
 import com.example.huangxinhui.erpapp.JavaBean.LoginResult;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
 import com.example.huangxinhui.erpapp.Util.JsonUtil;
@@ -22,6 +28,9 @@ import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,16 +44,26 @@ public class LoginActivity extends AppCompatActivity {
     EditText pwd;
     @BindView(R.id.remember)
     CheckBox remember;
+    @BindView(R.id.team)
+    TextView team;
 
     SharedPreferences sp;
 
     ProgressDialog dialog;
+
+    // 班组信息
+    List<GroupBean> list_group = new ArrayList<>();
+
+    private String group_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        list_group.add(new GroupBean("A", "甲"));
+        list_group.add(new GroupBean("B", "乙"));
+        list_group.add(new GroupBean("C", "丙"));
         dialog = new ProgressDialog(this);
         dialog.setMessage("登录中");
         dialog.setCancelable(false);
@@ -107,12 +126,34 @@ public class LoginActivity extends AppCompatActivity {
         }
     };
 
-    @OnClick(R.id.login)
-    public void onViewClicked() {
-//        new Thread(new LoginThread(user.getText().toString().trim(), pwd.getText().toString())).start();
-        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-        startActivity(intent);
-        finish();
+    @OnClick({R.id.team, R.id.login})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.team:
+                OptionsPickerView pvOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+                    @Override
+                    public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                        team.setText(list_group.get(options1).getName());
+                        group_id = list_group.get(options1).getId();
+                    }
+                }).setOutSideCancelable(false)
+                        .setContentTextSize(25)
+                        .build();
+                pvOptions.setPicker(list_group);
+                pvOptions.setTitleText("请选择班组");
+                pvOptions.show();
+                break;
+            case R.id.login:
+                if (group_id == null) {
+                    Toast.makeText(this, "请选择班组", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+//                new Thread(new LoginThread(user.getText().toString().trim(), pwd.getText().toString())).start();
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+        }
     }
 
 
@@ -145,7 +186,7 @@ public class LoginActivity extends AppCompatActivity {
 
             String data = String.format("%-10s", "GPIS00")
                     + String.format("%-10s", userName) + String.format("%-10s", password)
-                    + String.format("%-10s", "A") + "*";
+                    + String.format("%-10s", group_id) + "*";
             // 设置需调用WebService接口需要传入的参数
             Log.i("params", data);
             rpc.addProperty("date", data);

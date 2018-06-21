@@ -1,15 +1,15 @@
-package com.example.huangxinhui.erpapp.Function;
+package com.example.huangxinhui.erpapp.Information;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.huangxinhui.erpapp.R;
 
-public class DeleteActivity extends AppCompatActivity {
+public class MoveInformationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_delete);
+        setContentView(R.layout.activity_move_information);
     }
 }

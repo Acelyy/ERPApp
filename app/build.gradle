@@ -43,4 +43,7 @@ dependencies {
     //ScreenAdaptation屏幕ui适配
     implementation 'me.yatoooon:screenadaptation:1.1.1'
     implementation files('libs/ksoap2-android-assembly-2.5.4-jar-with-dependencies.jar')
+
+    // 滚轮选择器
+    implementation 'com.contrarywind:Android-PickerView:4.1.4'
 }
