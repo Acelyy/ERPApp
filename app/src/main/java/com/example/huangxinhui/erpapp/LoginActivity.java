@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                     String data = msg.getData().getString("data");
                     if (JsonUtil.isJson(data)) {// 判断是否为json
                         LoginResult result = JSON.parseObject(data, LoginResult.class);
-                        if (result != null && result.getMsg().equals("S")) {
+                        if (result != null && result.getResult().equals("S")) {
                             // 记住密码
                             if (remember.isChecked()) {
                                 SharedPreferences.Editor editor = sp.edit();
@@ -170,6 +170,7 @@ public class LoginActivity extends AppCompatActivity {
                 msg.what = 1;
                 Bundle bundle = new Bundle();
                 bundle.putString("data", result);
+                msg.setData(bundle);
                 msg.sendToTarget();
             } catch (Exception e) {
                 // 如果捕获异常，通知handler 0
