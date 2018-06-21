@@ -24,25 +24,24 @@
             android:name="unit"
             android:value="dp" />
 
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".QueryActivity" />
-        <activity android:name=".QueryInformationActivity" >
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ReceiveActivity">
-        </activity>
-        <activity android:name=".ReceiveInformationActivity" />
-        <activity android:name=".OutActivity" />
-        <activity android:name=".IntoActivity" />
-        <activity android:name=".DeleteActivity" />
-        <activity android:name=".IntoInformationActivity" />
-        <activity android:name=".OutInformationActivity" />
-        <activity android:name=".DeleteInformationActivity"/>
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".Function.QueryActivity" />
+        <activity android:name=".Information.QueryInformationActivity" />
+        <activity android:name=".Function.ReceiveActivity" />
+        <activity android:name=".Information.ReceiveInformationActivity" />
+        <activity android:name=".Function.OutActivity" />
+        <activity android:name=".Information.OutInformationActivity" />
+        <activity android:name=".Function.IntoActivity" />
+        <activity android:name=".Information.IntoInformationActivity" />
+        <activity android:name=".Function.DeleteActivity" />
+        <activity android:name=".Information.DeleteInformationActivity" />
     </application>
 
 </manifest>

@@ -1,7 +1,9 @@
-package com.example.huangxinhui.erpapp;
+package com.example.huangxinhui.erpapp.Information;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.huangxinhui.erpapp.R;
 
 public class IntoInformationActivity extends AppCompatActivity {
 

@@ -1,13 +1,15 @@
-package com.example.huangxinhui.erpapp;
+package com.example.huangxinhui.erpapp.Function;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class OutActivity extends AppCompatActivity {
+import com.example.huangxinhui.erpapp.R;
+
+public class QueryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_out);
+        setContentView(R.layout.activity_query);
     }
 }
