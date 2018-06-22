@@ -73,7 +73,7 @@ public class QueryActivity extends AppCompatActivity {
                         }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        date = new SimpleDateFormat("yyyyMMdd").format(new Date(picker.getYear(), picker.getMonth(), picker.getDayOfMonth()));
+                        date = new SimpleDateFormat("yyyyMMdd").format(new Date(picker.getYear()-1900, picker.getMonth(), picker.getDayOfMonth()));
                         producedDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date(picker.getYear() - 1900, picker.getMonth(), picker.getDayOfMonth())));
                     }
                 }).create().show();
