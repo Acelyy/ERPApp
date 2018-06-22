@@ -66,7 +66,6 @@ public class LoginActivity extends AppCompatActivity {
         list_group.add(new GroupBean("C", "丙"));
         dialog = new ProgressDialog(this);
         dialog.setMessage("登录中");
-        dialog.setCancelable(false);
         sp = this.getSharedPreferences("userinfo", MODE_PRIVATE);
         if (sp.getBoolean("remember", false)) {
             user.setText(sp.getString("username", null));
@@ -95,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                     String data = msg.getData().getString("data");
                     if (JsonUtil.isJson(data)) {// 判断是否为json
                         LoginResult result = JSON.parseObject(data, LoginResult.class);
-                        if (result != null && result.getResult().equals("S")) {
+                        if (result != null && !result.getResult().equals("F")) {
                             // 记住密码
                             if (remember.isChecked()) {
                                 SharedPreferences.Editor editor = sp.edit();
@@ -148,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(this, "请选择班组", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                //new Thread(new LoginThread(user.getText().toString().trim(), pwd.getText().toString())).start();
+//                new Thread(new LoginThread(user.getText().toString().trim(), pwd.getText().toString())).start();
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();

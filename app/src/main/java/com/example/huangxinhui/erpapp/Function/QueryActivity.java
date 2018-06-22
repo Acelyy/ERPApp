@@ -1,7 +1,12 @@
 package com.example.huangxinhui.erpapp.Function;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,8 +17,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.example.huangxinhui.erpapp.Information.QueryInformationActivity;
+import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.R;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
+import com.example.huangxinhui.erpapp.Util.JsonUtil;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -36,13 +45,57 @@ public class QueryActivity extends AppCompatActivity {
     @BindView(R.id.producedDate)
     TextView producedDate;
 
-    String date;
+    String date = "20180226";
+
+    ProgressDialog dialog;
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case -1:
+                    dialog.show();
+                    break;
+                case 0:
+                    // 处理异常，网络请求失败
+                    Toast.makeText(QueryActivity.this, "网络异常，请检查网络是否通畅", Toast.LENGTH_SHORT).show();
+                    if (dialog.isShowing())
+                        dialog.dismiss();
+                    break;
+                case 1:
+                    // 处理服务器返回的数据
+                    String data = msg.getData().getString("data");
+                    if (JsonUtil.isJson(data)) {
+                        Query query = JSON.parseObject(data, Query.class);
+                        if (query != null && !query.getResult().equals("F")) {
+                            Intent intent = new Intent(QueryActivity.this, QueryInformationActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("data", query.getData());
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(QueryActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(QueryActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
+                    }
+                    if (dialog.isShowing())
+                        dialog.dismiss();
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_query);
         ButterKnife.bind(this);
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("查询中");
     }
 
     @OnClick({R.id.back, R.id.query, R.id.producedDate})
@@ -73,7 +126,7 @@ public class QueryActivity extends AppCompatActivity {
                         }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        date = new SimpleDateFormat("yyyyMMdd").format(new Date(picker.getYear()-1900, picker.getMonth(), picker.getDayOfMonth()));
+                        date = new SimpleDateFormat("yyyyMMdd").format(new Date(picker.getYear() - 1900, picker.getMonth(), picker.getDayOfMonth()));
                         producedDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date(picker.getYear() - 1900, picker.getMonth(), picker.getDayOfMonth())));
                     }
                 }).create().show();
@@ -107,7 +160,7 @@ public class QueryActivity extends AppCompatActivity {
             SoapObject rpc = new SoapObject(nameSpace, methodName);
 
             String data = String.format("%-10s", "GPIS01")
-                    + String.format("%-10s", heatNo) + String.format("%-8s", date)
+                    + String.format("%-15s", heatNo) + String.format("%-8s", date)
                     + String.format("%-10s", ccNo) + "*";
             // 设置需调用WebService接口需要传入的参数
             Log.i("params", data);
@@ -123,7 +176,7 @@ public class QueryActivity extends AppCompatActivity {
             envelope.setOutputSoapObject(rpc);
 
             HttpTransportSE transport = new HttpTransportSE(endPoint);
-//            mHandler.sendEmptyMessage(-1);
+            mHandler.sendEmptyMessage(-1);
             try {
                 // 调用WebService
                 transport.call(soapAction, envelope);
@@ -133,15 +186,15 @@ public class QueryActivity extends AppCompatActivity {
                 Log.i("Query", result);
 
                 // 如果有数据返回，通知handler 1
-//                Message msg = mHandler.obtainMessage();
-//                msg.what = 1;
-//                Bundle bundle = new Bundle();
-//                bundle.putString("data", result);
-//                msg.setData(bundle);
-//                msg.sendToTarget();
+                Message msg = mHandler.obtainMessage();
+                msg.what = 1;
+                Bundle bundle = new Bundle();
+                bundle.putString("data", result);
+                msg.setData(bundle);
+                msg.sendToTarget();
             } catch (Exception e) {
                 // 如果捕获异常，通知handler 0
-//                mHandler.sendEmptyMessage(0);
+                mHandler.sendEmptyMessage(0);
                 e.printStackTrace();
             }
         }
