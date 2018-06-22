@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="15dp"
-            android:textSize="8pt"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <ImageView
