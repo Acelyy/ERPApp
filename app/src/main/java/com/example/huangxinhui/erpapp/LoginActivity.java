@@ -148,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(this, "请选择班组", Toast.LENGTH_SHORT).show();
                     return;
                 }
-//                new Thread(new LoginThread(user.getText().toString().trim(), pwd.getText().toString())).start();
+                //new Thread(new LoginThread(user.getText().toString().trim(), pwd.getText().toString())).start();
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();
