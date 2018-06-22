@@ -43,8 +43,8 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/imageButton"
         android:layout_below="@+id/imageTop"
-        android:paddingTop="50dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="50dp">
 
         <LinearLayout
             android:layout_width="300dp"
@@ -61,16 +61,17 @@
                 android:textSize="8pt" />
 
             <EditText
-                android:singleLine="true"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
                 android:id="@+id/furnaceCode"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:textSize="16sp"
-                android:textColor="#000"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_border" />
+                android:background="@drawable/bg_border"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"
+                android:text="15B112755"
+                android:textColor="#000"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -89,16 +90,17 @@
                 android:textSize="8pt" />
 
             <EditText
-                android:singleLine="true"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:textSize="16sp"
-                android:id="@+id/dericeNumber"
+                android:id="@+id/deviceNumber"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:textColor="#000"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/bg_border" />
+                android:background="@drawable/bg_border"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"
+                android:text="B6"
+                android:textColor="#000"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -116,14 +118,17 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="8pt" />
 
-            <Spinner
+            <TextView
                 android:id="@+id/producedDate"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:background="@drawable/bg_border"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="请选择日期"
                 android:textColor="#000"
-                android:textSize="16sp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/bg_border"></Spinner>
+                android:textSize="16sp" />
         </LinearLayout>
 
         <Button
@@ -132,10 +137,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
-            android:textSize="16sp"
             android:background="@drawable/bg_round"
             android:text="查询"
             android:textColor="#fff"
+            android:textSize="16sp"
             android:textStyle="bold" />
     </LinearLayout>
 
