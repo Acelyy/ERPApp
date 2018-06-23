@@ -1,6 +1,8 @@
 package com.example.huangxinhui.erpapp.Adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class QueryAdapter extends BaseAdapter {
+public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> {
 
     private List<Query.DataBean.Info> data;
     private LayoutInflater inflater;
@@ -25,14 +27,17 @@ public class QueryAdapter extends BaseAdapter {
         this.inflater = LayoutInflater.from(context);
     }
 
+    @NonNull
     @Override
-    public int getCount() {
-        return data.size();
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        ViewHolder holder = new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_information, viewGroup, false));
+        return holder;
     }
 
     @Override
-    public Object getItem(int position) {
-        return data.get(position);
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+        viewHolder.name.setText(data.get(i).getKey());
+        viewHolder.num.setText(data.get(i).getValue());
     }
 
     @Override
@@ -41,27 +46,18 @@ public class QueryAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.list_information, parent, false);
-            holder = new ViewHolder(convertView);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-        holder.name.setText(data.get(position).getKey());
-        holder.num.setText(data.get(position).getValue());
-        return convertView;
+    public int getItemCount() {
+        return data==null?0:data.size();
     }
 
-    static class ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.name)
         TextView name;
         @BindView(R.id.num)
         TextView num;
 
         ViewHolder(View view) {
+            super(view);
             ButterKnife.bind(this, view);
         }
     }
