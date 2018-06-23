@@ -73,6 +73,7 @@ public class QueryActivity extends AppCompatActivity {
                         if (query != null && !query.getResult().equals("F")) {
                             Intent intent = new Intent(QueryActivity.this, QueryInformationActivity.class);
                             Bundle bundle = new Bundle();
+                            bundle.putString("title", furnaceCode.getText().toString());
                             bundle.putSerializable("data", query.getData());
                             intent.putExtras(bundle);
                             startActivity(intent);
