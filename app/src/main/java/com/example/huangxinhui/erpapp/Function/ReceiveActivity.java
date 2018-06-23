@@ -3,6 +3,7 @@ package com.example.huangxinhui.erpapp.Function;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,7 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.example.huangxinhui.erpapp.JavaBean.LoginResult;
+import com.example.huangxinhui.erpapp.Information.ReceiveInformationActivity;
+import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.R;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
 import com.example.huangxinhui.erpapp.Util.JsonUtil;
@@ -46,7 +48,7 @@ public class ReceiveActivity extends AppCompatActivity {
     @BindView(R.id.qualityBooks)
     EditText qualityBooks;
 
-    String date = "20180623";
+    String date = "20180226";
 
     ProgressDialog dialog;
 
@@ -69,30 +71,19 @@ public class ReceiveActivity extends AppCompatActivity {
                     // 处理服务器返回的数据
                     String data = msg.getData().getString("data");
                     if (JsonUtil.isJson(data)) {// 判断是否为json
-                        LoginResult result = JSON.parseObject(data, LoginResult.class);
+                        Query result = JSON.parseObject(data, Query.class);
                         if (result != null && !result.getResult().equals("F")) {
-//                            // 记住密码
-//                            if (remember.isChecked()) {
-//                                SharedPreferences.Editor editor = sp.edit();
-//                                editor.putString("username", user.getText().toString());
-//                                editor.putString("password", pwd.getText().toString());
-//                                editor.putBoolean("remember", true);
-//                                editor.apply();
-//                            } else {
-//                                SharedPreferences.Editor editor = sp.edit();
-//                                editor.putString("username", "");
-//                                editor.putString("password", "");
-//                                editor.putBoolean("remember", false);
-//                                editor.apply();
-//                            }
-//                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-//                            startActivity(intent);
-//                            finish();
+                            Intent intent = new Intent(ReceiveActivity.this, ReceiveInformationActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("title", furnaceCode.getText().toString());
+                            bundle.putSerializable("data", result.getData());
+                            intent.putExtras(bundle);
+                            startActivity(intent);
                         } else {
-                            Toast.makeText(ReceiveActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ReceiveActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(ReceiveActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ReceiveActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
                     }
                     if (dialog.isShowing())
                         dialog.dismiss();
@@ -106,6 +97,8 @@ public class ReceiveActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receive);
         ButterKnife.bind(this);
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("查询中");
     }
 
     @OnClick({R.id.back, R.id.producedDate, R.id.query})
@@ -135,6 +128,7 @@ public class ReceiveActivity extends AppCompatActivity {
                 ).create().show();
                 break;
             case R.id.query:
+                new Thread(new ReceiverThread(furnaceCode.getText().toString().trim(), brevityCode.getText().toString().trim(), deviceNumber.getText().toString().trim(), qualityBooks.getText().toString().trim())).start();
                 break;
         }
     }
@@ -170,6 +164,7 @@ public class ReceiveActivity extends AppCompatActivity {
 
             String data = String.format("%-10s", "GPIS02")
                     + String.format("%-10s", heatNo) + String.format("%-10s", heatNoj)
+                    + String.format("%-10s", date)
                     + String.format("%-10s", ccNo) + String.format("%-12s", chgLocRptNo) + "*";
             // 设置需调用WebService接口需要传入的参数
             Log.i("params", data);
@@ -192,7 +187,7 @@ public class ReceiveActivity extends AppCompatActivity {
                 Object object = (Object) envelope.getResponse();
                 // 获取返回的结果
                 result = object.toString();
-                Log.i("login", result);
+                Log.i("Receiver", result);
 
                 // 如果有数据返回，通知handler 1
                 Message msg = mHandler.obtainMessage();
