@@ -41,6 +41,7 @@ public class QueryInformationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_query_information);
         ButterKnife.bind(this);
         ArrayList<Query.DataBean> list_data = (ArrayList<Query.DataBean>) getIntent().getExtras().getSerializable("data");
+        titleName.setText(getIntent().getExtras().getString("title") == null ? "" : getIntent().getExtras().getString("title"));
         fragments = new QueryFragment[list_data.size()];
         titles = new String[list_data.size()];
         for (int i = 0; i < list_data.size(); i++) {

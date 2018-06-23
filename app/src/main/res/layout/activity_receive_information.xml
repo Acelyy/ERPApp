@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="#fff"
     tools:context=".Information.ReceiveInformationActivity">
+
     <LinearLayout
         android:id="@+id/imageTop"
         android:layout_width="match_parent"
@@ -31,7 +32,6 @@
                 android:layout_height="30dp"
                 android:layout_centerHorizontal="true"
                 android:gravity="center_vertical"
-                android:text="111111111"
                 android:textColor="#fff"
                 android:textSize="11pt"
                 android:textStyle="bold" />
@@ -45,10 +45,18 @@
         android:layout_below="@+id/imageTop"
         android:orientation="vertical">
 
-        <ExpandableListView
-            android:id="@+id/list"
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tl_tab"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="50dp"
+            android:background="#f2f2f2">
+
+        </android.support.design.widget.TabLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <ImageView

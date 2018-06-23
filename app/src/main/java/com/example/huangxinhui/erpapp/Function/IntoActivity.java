@@ -35,4 +35,12 @@ public class IntoActivity extends AppCompatActivity {
                 break;
         }
     }
+
+    class IntoThread implements Runnable {
+
+        @Override
+        public void run() {
+
+        }
+    }
 }
