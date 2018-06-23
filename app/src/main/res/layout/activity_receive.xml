@@ -61,16 +61,16 @@
                 android:textSize="8pt" />
 
             <EditText
-                android:singleLine="true"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
                 android:id="@+id/furnaceCode"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="5dp"
-                android:textSize="16sp"
+                android:background="@drawable/bg_border"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"
                 android:textColor="#000"
-                android:background="@drawable/bg_border" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -89,16 +89,16 @@
                 android:textSize="8pt" />
 
             <EditText
-                android:singleLine="true"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
                 android:id="@+id/brevityCode"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="5dp"
-                android:textSize="16sp"
+                android:background="@drawable/bg_border"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"
                 android:textColor="#000"
-                android:background="@drawable/bg_border" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -145,16 +145,16 @@
                 android:textSize="8pt" />
 
             <EditText
-                android:singleLine="true"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
                 android:id="@+id/deviceNumber"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="5dp"
-                android:textSize="16sp"
+                android:background="@drawable/bg_border"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"
                 android:textColor="#000"
-                android:background="@drawable/bg_border" />
+                android:textSize="16sp" />
         </LinearLayout>
 
 
@@ -174,16 +174,16 @@
                 android:textSize="8pt" />
 
             <EditText
-                android:singleLine="true"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
                 android:id="@+id/qualityBooks"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="5dp"
-                android:textSize="16sp"
+                android:background="@drawable/bg_border"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"
                 android:textColor="#000"
-                android:background="@drawable/bg_border" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <Button
@@ -193,9 +193,9 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="12dp"
             android:background="@drawable/bg_round"
-            android:textSize="16sp"
             android:text="查询"
             android:textColor="#fff"
+            android:textSize="16sp"
             android:textStyle="bold" />
     </LinearLayout>
 
