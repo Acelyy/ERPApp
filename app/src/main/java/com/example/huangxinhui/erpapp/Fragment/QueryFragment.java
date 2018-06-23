@@ -1,9 +1,11 @@
-package com.example.huangxinhui.erpapp;
+package com.example.huangxinhui.erpapp.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.ListView;
 
 import com.example.huangxinhui.erpapp.Adapter.QueryAdapter;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
+import com.example.huangxinhui.erpapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +23,11 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class QueryFragment extends Fragment {
-    @BindView(R.id.list_query)
-    ListView listQuery;
     Unbinder unbinder;
 
     List<Query.DataBean.Info> data;
+    @BindView(R.id.list_query)
+    RecyclerView listQuery;
 
     public static QueryFragment getInstance(ArrayList<Query.DataBean.Info> data) {
         QueryFragment f = new QueryFragment();
@@ -45,6 +48,7 @@ public class QueryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_fragment_query, container, false);
         unbinder = ButterKnife.bind(this, view);
+        listQuery.setLayoutManager(new LinearLayoutManager(getActivity()));
         listQuery.setAdapter(new QueryAdapter(data, getActivity()));
         return view;
     }
