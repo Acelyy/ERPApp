@@ -1,11 +1,19 @@
 package com.example.huangxinhui.erpapp.Information;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.huangxinhui.erpapp.Adapter.ReceiverAdapter;
@@ -24,10 +32,14 @@ public class ReceiveInformationActivity extends AppCompatActivity {
     TextView titleName;
     @BindView(R.id.list_receiver)
     RecyclerView listReceiver;
+    @BindView(R.id.parent)
+    LinearLayout parent;
 
     ReceiverAdapter adapter;
 
     ArrayList<Query.DataBean> data;
+
+    PopupWindow pop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +54,41 @@ public class ReceiveInformationActivity extends AppCompatActivity {
             adapter.setOnButtonClickListener(new ReceiverAdapter.OnButtonClickListener() {
                 @Override
                 public void onCLick(View view, int position) {
-
                     // 点击入库
+                    pop.showAtLocation(parent, Gravity.CENTER, 0, 0);
+                    WindowManager.LayoutParams lp = getWindow().getAttributes();
+                    lp.alpha = 0.5f; //0.0-1.0
+                    getWindow().setAttributes(lp);
                 }
             });
             listReceiver.setAdapter(adapter);
         }
+
+        initPopupWindow();
+    }
+
+    private void initPopupWindow() {
+        final View popView = LayoutInflater.from(this).inflate(R.layout.pop_receiver, null);
+        popView.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 提交接收入库
+
+            }
+        });
+        pop = new PopupWindow(popView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        pop.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFF")));
+        pop.setFocusable(true);
+        pop.setOutsideTouchable(true);
+        pop.update();
+        pop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams lp = getWindow().getAttributes();
+                lp.alpha = 1f; //0.0-1.0
+                getWindow().setAttributes(lp);
+            }
+        });
     }
 
     @OnClick({R.id.back, R.id.icon})

@@ -52,6 +52,8 @@ public class ReceiveActivity extends AppCompatActivity {
 
     ProgressDialog dialog;
 
+    AlertDialog date_dialog;
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
@@ -108,24 +110,27 @@ public class ReceiveActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.producedDate:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                View itemView = LayoutInflater.from(this).inflate(R.layout.item_date, null);
-                final DatePicker picker = itemView.findViewById(R.id.dataPicker);
-                builder.setTitle("请选择查询日期")
-                        .setView(itemView)
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                if (date_dialog == null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    View itemView = LayoutInflater.from(this).inflate(R.layout.item_date, null);
+                    final DatePicker picker = itemView.findViewById(R.id.dataPicker);
+                    builder.setTitle("请选择查询日期")
+                            .setView(itemView)
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
 
+                                }
+                            }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    date = new SimpleDateFormat("yyyyMMdd").format(new Date(picker.getYear() - 1900, picker.getMonth(), picker.getDayOfMonth()));
+                                    producedDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date(picker.getYear() - 1900, picker.getMonth(), picker.getDayOfMonth())));
+                                }
                             }
-                        }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                date = new SimpleDateFormat("yyyyMMdd").format(new Date(picker.getYear() - 1900, picker.getMonth(), picker.getDayOfMonth()));
-                                producedDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date(picker.getYear() - 1900, picker.getMonth(), picker.getDayOfMonth())));
-                            }
-                        }
-                ).create().show();
+                    ).create();
+                }
+                dialog.show();
                 break;
             case R.id.query:
                 new Thread(new ReceiverThread(furnaceCode.getText().toString().trim(), brevityCode.getText().toString().trim(), deviceNumber.getText().toString().trim(), qualityBooks.getText().toString().trim())).start();
