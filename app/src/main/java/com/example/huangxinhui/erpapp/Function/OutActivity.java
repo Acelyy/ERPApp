@@ -1,7 +1,12 @@
 package com.example.huangxinhui.erpapp.Function;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -10,8 +15,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.example.huangxinhui.erpapp.Information.OutInformationActivity;
+import com.example.huangxinhui.erpapp.Information.QueryInformationActivity;
+import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.R;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
+import com.example.huangxinhui.erpapp.Util.JsonUtil;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 import org.ksoap2.SoapEnvelope;
@@ -30,13 +40,55 @@ public class OutActivity extends AppCompatActivity {
     @BindView(R.id.brevityCode)
     EditText brevityCode;
 
+    ProgressDialog dialog;
+
+    AlertDialog data_dialog;
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandle = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case -1:
+                    dialog.show();
+                    break;
+                case 0:
+                    // 处理异常，网络请求失败
+                    Toast.makeText(OutActivity.this, "网络异常，请检查网络是否通畅", Toast.LENGTH_SHORT).show();
+                    if (dialog.isShowing())
+                        dialog.dismiss();
+                    break;
+                case 1:
+                    String data = msg.getData().getString("data");
+                    if(JsonUtil.isJson(data)){
+                        Query query = JSON.parseObject(data,Query.class);
+                        if(query != null && !query.getResult().equals("F")){
+                            Intent intent = new Intent(OutActivity.this, OutInformationActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("title", outCode.getText().toString());
+                            bundle.putSerializable("data", query.getData());
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }else {
+                            Toast.makeText(OutActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Toast.makeText(OutActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
+                    }
+                    if (dialog.isShowing())dialog.dismiss();
+                    break;
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_out);
         ButterKnife.bind(this);
         ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
-
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("查询中");
     }
 
     @OnClick({R.id.back, R.id.query})
@@ -100,7 +152,14 @@ public class OutActivity extends AppCompatActivity {
                 result = object.toString();
                 Log.i("out", result);
 
+                Message msg = mHandle.obtainMessage();
+                msg.what = 1;
+                Bundle bundle = new Bundle();
+                bundle.putString("data",result);
+                msg.setData(bundle);
+                msg.sendToTarget();
             } catch (Exception e) {
+                mHandle.sendEmptyMessage(0);
                 e.printStackTrace();
             }
         }

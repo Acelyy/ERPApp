@@ -43,7 +43,7 @@
         <activity android:name=".Information.IntoInformationActivity" />
         <activity android:name=".Function.MoveActivity" />
         <activity android:name=".Information.MoveInformationActivity" />
-        <activity android:name=".Information.WarrantyActivity"></activity>
+        <activity android:name=".Information.WarrantyActivity"/>
     </application>
 
 </manifest>
