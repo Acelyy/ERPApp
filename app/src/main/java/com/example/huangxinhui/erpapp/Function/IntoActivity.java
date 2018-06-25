@@ -47,6 +47,13 @@ public class IntoActivity extends AppCompatActivity {
     }
 
     class IntoThread implements Runnable {
+        private String heatNo;
+        private String heatNoj;
+
+        public IntoThread(String outCode, String brevityCode) {
+            this.heatNo = outCode;
+            this.heatNoj = brevityCode;
+        }
 
         @Override
         public void run() {
@@ -64,7 +71,7 @@ public class IntoActivity extends AppCompatActivity {
             SoapObject rpc = new SoapObject(nameSpace, methodName);
 
             String data = String.format("%-10s", "GPIS06")
-                    + String.format("%-10s", intoCode) + String.format("%-10s", brevityCode)
+                    + String.format("%-10s", heatNo) + String.format("%-10s", heatNoj)
                     + "*";
             // 设置需调用WebService接口需要传入的参数
             Log.i("params", data);

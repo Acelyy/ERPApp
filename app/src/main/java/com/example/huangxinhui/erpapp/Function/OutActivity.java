@@ -52,12 +52,12 @@ public class OutActivity extends AppCompatActivity {
     }
 
     class OutThread implements Runnable{
-        private String outCode;
-        private String brevityCode;
+        private String heatNo;
+        private String heatNoj;
 
         public OutThread(String outCode, String brevityCode) {
-            this.outCode = outCode;
-            this.brevityCode = brevityCode;
+            this.heatNo = outCode;
+            this.heatNoj = brevityCode;
         }
 
         @Override
@@ -76,7 +76,7 @@ public class OutActivity extends AppCompatActivity {
             SoapObject rpc = new SoapObject(nameSpace, methodName);
 
             String data = String.format("%-10s", "GPIS05")
-                    + String.format("%-10s", outCode) + String.format("%-10s", brevityCode)
+                    + String.format("%-10s", heatNo) + String.format("%-10s", heatNoj)
                     + "*";
             // 设置需调用WebService接口需要传入的参数
             Log.i("params", data);
