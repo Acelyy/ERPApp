@@ -30,7 +30,7 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        ViewHolder holder = new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_information, viewGroup, false));
+        ViewHolder holder = new ViewHolder(inflater.inflate(R.layout.list_information, viewGroup, false));
         return holder;
     }
 

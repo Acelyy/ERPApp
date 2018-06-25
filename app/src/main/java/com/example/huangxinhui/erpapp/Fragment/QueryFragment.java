@@ -1,5 +1,6 @@
 package com.example.huangxinhui.erpapp.Fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.widget.ListView;
 import com.example.huangxinhui.erpapp.Adapter.QueryAdapter;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.R;
+import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+@SuppressLint("ValidFragment")
 public class QueryFragment extends Fragment {
     Unbinder unbinder;
 
@@ -50,6 +53,7 @@ public class QueryFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         listQuery.setLayoutManager(new LinearLayoutManager(getActivity()));
         listQuery.setAdapter(new QueryAdapter(data, getActivity()));
+        ScreenAdapterTools.getInstance().loadView(view);
         return view;
     }
 

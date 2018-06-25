@@ -2,10 +2,18 @@ package com.example.huangxinhui.erpapp.Function;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import com.example.huangxinhui.erpapp.R;
+import com.example.huangxinhui.erpapp.Util.IpConfig;
+import com.yatoooon.screenadaptation.ScreenAdapterTools;
+
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +31,8 @@ public class IntoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_into);
         ButterKnife.bind(this);
+        ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
+
     }
 
     @OnClick({R.id.back, R.id.query})
@@ -40,7 +50,47 @@ public class IntoActivity extends AppCompatActivity {
 
         @Override
         public void run() {
+            String result = "";
+            String nameSpace = "http://service.sh.icsc.com";
+            // 调用的方法名称
+            String methodName = "run";
+            // EndPoint
+            //String endPoint = "http://10.10.4.210:9081/erp/sh/Scanning.ws";//测试
+            String endPoint = "http://" + IpConfig.IP + "/erp/sh/Scanning.ws";//正式
+            // SOAP Action
+            String soapAction = "http://service.sh.icsc.com/run";
 
+            // 指定WebService的命名空间和调用的方法名
+            SoapObject rpc = new SoapObject(nameSpace, methodName);
+
+            String data = String.format("%-10s", "GPIS06")
+                    + String.format("%-10s", intoCode) + String.format("%-10s", brevityCode)
+                    + "*";
+            // 设置需调用WebService接口需要传入的参数
+            Log.i("params", data);
+            rpc.addProperty("date", data);
+
+            // 生成调用WebService方法的SOAP请求信息,并指定SOAP的版本
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
+                    SoapEnvelope.VER10);
+
+            envelope.bodyOut = rpc;
+            // 设置是否调用的是dotNet开发的WebService
+            envelope.dotNet = false;
+            envelope.setOutputSoapObject(rpc);
+
+            HttpTransportSE transport = new HttpTransportSE(endPoint);
+            try {
+                // 调用WebService
+                transport.call(soapAction, envelope);
+                Object object = (Object) envelope.getResponse();
+                // 获取返回的结果
+                result = object.toString();
+                Log.i("out", result);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

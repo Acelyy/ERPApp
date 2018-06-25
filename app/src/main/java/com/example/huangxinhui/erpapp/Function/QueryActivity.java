@@ -23,6 +23,7 @@ import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.R;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
 import com.example.huangxinhui.erpapp.Util.JsonUtil;
+import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -97,6 +98,7 @@ public class QueryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_query);
         ButterKnife.bind(this);
+        ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
         dialog = new ProgressDialog(this);
         dialog.setMessage("查询中");
     }
@@ -132,9 +134,10 @@ public class QueryActivity extends AppCompatActivity {
                             date = new SimpleDateFormat("yyyyMMdd").format(new Date(picker.getYear() - 1900, picker.getMonth(), picker.getDayOfMonth()));
                             producedDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date(picker.getYear() - 1900, picker.getMonth(), picker.getDayOfMonth())));
                         }
-                    }).create();
+                    });
+                    data_dialog = builder.create();
                 }
-                dialog.show();
+                data_dialog.show();
                 break;
         }
     }

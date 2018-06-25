@@ -11,6 +11,7 @@ import com.example.huangxinhui.erpapp.Function.MoveActivity;
 import com.example.huangxinhui.erpapp.Function.OutActivity;
 import com.example.huangxinhui.erpapp.Function.QueryActivity;
 import com.example.huangxinhui.erpapp.Function.ReceiveActivity;
+import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -22,6 +23,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
+        ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
     }
 
     @OnClick({R.id.query, R.id.receive, R.id.out, R.id.into, R.id.move})

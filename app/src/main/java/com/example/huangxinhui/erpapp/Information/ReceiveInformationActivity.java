@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.example.huangxinhui.erpapp.Adapter.ReceiverAdapter;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.R;
+import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 import java.util.ArrayList;
 
@@ -46,6 +47,7 @@ public class ReceiveInformationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receive_information);
         ButterKnife.bind(this);
+        ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
         listReceiver.setLayoutManager(new LinearLayoutManager(this));
         titleName.setText(getIntent().getExtras().getString("title") == null ? "" : getIntent().getExtras().getString("title"));
         data = (ArrayList<Query.DataBean>) getIntent().getExtras().getSerializable("data");

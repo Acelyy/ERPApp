@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.huangxinhui.erpapp.R;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
+import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -33,6 +35,8 @@ public class OutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_out);
         ButterKnife.bind(this);
+        ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
+
     }
 
     @OnClick({R.id.back, R.id.query})
@@ -42,6 +46,7 @@ public class OutActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.query:
+                new Thread(new OutThread(outCode.getText().toString().trim(),brevityCode.getText().toString().trim())).start();
                 break;
         }
     }

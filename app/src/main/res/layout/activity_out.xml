@@ -61,6 +61,7 @@
                 android:textSize="8pt" />
 
             <EditText
+                android:text="18B601149"
                 android:singleLine="true"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"

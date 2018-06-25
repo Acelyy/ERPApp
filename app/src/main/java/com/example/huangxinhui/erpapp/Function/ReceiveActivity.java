@@ -23,6 +23,7 @@ import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.R;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
 import com.example.huangxinhui.erpapp.Util.JsonUtil;
+import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -99,6 +100,7 @@ public class ReceiveActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receive);
         ButterKnife.bind(this);
+        ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
         dialog = new ProgressDialog(this);
         dialog.setMessage("查询中");
     }
@@ -128,9 +130,10 @@ public class ReceiveActivity extends AppCompatActivity {
                                     producedDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date(picker.getYear() - 1900, picker.getMonth(), picker.getDayOfMonth())));
                                 }
                             }
-                    ).create();
+                    );
+                    date_dialog = builder.create();
                 }
-                dialog.show();
+                date_dialog.show();
                 break;
             case R.id.query:
                 new Thread(new ReceiverThread(furnaceCode.getText().toString().trim(), brevityCode.getText().toString().trim(), deviceNumber.getText().toString().trim(), qualityBooks.getText().toString().trim())).start();
@@ -169,8 +172,8 @@ public class ReceiveActivity extends AppCompatActivity {
 
             String data = String.format("%-10s", "GPIS02")
                     + String.format("%-10s", heatNo) + String.format("%-10s", heatNoj)
-                    + String.format("%-10s", date)
-                    + String.format("%-10s", ccNo) + String.format("%-12s", chgLocRptNo) + "*";
+                    + String.format("%-10s", date) + String.format("%-10s", ccNo)
+                    + String.format("%-12s", chgLocRptNo) + "*";
             // 设置需调用WebService接口需要传入的参数
             Log.i("params", data);
             rpc.addProperty("date", data);

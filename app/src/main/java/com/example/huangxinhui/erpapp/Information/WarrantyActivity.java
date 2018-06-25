@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.R;
+import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class WarrantyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_warranty);
         ButterKnife.bind(this);
+        ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
         list_data = (List<Query.DataBean>) getIntent().getExtras().getSerializable("data");
         if (list_data == null || list_data.size() < 3) {
             Toast.makeText(this, "数据有误，请联系管理员", Toast.LENGTH_SHORT).show();
