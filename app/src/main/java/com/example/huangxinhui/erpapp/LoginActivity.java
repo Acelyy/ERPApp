@@ -23,6 +23,9 @@ import com.example.huangxinhui.erpapp.JavaBean.GroupBean;
 import com.example.huangxinhui.erpapp.JavaBean.LoginResult;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
 import com.example.huangxinhui.erpapp.Util.JsonUtil;
+import com.kcode.lib.UpdateWrapper;
+import com.kcode.lib.bean.VersionModel;
+import com.kcode.lib.net.CheckUpdateTask;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 import org.ksoap2.SoapEnvelope;
@@ -74,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
             pwd.setText(sp.getString("password", null));
             remember.setChecked(true);
         }
+        checkUpdate(0);
     }
 
     @SuppressLint("HandlerLeak")
@@ -224,5 +228,29 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+
+    /**
+     * 检查更新
+     *
+     * @param time
+     */
+    private void checkUpdate(final long time) {
+
+        UpdateWrapper.Builder builder = new UpdateWrapper.Builder(getApplicationContext())
+                .setTime(time)
+                .setNotificationIcon(R.mipmap.app_icon)
+                .setUrl("http://45.78.52.169/app/update.json")
+                .setIsShowToast(false)
+                .setCallback(new CheckUpdateTask.Callback() {
+                    @Override
+                    public void callBack(VersionModel versionModel) {
+                        Log.i("versionModel", JSON.toJSONString(versionModel));
+                    }
+                });
+        builder.build().start();
+
+
     }
 }

@@ -251,10 +251,12 @@ public class OutFragment extends Fragment {
     }
 
     private void showPop() {
-        pop.showAtLocation(listOut, Gravity.CENTER, 0, 0);
-        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-        lp.alpha = 0.5f; //0.0-1.0
-        getActivity().getWindow().setAttributes(lp);
+        if (!pop.isShowing()) {
+            pop.showAtLocation(listOut, Gravity.CENTER, 0, 0);
+            WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+            lp.alpha = 0.5f; //0.0-1.0
+            getActivity().getWindow().setAttributes(lp);
+        }
     }
 
     @Override
