@@ -42,7 +42,7 @@ public class OutInformationActivity extends AppCompatActivity {
         ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
         ArrayList<Query.DataBean> list_data = (ArrayList<Query.DataBean>)getIntent().getExtras().getSerializable("data");
         titleName.setText(getIntent().getExtras().getString("title") == null ? "" : getIntent().getExtras().getString("title"));
-        fragments = new QueryFragment[list_data.size()];
+        fragments = new OutFragment[list_data.size()];
         titles = new String[list_data.size()];
         for(int i=0;i<list_data.size();i++){
             fragments[i] = OutFragment.getIntance(list_data.get(i).getList_info());
@@ -50,7 +50,6 @@ public class OutInformationActivity extends AppCompatActivity {
         }
         pager.setAdapter(new OutInformationActivity.MyPagerAdapter(getSupportFragmentManager()));
         tlTab.setTabMode(TabLayout.MODE_SCROLLABLE);
-
         tlTab.setTabTextColors(Color.parseColor("#000000"), Color.parseColor("#40a9ff"));
         tlTab.setupWithViewPager(pager);
     }
