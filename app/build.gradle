@@ -46,4 +46,12 @@ dependencies {
     implementation files('libs/ksoap2-android-assembly-2.5.4-jar-with-dependencies.jar')
     // 滚轮选择器
     implementation 'com.contrarywind:Android-PickerView:4.1.4'
+    // 版本更新库
+    implementation 'com.github.fccaikai:AppUpdate:2.1.4'
+}
+
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
 }
