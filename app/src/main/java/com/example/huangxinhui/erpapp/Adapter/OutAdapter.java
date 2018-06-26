@@ -76,7 +76,7 @@ public class OutAdapter extends RecyclerView.Adapter<OutAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return data == null ? 0 : data.size();
+        return data == null ? 0 : data.size()+1;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
