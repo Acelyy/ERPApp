@@ -54,12 +54,12 @@
                 android:id="@+id/user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:textSize="16sp"
                 android:layout_marginStart="10dp"
-                android:textColor="#000000"
+                android:background="@null"
+                android:hint="请输入用户名"
                 android:singleLine="true"
-                android:hint="请输入用户名" />
+                android:textColor="#000000"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <View
@@ -85,13 +85,13 @@
                 android:id="@+id/pwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textSize="16sp"
                 android:layout_marginStart="10dp"
-                android:textColor="#000000"
-                android:password="true"
                 android:background="@null"
-                android:hint="请输入密码" />
+                android:hint="请输入密码"
+                android:password="true"
+                android:singleLine="true"
+                android:textColor="#000000"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <View
@@ -113,16 +113,32 @@
                 android:layout_marginRight="5dp"
                 android:src="@mipmap/team" />
 
-            <TextView
-                android:id="@+id/team"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="请选择班组"
-                android:layout_marginStart="10dp"
-                android:textColor="#000000">
+                android:orientation="horizontal">
 
-            </TextView>
+                <TextView
+                    android:id="@+id/team"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:text="请选择班组"
+                    android:textColor="#000000"
+                    android:textSize="16sp">
+
+                </TextView>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/drop"/>
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
         <View
@@ -144,37 +160,37 @@
 
                 <CheckBox
                     android:id="@+id/remember"
-                    android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
                     android:layout_gravity="center_vertical"
+                    android:text="记住密码"
                     android:textColor="#757575"
-                    android:text="记住密码" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <!--<LinearLayout-->
-                <!--android:id="@+id/forget"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="1">-->
+            <!--android:id="@+id/forget"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1">-->
 
-                <!--<ImageView-->
-                    <!--android:layout_width="30dp"-->
-                    <!--android:layout_height="30dp"-->
-                    <!--android:src="@mipmap/forget" />-->
+            <!--<ImageView-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:src="@mipmap/forget" />-->
 
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_gravity="center_vertical"-->
-                    <!--android:textSize="16sp"-->
-                    <!--android:textColor="#757575"-->
-                    <!--android:text="忘记密码" />-->
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:textSize="16sp"-->
+            <!--android:textColor="#757575"-->
+            <!--android:text="忘记密码" />-->
             <!--</LinearLayout>-->
         </LinearLayout>
 
@@ -184,9 +200,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:background="@drawable/bg_round"
-            android:textSize="16sp"
             android:text="登录"
             android:textColor="#fff"
+            android:textSize="16sp"
             android:textStyle="bold" />
     </LinearLayout>
 

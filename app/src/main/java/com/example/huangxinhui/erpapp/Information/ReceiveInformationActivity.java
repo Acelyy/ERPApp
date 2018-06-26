@@ -65,7 +65,6 @@ public class ReceiveInformationActivity extends AppCompatActivity {
             });
             listReceiver.setAdapter(adapter);
         }
-
         initPopupWindow();
     }
 

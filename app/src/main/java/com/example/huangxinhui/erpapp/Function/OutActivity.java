@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -38,8 +37,6 @@ public class OutActivity extends AppCompatActivity {
     EditText brevityCode;
 
     ProgressDialog dialog;
-
-    AlertDialog data_dialog;
 
     @SuppressLint("HandlerLeak")
     private Handler mHandle = new Handler() {

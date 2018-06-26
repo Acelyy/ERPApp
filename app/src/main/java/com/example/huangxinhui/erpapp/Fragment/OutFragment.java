@@ -2,6 +2,8 @@ package com.example.huangxinhui.erpapp.Fragment;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,14 +12,21 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.example.huangxinhui.erpapp.Adapter.OutAdapter;
+import com.example.huangxinhui.erpapp.JavaBean.BusinessType;
 import com.example.huangxinhui.erpapp.JavaBean.LoginResult;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.JavaBean.Wear;
@@ -58,6 +67,9 @@ public class OutFragment extends Fragment {
 
     private PopupWindow pop;
 
+    private List<BusinessType> types = new ArrayList<>();
+    private int select;
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
@@ -79,12 +91,13 @@ public class OutFragment extends Fragment {
                     if (JsonUtil.isJson(data)) {// 判断是否为json
                         LoginResult result = JSON.parseObject(data, LoginResult.class);
                         if (result != null && !result.getResult().equals("F")) {
-
+                            Toast.makeText(getActivity(), "出库成功", Toast.LENGTH_SHORT).show();
+                            getActivity().finish();
                         } else {
-
+                            Toast.makeText(getActivity(), "出库失败", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-
+                        Toast.makeText(getActivity(), "出库失败", Toast.LENGTH_SHORT).show();
                     }
                     if (dialog.isShowing())
                         dialog.dismiss();
@@ -102,10 +115,82 @@ public class OutFragment extends Fragment {
         return qf;
     }
 
+    /**
+     * 初始化pop
+     */
     private void initPop() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.pop_out, null);
-        pop = new PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        final TextView lb = view.findViewById(R.id.lb);
+        TextView outWarehouseNo = view.findViewById(R.id.outWarehouseNo);
+//        EditText chgLocDate = view.findViewById(R.id.chgLocDate);
+//        EditText carNo = view.findViewById(R.id.carNo);
+//        EditText operateShift = view.findViewById(R.id.operateShift);
+//        EditText operateCrew = view.findViewById(R.id.operateCrew);
+//        EditText driver = view.findViewById(R.id.driver);
+//        EditText inWarehouseNo = view.findViewById(R.id.inWarehouseNo);
+//        EditText qty = view.findViewById(R.id.qty);
+//        EditText bz = view.findViewById(R.id.bz);
+        lb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pop.dismiss();
+                OptionsPickerView pvOptions = new OptionsPickerBuilder(getActivity(), new OnOptionsSelectListener() {
+                    @Override
+                    public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                        select = options1;
+                        lb.setText(types.get(select).getName());
+                        showPop();
+                    }
+                }).setOutSideCancelable(false)
+                        .setContentTextSize(25)
+                        .build();
+                pvOptions.setPicker(types);
+                pvOptions.setSelectOptions(select);
+                pvOptions.setTitleText("请选择班组");
+                pvOptions.show();
+            }
+        });
+        outWarehouseNo.setText(data_map.get("当前库"));
 
+        view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new OutConfirmThread(
+                        "B",
+                        "X30",
+                        "20180626",
+                        "2301",
+                        "1",
+                        "B",
+                        "001",
+                        "X40",
+                        "杜成栋",
+
+                        data_map.get("炉号"),
+                        data_map.get("长度"),
+                        data_map.get("重量"),
+                        data_map.get("钢种"),
+                        status.get(data_map.get("钢坯状态")),
+                        data_map.get("块数"),// 后面改
+                        wear.get(data_map.get("当前库")),
+                        data_map.get("当前跨"),
+                        data_map.get("当前储序")
+                )).start();
+            }
+        });
+        pop = new PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        pop.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFFFFF")));
+        pop.setFocusable(true);
+        pop.setOutsideTouchable(true);
+        pop.update();
+        pop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+                lp.alpha = 1f; //0.0-1.0
+                getActivity().getWindow().setAttributes(lp);
+            }
+        });
     }
 
     @Override
@@ -115,6 +200,8 @@ public class OutFragment extends Fragment {
         wear = getWear(JSON.parseArray(JsonReader.getJson("wear.json", getActivity()), Wear.class));
         data = (List<Query.DataBean.Info>) getArguments().getSerializable("data");
         data_map = exchange(data);
+        types.add(new BusinessType("热输", "A"));
+        types.add(new BusinessType("冷送", "B"));
     }
 
     /**
@@ -150,37 +237,24 @@ public class OutFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         dialog = new ProgressDialog(getActivity());
         dialog.setMessage("出库中");
+        initPop();
         listOut.setLayoutManager(new LinearLayoutManager(getActivity()));
         OutAdapter adapter = new OutAdapter(data, getActivity());
         adapter.setOnButtonClickListener(new OutAdapter.OnButtonClickListener() {
             @Override
             public void onCLick(View view, int position) {
-//                Toast.makeText(getActivity(), "111111", Toast.LENGTH_SHORT).show();
-                new Thread(new OutConfirmThread(
-                        "B",
-                        "X30",
-                        "20186026",
-                        "2301",
-                        "1",
-                        "B",
-                        "001",
-                        "X40",
-                        "杜成栋",
-
-                        data_map.get("炉号"),
-                        data_map.get("长度"),
-                        data_map.get("重量"),
-                        data_map.get("钢种"),
-                        status.get(data_map.get("钢坯状态")),
-                        data_map.get("块数"),// 后面改
-                        wear.get(data_map.get("当前库")),
-                        data_map.get("当前跨"),
-                        data_map.get("当前储序")
-                )).start();
+                showPop();
             }
         });
         listOut.setAdapter(adapter);
         return view;
+    }
+
+    private void showPop() {
+        pop.showAtLocation(listOut, Gravity.CENTER, 0, 0);
+        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+        lp.alpha = 0.5f; //0.0-1.0
+        getActivity().getWindow().setAttributes(lp);
     }
 
     @Override

@@ -33,17 +33,18 @@ public class OutInformationActivity extends AppCompatActivity {
 
     Fragment fragments[];
     String[] titles;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_out_information);
         ButterKnife.bind(this);
         ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
-        ArrayList<Query.DataBean> list_data = (ArrayList<Query.DataBean>)getIntent().getExtras().getSerializable("data");
+        ArrayList<Query.DataBean> list_data = (ArrayList<Query.DataBean>) getIntent().getExtras().getSerializable("data");
         titleName.setText(getIntent().getExtras().getString("title") == null ? "" : getIntent().getExtras().getString("title"));
         fragments = new OutFragment[list_data.size()];
         titles = new String[list_data.size()];
-        for(int i=0;i<list_data.size();i++){
+        for (int i = 0; i < list_data.size(); i++) {
             fragments[i] = OutFragment.getInstance(list_data.get(i).getList_info());
             titles[i] = list_data.get(i).getName();
         }
