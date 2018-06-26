@@ -59,7 +59,7 @@ public class OutFragment extends Fragment {
 
     ProgressDialog dialog;
 
-    @BindView(R.id.list_out)
+    @BindView(R.id.list_query)
     RecyclerView listOut;
 
     private Map<String, String> status;
@@ -232,7 +232,7 @@ public class OutFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.layout_fragment_out, container, false);
+        View view = inflater.inflate(R.layout.layout_fragment_query, container, false);
         ScreenAdapterTools.getInstance().loadView(view);
         unbinder = ButterKnife.bind(this, view);
         dialog = new ProgressDialog(getActivity());
