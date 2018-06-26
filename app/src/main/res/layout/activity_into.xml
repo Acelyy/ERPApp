@@ -70,6 +70,7 @@
                 android:layout_marginTop="10dp"
                 android:textSize="16sp"
                 android:textColor="#000"
+                android:text="18B102427"
                 android:background="@drawable/bg_border" />
         </LinearLayout>
 
