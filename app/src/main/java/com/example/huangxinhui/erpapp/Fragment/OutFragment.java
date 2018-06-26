@@ -111,8 +111,8 @@ public class OutFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        status = JSON.parseObject(JsonReader.getJson("status", getActivity()), Map.class);
-        wear = getWear(JSON.parseArray(JsonReader.getJson("wear", getActivity()), Wear.class));
+        status = JSON.parseObject(JsonReader.getJson("status.json", getActivity()), Map.class);
+        wear = getWear(JSON.parseArray(JsonReader.getJson("wear.json", getActivity()), Wear.class));
         data = (List<Query.DataBean.Info>) getArguments().getSerializable("data");
         data_map = exchange(data);
     }
