@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.example.huangxinhui.erpapp.Fragment.OutFragment;
-import com.example.huangxinhui.erpapp.Fragment.QueryFragment;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.R;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
@@ -45,7 +44,7 @@ public class OutInformationActivity extends AppCompatActivity {
         fragments = new OutFragment[list_data.size()];
         titles = new String[list_data.size()];
         for(int i=0;i<list_data.size();i++){
-            fragments[i] = OutFragment.getIntance(list_data.get(i).getList_info());
+            fragments[i] = OutFragment.getInstance(list_data.get(i).getList_info());
             titles[i] = list_data.get(i).getName();
         }
         pager.setAdapter(new OutInformationActivity.MyPagerAdapter(getSupportFragmentManager()));
