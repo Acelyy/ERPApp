@@ -24,7 +24,7 @@ import butterknife.Unbinder;
 public class MoveFragment extends Fragment {
     Unbinder unbinder;
     List<Query.DataBean.Info> data;
-    @BindView(R.id.list_move)
+    @BindView(R.id.list_query)
     RecyclerView listMove;
 
 
@@ -45,7 +45,7 @@ public class MoveFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.layout_fragment_move, container, false);
+        View view = inflater.inflate(R.layout.layout_fragment_query, container, false);
         unbinder = ButterKnife.bind(this, view);
         listMove.setLayoutManager(new LinearLayoutManager(getActivity()));
         listMove.setAdapter(new MoveAdapter(data,getActivity()));
