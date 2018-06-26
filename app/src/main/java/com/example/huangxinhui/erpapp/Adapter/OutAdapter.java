@@ -2,7 +2,6 @@ package com.example.huangxinhui.erpapp.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +12,6 @@ import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.R;
 
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class OutAdapter extends RecyclerView.Adapter<OutAdapter.ViewHolder> {
     private static final int TYPE_LAYOUT = 1;
@@ -45,7 +41,6 @@ public class OutAdapter extends RecyclerView.Adapter<OutAdapter.ViewHolder> {
     @Override
     public OutAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_BUTTON) {
-            Log.i("onCreateViewHolder", "TYPE_BUTTON");
             return new OutAdapter.ViewHolder(inflater.inflate(R.layout.list_button, parent, false));
         } else {
             return new OutAdapter.ViewHolder(inflater.inflate(R.layout.list_information, parent, false));

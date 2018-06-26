@@ -5,13 +5,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.huangxinhui.erpapp.Adapter.OutAdapter;
-import com.example.huangxinhui.erpapp.Adapter.ReceiverAdapter;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.R;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
@@ -21,7 +19,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class OutFragment extends Fragment {
@@ -30,7 +27,6 @@ public class OutFragment extends Fragment {
     List<Query.DataBean.Info> data;
     @BindView(R.id.list_out)
     RecyclerView listOut;
-    Unbinder unbinder1;
 
     public static OutFragment getIntance(ArrayList<Query.DataBean.Info> data) {
         OutFragment qf = new OutFragment();
@@ -52,7 +48,7 @@ public class OutFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.layout_fragment_out, container, false);
         ScreenAdapterTools.getInstance().loadView(view);
-        unbinder1 = ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         listOut.setLayoutManager(new LinearLayoutManager(getActivity()));
         listOut.setAdapter(new OutAdapter(data, getActivity()));
         return view;
