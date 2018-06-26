@@ -1,14 +1,25 @@
 package com.example.huangxinhui.erpapp.Function;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.example.huangxinhui.erpapp.Information.MoveInformationActivity;
+import com.example.huangxinhui.erpapp.Information.OutInformationActivity;
+import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.R;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
+import com.example.huangxinhui.erpapp.Util.JsonUtil;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 import org.ksoap2.SoapEnvelope;
@@ -27,13 +38,54 @@ public class MoveActivity extends AppCompatActivity {
     @BindView(R.id.Libraries)
     Spinner Libraries;
     private String library = "";
+    ProgressDialog dialog;
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandle = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case -1:
+                    dialog.show();
+                    break;
+                case 0:
+                    // 处理异常，网络请求失败
+                    Toast.makeText(MoveActivity.this, "网络异常，请检查网络是否通畅", Toast.LENGTH_SHORT).show();
+                    if (dialog.isShowing())
+                        dialog.dismiss();
+                    break;
+                case 1:
+                    String data = msg.getData().getString("data");
+                    if (JsonUtil.isJson(data)) {
+                        Query query = JSON.parseObject(data, Query.class);
+                        if (query != null && !query.getResult().equals("F")) {
+                            Intent intent = new Intent(MoveActivity.this, MoveInformationActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("title", moveCode.getText().toString());
+                            bundle.putSerializable("data", query.getData());
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(MoveActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(MoveActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
+                    }
+                    if (dialog.isShowing()) dialog.dismiss();
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_move);
         ButterKnife.bind(this);
         ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
-
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("查询中");
     }
 
     @OnClick({R.id.back, R.id.query})
@@ -43,7 +95,7 @@ public class MoveActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.query:
-                new Thread(new MoveThread(moveCode.getText().toString().trim(),library)).start();;
+                new Thread(new MoveThread(moveCode.getText().toString().trim(), library)).start();
                 break;
         }
     }
@@ -51,10 +103,12 @@ public class MoveActivity extends AppCompatActivity {
     class MoveThread implements Runnable {
         private String heatNo;
         private String heatNoj;
+
         public MoveThread(String moveCode, String Libraries) {
             this.heatNo = moveCode;
             this.heatNoj = Libraries;
         }
+
         @Override
         public void run() {
             String result = "";
@@ -94,8 +148,14 @@ public class MoveActivity extends AppCompatActivity {
                 // 获取返回的结果
                 result = object.toString();
                 Log.i("out", result);
-
+                Message msg = mHandle.obtainMessage();
+                msg.what = 1;
+                Bundle bundle = new Bundle();
+                bundle.putString("data", result);
+                msg.setData(bundle);
+                msg.sendToTarget();
             } catch (Exception e) {
+                mHandle.sendEmptyMessage(0);
                 e.printStackTrace();
             }
         }
