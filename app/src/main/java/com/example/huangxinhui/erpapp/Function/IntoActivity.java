@@ -42,6 +42,7 @@ public class IntoActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.query:
+                new Thread(new IntoThread(intoCode.getText().toString().trim(),brevityCode.getText().toString().trim())).start();;
                 break;
         }
     }
@@ -50,8 +51,8 @@ public class IntoActivity extends AppCompatActivity {
         private String heatNo;
         private String heatNoj;
 
-        public IntoThread(String outCode, String brevityCode) {
-            this.heatNo = outCode;
+        public IntoThread(String intoCode, String brevityCode) {
+            this.heatNo = intoCode;
             this.heatNoj = brevityCode;
         }
 

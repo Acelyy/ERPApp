@@ -27,6 +27,8 @@ public class OutFragment extends Fragment {
     List<Query.DataBean.Info> data;
     @BindView(R.id.list_out)
     RecyclerView listOut;
+    OutAdapter adapter;
+
 
     public static OutFragment getIntance(ArrayList<Query.DataBean.Info> data) {
         OutFragment qf = new OutFragment();
@@ -45,12 +47,12 @@ public class OutFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.layout_fragment_out, container, false);
         ScreenAdapterTools.getInstance().loadView(view);
         unbinder = ButterKnife.bind(this, view);
+        adapter = new OutAdapter(data, getActivity());
         listOut.setLayoutManager(new LinearLayoutManager(getActivity()));
-        listOut.setAdapter(new OutAdapter(data, getActivity()));
+        listOut.setAdapter(adapter);
         return view;
     }
 
