@@ -10,14 +10,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.example.huangxinhui.erpapp.Information.OutInformationActivity;
-import com.example.huangxinhui.erpapp.Information.QueryInformationActivity;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.R;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
@@ -45,11 +42,11 @@ public class OutActivity extends AppCompatActivity {
     AlertDialog data_dialog;
 
     @SuppressLint("HandlerLeak")
-    private Handler mHandle = new Handler(){
+    private Handler mHandle = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case -1:
                     dialog.show();
                     break;
@@ -61,26 +58,27 @@ public class OutActivity extends AppCompatActivity {
                     break;
                 case 1:
                     String data = msg.getData().getString("data");
-                    if(JsonUtil.isJson(data)){
-                        Query query = JSON.parseObject(data,Query.class);
-                        if(query != null && !query.getResult().equals("F")){
+                    if (JsonUtil.isJson(data)) {
+                        Query query = JSON.parseObject(data, Query.class);
+                        if (query != null && !query.getResult().equals("F")) {
                             Intent intent = new Intent(OutActivity.this, OutInformationActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putString("title", outCode.getText().toString());
                             bundle.putSerializable("data", query.getData());
                             intent.putExtras(bundle);
                             startActivity(intent);
-                        }else {
+                        } else {
                             Toast.makeText(OutActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
                         }
-                    }else {
+                    } else {
                         Toast.makeText(OutActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
                     }
-                    if (dialog.isShowing())dialog.dismiss();
+                    if (dialog.isShowing()) dialog.dismiss();
                     break;
             }
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,12 +96,12 @@ public class OutActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.query:
-                new Thread(new OutThread(outCode.getText().toString().trim(),brevityCode.getText().toString().trim())).start();
+                new Thread(new OutThread(outCode.getText().toString().trim(), brevityCode.getText().toString().trim())).start();
                 break;
         }
     }
 
-    class OutThread implements Runnable{
+    class OutThread implements Runnable {
         private String heatNo;
         private String heatNoj;
 
@@ -144,6 +142,7 @@ public class OutActivity extends AppCompatActivity {
             envelope.setOutputSoapObject(rpc);
 
             HttpTransportSE transport = new HttpTransportSE(endPoint);
+            mHandle.sendEmptyMessage(-1);
             try {
                 // 调用WebService
                 transport.call(soapAction, envelope);
@@ -155,7 +154,7 @@ public class OutActivity extends AppCompatActivity {
                 Message msg = mHandle.obtainMessage();
                 msg.what = 1;
                 Bundle bundle = new Bundle();
-                bundle.putString("data",result);
+                bundle.putString("data", result);
                 msg.setData(bundle);
                 msg.sendToTarget();
             } catch (Exception e) {
