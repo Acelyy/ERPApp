@@ -15,8 +15,10 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.example.huangxinhui.erpapp.Information.OutInformationActivity;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
+import com.example.huangxinhui.erpapp.JavaBean.Wear;
 import com.example.huangxinhui.erpapp.R;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
+import com.example.huangxinhui.erpapp.Util.JsonReader;
 import com.example.huangxinhui.erpapp.Util.JsonUtil;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
@@ -24,6 +26,10 @@ import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,7 +43,6 @@ public class OutActivity extends AppCompatActivity {
     EditText brevityCode;
 
     ProgressDialog dialog;
-
     @SuppressLint("HandlerLeak")
     private Handler mHandle = new Handler() {
         @Override

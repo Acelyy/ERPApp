@@ -37,7 +37,7 @@ public class IntoActivity extends AppCompatActivity {
     EditText brevityCode;
     ProgressDialog dialog;
     @SuppressLint("HandlerLeak")
-    private Handler mHandle = new Handler() {
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -137,6 +137,7 @@ public class IntoActivity extends AppCompatActivity {
             envelope.setOutputSoapObject(rpc);
 
             HttpTransportSE transport = new HttpTransportSE(endPoint);
+            mHandler.sendEmptyMessage(-1);
             try {
                 // 调用WebService
                 transport.call(soapAction, envelope);
@@ -144,14 +145,14 @@ public class IntoActivity extends AppCompatActivity {
                 // 获取返回的结果
                 result = object.toString();
                 Log.i("out", result);
-                Message msg = mHandle.obtainMessage();
+                Message msg = mHandler.obtainMessage();
                 msg.what = 1;
                 Bundle bundle = new Bundle();
                 bundle.putString("data", result);
                 msg.setData(bundle);
                 msg.sendToTarget();
             } catch (Exception e) {
-                mHandle.sendEmptyMessage(0);
+                mHandler.sendEmptyMessage(0);
                 e.printStackTrace();
             }
         }

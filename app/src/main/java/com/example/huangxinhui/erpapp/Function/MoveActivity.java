@@ -6,19 +6,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.renderscript.Sampler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.example.huangxinhui.erpapp.Information.MoveInformationActivity;
-import com.example.huangxinhui.erpapp.Information.OutInformationActivity;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
+import com.example.huangxinhui.erpapp.JavaBean.Wear;
 import com.example.huangxinhui.erpapp.R;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
+import com.example.huangxinhui.erpapp.Util.JsonReader;
 import com.example.huangxinhui.erpapp.Util.JsonUtil;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
@@ -26,6 +32,12 @@ import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+
+import java.security.Key;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,12 +48,12 @@ public class MoveActivity extends AppCompatActivity {
     @BindView(R.id.moveCode)
     EditText moveCode;
     @BindView(R.id.Libraries)
-    Spinner Libraries;
-    private String library = "";
+    TextView Libraries;
+    String library_id ;
     ProgressDialog dialog;
-
+    List<Wear> wear;
     @SuppressLint("HandlerLeak")
-    private Handler mHandle = new Handler() {
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -86,27 +98,51 @@ public class MoveActivity extends AppCompatActivity {
         ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
         dialog = new ProgressDialog(this);
         dialog.setMessage("查询中");
+        wear = JSON.parseArray(JsonReader.getJson("wear.json", MoveActivity.this), Wear.class);
     }
 
-    @OnClick({R.id.back, R.id.query})
+
+    @OnClick({R.id.back, R.id.query,R.id.Libraries})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
                 finish();
                 break;
             case R.id.query:
-                new Thread(new MoveThread(moveCode.getText().toString().trim(), library)).start();
+                if(library_id == null){
+                    Toast.makeText(this, "请选择库别", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                new Thread(new MoveThread(moveCode.getText().toString().trim(), library_id)).start();
+                break;
+            case R.id.Libraries:
+                OptionsPickerView pvOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+                    @Override
+                    public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                        Libraries.setText(wear.get(options1).getKey());
+                        library_id = wear.get(options1).getValue();
+                    }
+                }).setOutSideCancelable(false)
+                        .setContentTextSize(25)
+                        .build();
+                pvOptions.setPicker(wear);
+                pvOptions.setTitleText("请选择库别");
+                pvOptions.show();
                 break;
         }
+    }
+
+    @OnClick(R.id.Libraries)
+    public void onViewClicked() {
     }
 
     class MoveThread implements Runnable {
         private String heatNo;
         private String heatNoj;
 
-        public MoveThread(String moveCode, String Libraries) {
+        public MoveThread(String moveCode, String library_id) {
             this.heatNo = moveCode;
-            this.heatNoj = Libraries;
+            this.heatNoj = library_id;
         }
 
         @Override
@@ -141,6 +177,7 @@ public class MoveActivity extends AppCompatActivity {
             envelope.setOutputSoapObject(rpc);
 
             HttpTransportSE transport = new HttpTransportSE(endPoint);
+            mHandler.sendEmptyMessage(-1);
             try {
                 // 调用WebService
                 transport.call(soapAction, envelope);
@@ -148,14 +185,14 @@ public class MoveActivity extends AppCompatActivity {
                 // 获取返回的结果
                 result = object.toString();
                 Log.i("out", result);
-                Message msg = mHandle.obtainMessage();
+                Message msg = mHandler.obtainMessage();
                 msg.what = 1;
                 Bundle bundle = new Bundle();
                 bundle.putString("data", result);
                 msg.setData(bundle);
                 msg.sendToTarget();
             } catch (Exception e) {
-                mHandle.sendEmptyMessage(0);
+                mHandler.sendEmptyMessage(0);
                 e.printStackTrace();
             }
         }

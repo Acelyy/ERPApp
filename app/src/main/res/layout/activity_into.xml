@@ -31,7 +31,7 @@
                 android:layout_height="30dp"
                 android:layout_centerHorizontal="true"
                 android:gravity="center_vertical"
-                android:text="钢柸入库查询"
+                android:text="钢抷入库查询"
                 android:textColor="#fff"
                 android:textSize="11pt"
                 android:textStyle="bold" />
@@ -70,7 +70,7 @@
                 android:layout_marginTop="10dp"
                 android:textSize="16sp"
                 android:textColor="#000"
-                android:text="18B102427"
+                android:text="18B601149"
                 android:background="@drawable/bg_border" />
         </LinearLayout>
 
