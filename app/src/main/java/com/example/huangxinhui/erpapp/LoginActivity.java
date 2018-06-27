@@ -58,7 +58,9 @@ public class LoginActivity extends AppCompatActivity {
     // 班组信息
     List<GroupBean> list_group = new ArrayList<>();
 
-    private String group_id;
+    private int select_group;
+
+    App app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
+        app = (App) getApplication();
         list_group.add(new GroupBean("A", "甲"));
         list_group.add(new GroupBean("B", "乙"));
         list_group.add(new GroupBean("C", "丙"));
@@ -77,7 +80,8 @@ public class LoginActivity extends AppCompatActivity {
             pwd.setText(sp.getString("password", null));
             remember.setChecked(true);
         }
-        checkUpdate(0);
+        team.setText(list_group.get(select_group).getName());
+//        checkUpdate(0);
     }
 
     @SuppressLint("HandlerLeak")
@@ -115,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putBoolean("remember", false);
                                 editor.apply();
                             }
+                            app.setGroup(list_group.get(select_group));
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             startActivity(intent);
                             finish();
@@ -138,22 +143,24 @@ public class LoginActivity extends AppCompatActivity {
                 OptionsPickerView pvOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
                     @Override
                     public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                        select_group = options1;
                         team.setText(list_group.get(options1).getName());
-                        group_id = list_group.get(options1).getId();
                     }
                 }).setOutSideCancelable(false)
                         .setContentTextSize(25)
                         .build();
                 pvOptions.setPicker(list_group);
+                pvOptions.setSelectOptions(select_group);
                 pvOptions.setTitleText("请选择班组");
                 pvOptions.show();
                 break;
             case R.id.login:
-                if (group_id == null) {
-                    Toast.makeText(this, "请选择班组", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+//                if (group_id == null) {
+//                    Toast.makeText(this, "请选择班组", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
 //                new Thread(new LoginThread(user.getText().toString().trim(), pwd.getText().toString())).start();
+                app.setGroup(list_group.get(select_group));
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();
@@ -191,7 +198,7 @@ public class LoginActivity extends AppCompatActivity {
 
             String data = String.format("%-10s", "GPIS00")
                     + String.format("%-10s", userName) + String.format("%-10s", password)
-                    + String.format("%-10s", group_id) + "*";
+                    + String.format("%-10s", list_group.get(select_group)) + "*";
             // 设置需调用WebService接口需要传入的参数
             Log.i("params", data);
             rpc.addProperty("date", data);

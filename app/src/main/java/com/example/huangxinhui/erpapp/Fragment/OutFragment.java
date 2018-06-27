@@ -2,6 +2,7 @@ package com.example.huangxinhui.erpapp.Fragment;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +30,8 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.example.huangxinhui.erpapp.Adapter.OutAdapter;
+import com.example.huangxinhui.erpapp.App;
+import com.example.huangxinhui.erpapp.JavaBean.Banci;
 import com.example.huangxinhui.erpapp.JavaBean.BusinessType;
 import com.example.huangxinhui.erpapp.JavaBean.LoginResult;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
@@ -41,7 +47,9 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +76,19 @@ public class OutFragment extends Fragment {
     private PopupWindow pop;
 
     private List<BusinessType> types = new ArrayList<>();
-    private int select;
+    private int select_lb;
+
+    private AlertDialog dialog_date;
+
+    private String selected_date;
+
+    private List<Wear> list_wear;
+    private int selected_wear;
+
+    private List<Banci> list_banci = new ArrayList<>();
+    private int selected_banci;
+
+    private App app;
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -121,15 +141,17 @@ public class OutFragment extends Fragment {
     private void initPop() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.pop_out, null);
         final TextView lb = view.findViewById(R.id.lb);
-        TextView outWarehouseNo = view.findViewById(R.id.outWarehouseNo);
-//        EditText chgLocDate = view.findViewById(R.id.chgLocDate);
-//        EditText carNo = view.findViewById(R.id.carNo);
-//        EditText operateShift = view.findViewById(R.id.operateShift);
-//        EditText operateCrew = view.findViewById(R.id.operateCrew);
-//        EditText driver = view.findViewById(R.id.driver);
-//        EditText inWarehouseNo = view.findViewById(R.id.inWarehouseNo);
-//        EditText qty = view.findViewById(R.id.qty);
-//        EditText bz = view.findViewById(R.id.bz);
+        final TextView outWarehouseNo = view.findViewById(R.id.outWarehouseNo);
+        final TextView chgLocDate = view.findViewById(R.id.chgLocDate);
+        final EditText carNo = view.findViewById(R.id.carNo);
+        final TextView operateShift = view.findViewById(R.id.operateShift);
+        TextView operateCrew = view.findViewById(R.id.operateCrew);
+        final EditText driver = view.findViewById(R.id.driver);
+        final TextView inWarehouseNo = view.findViewById(R.id.inWarehouseNo);
+        final EditText qty = view.findViewById(R.id.qty);
+        final EditText bz = view.findViewById(R.id.bz);
+
+        lb.setText(types.get(select_lb).getName());
         lb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,41 +159,119 @@ public class OutFragment extends Fragment {
                 OptionsPickerView pvOptions = new OptionsPickerBuilder(getActivity(), new OnOptionsSelectListener() {
                     @Override
                     public void onOptionsSelect(int options1, int option2, int options3, View v) {
-                        select = options1;
-                        lb.setText(types.get(select).getName());
+                        select_lb = options1;
+                        lb.setText(types.get(select_lb).getName());
                         showPop();
                     }
                 }).setOutSideCancelable(false)
                         .setContentTextSize(25)
                         .build();
                 pvOptions.setPicker(types);
-                pvOptions.setSelectOptions(select);
+                pvOptions.setSelectOptions(select_lb);
                 pvOptions.setTitleText("请选择班组");
                 pvOptions.show();
             }
         });
         outWarehouseNo.setText(data_map.get("当前库"));
 
+        selected_date = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        chgLocDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        chgLocDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (pop.isShowing())
+                    pop.dismiss();
+                if (dialog_date == null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    View itemView = LayoutInflater.from(getActivity()).inflate(R.layout.item_date, null);
+                    final DatePicker picker = itemView.findViewById(R.id.dataPicker);
+                    builder.setTitle("请选择查询日期")
+                            .setView(itemView)
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    showPop();
+                                }
+                            }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            selected_date = new SimpleDateFormat("yyyyMMdd").format(new Date(picker.getYear() - 1900, picker.getMonth(), picker.getDayOfMonth()));
+                            chgLocDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date(picker.getYear() - 1900, picker.getMonth(), picker.getDayOfMonth())));
+                            showPop();
+                        }
+                    });
+                    dialog_date = builder.create();
+                }
+                dialog_date.show();
+            }
+        });
+        inWarehouseNo.setText(list_wear.get(selected_wear).getKey());
+        inWarehouseNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pop.dismiss();
+                OptionsPickerView pvOptions = new OptionsPickerBuilder(getActivity(), new OnOptionsSelectListener() {
+                    @Override
+                    public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                        selected_wear = options1;
+                        inWarehouseNo.setText(list_wear.get(selected_wear).getKey());
+                        showPop();
+                    }
+                }).setOutSideCancelable(false)
+                        .setContentTextSize(25)
+                        .build();
+                pvOptions.setPicker(list_wear);
+                pvOptions.setSelectOptions(selected_wear);
+                pvOptions.setTitleText("请选择接收库别");
+                pvOptions.show();
+            }
+        });
+
+        operateShift.setText(list_banci.get(selected_banci).getDesc());
+        operateShift.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pop.dismiss();
+                OptionsPickerView pvOptions = new OptionsPickerBuilder(getActivity(), new OnOptionsSelectListener() {
+                    @Override
+                    public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                        selected_banci = options1;
+                        operateShift.setText(list_banci.get(selected_banci).getDesc());
+                        showPop();
+                    }
+                }).setOutSideCancelable(false)
+                        .setContentTextSize(25)
+                        .build();
+                pvOptions.setPicker(list_banci);
+                pvOptions.setSelectOptions(selected_banci);
+                pvOptions.setTitleText("请选择班次");
+                pvOptions.show();
+            }
+        });
+
+        operateCrew.setText(app.getGroup().getName());
+
         view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new Thread(new OutConfirmThread(
-                        "B",
-                        "X30",
-                        "20180626",
-                        "2301",
-                        "1",
-                        "B",
-                        "001",
-                        "X40",
-                        "杜成栋",
+                        types.get(select_lb).getValue(),
+                        outWarehouseNo.getText().toString(),
+                        selected_date,
+                        carNo.getText().toString(),
+                        list_banci.get(selected_banci).getCode(),
+                        app.getGroup().getId(),
+                        driver.getText().toString(),
+                        list_wear.get(selected_wear).getValue(),
+                        bz.getText().toString(),
 
                         data_map.get("炉号"),
                         data_map.get("长度"),
                         data_map.get("重量"),
                         data_map.get("钢种"),
                         status.get(data_map.get("钢坯状态")),
-                        data_map.get("块数"),// 后面改
+                        //data_map.get("块数"),// 后面改
+                        qty.getText().toString(),
                         wear.get(data_map.get("当前库")),
                         data_map.get("当前跨"),
                         data_map.get("当前储序")
@@ -199,9 +299,14 @@ public class OutFragment extends Fragment {
         status = JSON.parseObject(JsonReader.getJson("status.json", getActivity()), Map.class);
         wear = getWear(JSON.parseArray(JsonReader.getJson("wear.json", getActivity()), Wear.class));
         data = (List<Query.DataBean.Info>) getArguments().getSerializable("data");
+        list_wear = JSON.parseArray(JsonReader.getJson("wear.json", getActivity()), Wear.class);
         data_map = exchange(data);
         types.add(new BusinessType("热输", "A"));
         types.add(new BusinessType("冷送", "B"));
+
+        list_banci.add(new Banci("1", "夜"));
+        list_banci.add(new Banci("2", "白"));
+        list_banci.add(new Banci("3", "中"));
     }
 
     /**
@@ -235,6 +340,7 @@ public class OutFragment extends Fragment {
         View view = inflater.inflate(R.layout.layout_fragment_query, container, false);
         ScreenAdapterTools.getInstance().loadView(view);
         unbinder = ButterKnife.bind(this, view);
+        app = (App) getActivity().getApplication();
         dialog = new ProgressDialog(getActivity());
         dialog.setMessage("出库中");
         initPop();

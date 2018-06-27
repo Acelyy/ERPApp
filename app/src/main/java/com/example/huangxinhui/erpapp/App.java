@@ -3,9 +3,20 @@ package com.example.huangxinhui.erpapp;
 import android.app.Application;
 import android.content.res.Configuration;
 
+import com.example.huangxinhui.erpapp.JavaBean.GroupBean;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 public class App extends Application {
+    private GroupBean group;// 登录时选择的班别
+
+    public GroupBean getGroup() {
+        return group;
+    }
+
+    public void setGroup(GroupBean group) {
+        this.group = group;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
