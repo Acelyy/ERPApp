@@ -22,6 +22,9 @@ import com.example.huangxinhui.erpapp.R;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +45,8 @@ public class ReceiveInformationActivity extends AppCompatActivity {
 
     PopupWindow pop;
 
+    private Map<String, String> data_map;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +57,7 @@ public class ReceiveInformationActivity extends AppCompatActivity {
         titleName.setText(getIntent().getExtras().getString("title") == null ? "" : getIntent().getExtras().getString("title"));
         data = (ArrayList<Query.DataBean>) getIntent().getExtras().getSerializable("data");
         if (data != null && !data.isEmpty() && data.get(0).getName().equals("data")) {
+            data_map = exchange(data.get(0).getList_info());
             adapter = new ReceiverAdapter(data.get(0).getList_info(), this);
             adapter.setOnButtonClickListener(new ReceiverAdapter.OnButtonClickListener() {
                 @Override
@@ -66,6 +72,19 @@ public class ReceiveInformationActivity extends AppCompatActivity {
             listReceiver.setAdapter(adapter);
         }
         initPopupWindow();
+    }
+
+    /**
+     * 将List<Info>列表转化为Map，便于取值
+     *
+     * @return
+     */
+    private Map<String, String> exchange(List<Query.DataBean.Info> data) {
+        Map<String, String> result = new HashMap<>();
+        for (Query.DataBean.Info info : data) {
+            result.put(info.getKey(), info.getValue());
+        }
+        return result;
     }
 
     private void initPopupWindow() {
