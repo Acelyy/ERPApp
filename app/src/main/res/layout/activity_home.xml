@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:text="钢柸信息查询"
+                    android:text="钢坯信息查询"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:text="钢柸接收入库"
+                    android:text="钢坯接收入库"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -103,7 +103,7 @@
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:textSize="16sp"
-                    android:text="钢柸出库"
+                    android:text="钢坯出库"
                     android:textColor="@color/colorPrimary"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -126,7 +126,7 @@
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:textSize="16sp"
-                    android:text="钢柸入库"
+                    android:text="钢坯入库"
                     android:textColor="@color/colorPrimary"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -158,7 +158,7 @@
                     android:layout_marginTop="5dp"
                     android:gravity="center"
                     android:textSize="16sp"
-                    android:text="钢柸倒剁"
+                    android:text="钢坯倒剁"
                     android:textColor="@color/colorPrimary"
                     android:textStyle="bold" />
             </LinearLayout>

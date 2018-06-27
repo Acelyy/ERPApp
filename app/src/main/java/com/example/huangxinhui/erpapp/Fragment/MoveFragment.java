@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -36,7 +37,9 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,6 +53,10 @@ public class MoveFragment extends Fragment {
     MoveAdapter adapter;
     PopupWindow pop;
     ProgressDialog dialog;
+
+    EditText qty, modiAreaNo, modiRowNo;
+
+    Map<String, String> data_map;
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
@@ -98,6 +105,18 @@ public class MoveFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.data = (List<Query.DataBean.Info>) getArguments().getSerializable("data");
+        data_map = exchange(data);
+    }
+
+    /**
+     * 将List转化为Map
+     */
+    private Map<String, String> exchange(List<Query.DataBean.Info> data) {
+        Map<String, String> result = new HashMap<>();
+        for (Query.DataBean.Info bean : data) {
+            result.put(bean.getKey(), bean.getValue());
+        }
+        return result;
     }
 
     @Nullable
@@ -110,7 +129,7 @@ public class MoveFragment extends Fragment {
         initPopupWindow();
         dialog = new ProgressDialog(getActivity());
         dialog.setMessage("查询中");
-        adapter = new MoveAdapter(data,getActivity());
+        adapter = new MoveAdapter(data, getActivity());
         adapter.setOnButtonClickListener(new MoveAdapter.OnButtonClickListener() {
             @Override
             public void onCLick(View view, int position) {
@@ -131,12 +150,26 @@ public class MoveFragment extends Fragment {
     }
 
     private void initPopupWindow() {
-        final View popView = LayoutInflater.from(getActivity()).inflate(R.layout.pop_receiver, null);
-
+        final View popView = LayoutInflater.from(getActivity()).inflate(R.layout.pop_move, null);
+        qty = popView.findViewById(R.id.qty);
+        modiAreaNo = popView.findViewById(R.id.modiAreaNo);
+        modiRowNo = popView.findViewById(R.id.modiRowNo);
         popView.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 提交钢柸入库
+                new Thread(new moceLibThread(
+                        data_map.get("炉号"),
+                        data_map.get("长度"),
+                        data_map.get("钢种"),
+                        data_map.get("状态"),
+                        data_map.get("库别"),
+                        data_map.get("当前跨"),
+                        data_map.get("当前储序"),
+                        qty.getText().toString().trim(),
+                        modiAreaNo.getText().toString().trim(),
+                        modiRowNo.getText().toString().trim()
+                )).start();
             }
         });
         pop = new PopupWindow(popView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -154,7 +187,7 @@ public class MoveFragment extends Fragment {
         });
     }
 
-    class moceLibThread implements Runnable{
+    class moceLibThread implements Runnable {
         private String heatNo;
         private String lenght;
         private String spec;
@@ -194,9 +227,17 @@ public class MoveFragment extends Fragment {
             // 指定WebService的命名空间和调用的方法名
             SoapObject rpc = new SoapObject(nameSpace, methodName);
 
-            String data = String.format("%-10s", "GPIS09")
-                    + String.format("%-12s", "18B102427") + String.format("%-10s", areaNo)
-                    + String.format("%-10s", rowNo)
+            String data = String.format("%-10s", "GPIS10")
+                    + String.format("%-12s", heatNo)
+                    + String.format("%-12s", lenght)
+                    + String.format("%-20s", spec)
+                    + String.format("%-5s", status)
+                    + String.format("%-12s", warehouseNo)
+                    + String.format("%-12s", areaNo)
+                    + String.format("%-12s", rowNo)
+                    + String.format("%-3s", qty)
+                    + String.format("%-12s", modiAreaNo)
+                    + String.format("%-12s", modiRowNo)
                     + "*";
             // 设置需调用WebService接口需要传入的参数
             Log.i("params", data);

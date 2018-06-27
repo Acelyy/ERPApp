@@ -31,7 +31,7 @@
                 android:layout_height="30dp"
                 android:layout_centerHorizontal="true"
                 android:gravity="center_vertical"
-                android:text="钢柸出库查询"
+                android:text="钢坯出库查询"
                 android:textColor="#fff"
                 android:textSize="11pt"
                 android:textStyle="bold" />
@@ -85,7 +85,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="请输入钢柸简码"
+                android:text="请输入钢坯简码"
                 android:textColor="@color/colorPrimary"
                 android:textSize="8pt" />
 

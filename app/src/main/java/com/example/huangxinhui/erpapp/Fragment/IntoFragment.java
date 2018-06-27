@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.Toast;
@@ -51,6 +52,7 @@ public class IntoFragment extends Fragment {
     PopupWindow pop;
     IntoAdapter adapter;
     EditText code, information;
+    Button btn;
     ProgressDialog dialog;
 
     @SuppressLint("HandlerLeak")
@@ -140,7 +142,9 @@ public class IntoFragment extends Fragment {
         final View popView = LayoutInflater.from(getActivity()).inflate(R.layout.pop_receiver, null);
         code = popView.findViewById(R.id.code);
         information = popView.findViewById(R.id.information);
-        popView.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+        btn = popView.findViewById(R.id.button);
+        btn.setText("点击入库");
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 提交钢柸入库
@@ -194,8 +198,7 @@ public class IntoFragment extends Fragment {
 
             String data = String.format("%-10s", "GPIS09")
                     + String.format("%-12s", "18B102427") + String.format("%-10s", areaNo)
-                    + String.format("%-10s", rowNo)
-                    + "*";
+                    + String.format("%-10s", rowNo) + "*";
             // 设置需调用WebService接口需要传入的参数
             Log.i("params", data);
             rpc.addProperty("date", data);

@@ -31,7 +31,7 @@
                 android:layout_height="30dp"
                 android:layout_centerHorizontal="true"
                 android:gravity="center_vertical"
-                android:text="钢柸倒剁"
+                android:text="钢坯倒剁"
                 android:textColor="#fff"
                 android:textSize="11pt"
                 android:textStyle="bold" />
@@ -56,7 +56,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="请输入要倒跺的炉号或钢柸简码"
+                android:text="请输入要倒跺的炉号或钢坯简码"
                 android:textColor="@color/colorPrimary"
                 android:textSize="8pt" />
 
