@@ -2,11 +2,13 @@ package com.example.huangxinhui.erpapp.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.R;
@@ -16,7 +18,7 @@ import java.util.List;
 public class IntoAdapter extends RecyclerView.Adapter<IntoAdapter.ViewHolder> {
     private static final int TYPE_LAYOUT = 1;
     private static final int TYPE_BUTTON = 2;
-    private MoveAdapter.OnButtonClickListener onButtonClickListener;
+    private OnButtonClickListener onButtonClickListener;
     private List<Query.DataBean.Info> data;
     private LayoutInflater inflater;
 
@@ -25,7 +27,7 @@ public class IntoAdapter extends RecyclerView.Adapter<IntoAdapter.ViewHolder> {
         this.inflater = LayoutInflater.from(context);
     }
 
-    public void setOnButtonClickListener(MoveAdapter.OnButtonClickListener onButtonClickListener) {
+    public void setOnButtonClickListener(OnButtonClickListener onButtonClickListener) {
         this.onButtonClickListener = onButtonClickListener;
     }
 

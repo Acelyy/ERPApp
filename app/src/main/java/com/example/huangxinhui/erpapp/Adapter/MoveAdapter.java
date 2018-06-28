@@ -16,7 +16,7 @@ import java.util.List;
 public class MoveAdapter extends RecyclerView.Adapter<MoveAdapter.ViewHolder> {
     private static final int TYPE_LAYOUT = 1;
     private static final int TYPE_BUTTON = 2;
-    private MoveAdapter.OnButtonClickListener onButtonClickListener;
+    private OnButtonClickListener onButtonClickListener;
     private List<Query.DataBean.Info> data;
     private LayoutInflater inflater;
 
@@ -25,7 +25,7 @@ public class MoveAdapter extends RecyclerView.Adapter<MoveAdapter.ViewHolder> {
         this.inflater = LayoutInflater.from(context);
     }
 
-    public void setOnButtonClickListener(MoveAdapter.OnButtonClickListener onButtonClickListener) {
+    public void setOnButtonClickListener(OnButtonClickListener onButtonClickListener) {
         this.onButtonClickListener = onButtonClickListener;
     }
 

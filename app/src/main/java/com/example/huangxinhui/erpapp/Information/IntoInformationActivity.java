@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.huangxinhui.erpapp.Fragment.IntoFragment;
 import com.example.huangxinhui.erpapp.Fragment.MoveFragment;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.R;
@@ -45,10 +46,10 @@ public class IntoInformationActivity extends AppCompatActivity {
         ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
         ArrayList<Query.DataBean> list_data = (ArrayList<Query.DataBean>) getIntent().getExtras().getSerializable("data");
         titleName.setText(getIntent().getExtras().getString("title") == null ? "" : getIntent().getExtras().getString("title"));
-        fragments = new MoveFragment[list_data.size()];
+        fragments = new IntoFragment[list_data.size()];
         titles = new String[list_data.size()];
         for (int i = 0; i < list_data.size(); i++) {
-            fragments[i] = MoveFragment.getInstance(list_data.get(i).getList_info());
+            fragments[i] = IntoFragment.getInstance(list_data.get(i).getList_info(),list_data.get(i).getName());
             titles[i] = list_data.get(i).getName();
         }
         pager.setAdapter(new IntoInformationActivity.MyPagerAdapter(getSupportFragmentManager()));
