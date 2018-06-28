@@ -45,7 +45,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MoveFragment extends Fragment{
+public class MoveFragment extends Fragment {
     Unbinder unbinder;
     List<Query.DataBean.Info> data;
     @BindView(R.id.list_query)
