@@ -78,13 +78,13 @@ public class MoveFragment extends Fragment {
                     if (JsonUtil.isJson(data)) {// 判断是否为json
                         LoginResult result = JSON.parseObject(data, LoginResult.class);
                         if (result != null && !result.getResult().equals("F")) {
-                            Toast.makeText(getActivity(), "入库成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "倒跺成功", Toast.LENGTH_SHORT).show();
                             getActivity().finish();
                         } else {
-                            Toast.makeText(getActivity(), "入库失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "倒跺失败", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(getActivity(), "入库失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "倒跺失败", Toast.LENGTH_SHORT).show();
                     }
                     if (dialog.isShowing())
                         dialog.dismiss();
@@ -154,6 +154,9 @@ public class MoveFragment extends Fragment {
         qty = popView.findViewById(R.id.qty);
         modiAreaNo = popView.findViewById(R.id.modiAreaNo);
         modiRowNo = popView.findViewById(R.id.modiRowNo);
+        qty.setText(data_map.get("块数"));
+        modiAreaNo.setText(data_map.get("当前跨"));
+        modiRowNo.setText(data_map.get("当前储序"));
         popView.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

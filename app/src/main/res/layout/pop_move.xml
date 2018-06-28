@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="请输入快熟"
+            android:text="请输入块数"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp" />
 

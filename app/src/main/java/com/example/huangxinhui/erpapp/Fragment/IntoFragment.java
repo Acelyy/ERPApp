@@ -105,7 +105,6 @@ public class IntoFragment extends Fragment {
         super.onCreate(savedInstanceState);
         data = (List<Query.DataBean.Info>) getArguments().getSerializable("data");
         WarrantyBook = getArguments().getString("title");
-        Log.i("hhh", WarrantyBook);
     }
 
     @Nullable
@@ -197,7 +196,7 @@ public class IntoFragment extends Fragment {
             SoapObject rpc = new SoapObject(nameSpace, methodName);
 
             String data = String.format("%-10s", "GPIS09")
-                    + String.format("%-12s", "18B102427") + String.format("%-10s", areaNo)
+                    + String.format("%-12s", chgLocRptNo) + String.format("%-10s", areaNo)
                     + String.format("%-10s", rowNo) + "*";
             // 设置需调用WebService接口需要传入的参数
             Log.i("params", data);
