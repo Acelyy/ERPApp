@@ -20,9 +20,6 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.example.huangxinhui.erpapp.JavaBean.GroupBean;
-import com.example.huangxinhui.erpapp.JavaBean.LoginResult;
-import com.example.huangxinhui.erpapp.Util.IpConfig;
-import com.example.huangxinhui.erpapp.Util.JsonUtil;
 import com.kcode.lib.UpdateWrapper;
 import com.kcode.lib.bean.VersionModel;
 import com.kcode.lib.net.CheckUpdateTask;
@@ -93,42 +90,67 @@ public class LoginActivity extends AppCompatActivity {
                 case -1:
                     dialog.show();
                     break;
-                case 0:
+                case -2:
                     // 处理异常，网络请求失败
                     Toast.makeText(LoginActivity.this, "网络异常，请检查网络是否通畅", Toast.LENGTH_SHORT).show();
                     if (dialog.isShowing())
                         dialog.dismiss();
                     break;
+                case 0:
+                    if (dialog.isShowing())
+                        dialog.dismiss();
+                    Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                    break;
+
                 case 1:
                     // 处理服务器返回的数据
-                    String data = msg.getData().getString("data");
-                    if (JsonUtil.isJson(data)) {// 判断是否为json
-                        LoginResult result = JSON.parseObject(data, LoginResult.class);
-                        if (result != null && !result.getResult().equals("F")) {
-                            // 记住密码
-                            if (remember.isChecked()) {
-                                SharedPreferences.Editor editor = sp.edit();
-                                editor.putString("username", user.getText().toString());
-                                editor.putString("password", pwd.getText().toString());
-                                editor.putBoolean("remember", true);
-                                editor.apply();
-                            } else {
-                                SharedPreferences.Editor editor = sp.edit();
-                                editor.putString("username", "");
-                                editor.putString("password", "");
-                                editor.putBoolean("remember", false);
-                                editor.apply();
-                            }
-                            app.setGroup(list_group.get(select_group));
-                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
-                        }
+//                    String data = msg.getData().getString("data");
+//                    if (JsonUtil.isJson(data)) {// 判断是否为json
+//                        LoginResult result = JSON.parseObject(data, LoginResult.class);
+//                        if (result != null && !result.getResult().equals("F")) {
+//                            // 记住密码
+//                            if (remember.isChecked()) {
+//                                SharedPreferences.Editor editor = sp.edit();
+//                                editor.putString("username", user.getText().toString());
+//                                editor.putString("password", pwd.getText().toString());
+//                                editor.putBoolean("remember", true);
+//                                editor.apply();
+//                            } else {
+//                                SharedPreferences.Editor editor = sp.edit();
+//                                editor.putString("username", "");
+//                                editor.putString("password", "");
+//                                editor.putBoolean("remember", false);
+//                                editor.apply();
+//                            }
+//                            app.setGroup(list_group.get(select_group));
+//                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+//                            startActivity(intent);
+//                            finish();
+//                        } else {
+//                            Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+//                        }
+//                    } else {
+//                        Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+//                    }
+                    // 记住密码
+                    if (remember.isChecked()) {
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putString("username", user.getText().toString());
+                        editor.putString("password", pwd.getText().toString());
+                        editor.putBoolean("remember", true);
+                        editor.apply();
                     } else {
-                        Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putString("username", "");
+                        editor.putString("password", "");
+                        editor.putBoolean("remember", false);
+                        editor.apply();
                     }
+                    app.setGroup(list_group.get(select_group));
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+
                     if (dialog.isShowing())
                         dialog.dismiss();
                     break;
@@ -155,15 +177,11 @@ public class LoginActivity extends AppCompatActivity {
                 pvOptions.show();
                 break;
             case R.id.login:
-//                if (group_id == null) {
-//                    Toast.makeText(this, "请选择班组", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//                new Thread(new LoginThread(user.getText().toString().trim(), pwd.getText().toString())).start();
-                app.setGroup(list_group.get(select_group));
-                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                startActivity(intent);
-                finish();
+                new Thread(new LoginThread(user.getText().toString().trim(), pwd.getText().toString())).start();
+//                app.setGroup(list_group.get(select_group));
+//                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+//                startActivity(intent);
+//                finish();
                 break;
         }
     }
@@ -189,18 +207,20 @@ public class LoginActivity extends AppCompatActivity {
             String methodName = "run";
             // EndPoint
             //String endPoint = "http://10.10.4.210:9081/erp/sh/Scanning.ws";//测试
-            String endPoint = "http://" + IpConfig.IP + "/erp/sh/Scanning.ws";//正式
+            String endPoint = "http://" + "10.10.3.216:80" + "/erp/sh/Scanning.ws";//正式
             // SOAP Action
             String soapAction = "http://service.sh.icsc.com/run";
 
             // 指定WebService的命名空间和调用的方法名
             SoapObject rpc = new SoapObject(nameSpace, methodName);
 
-            String data = String.format("%-10s", "GPIS00")
+            String data = String.format("%-10s", "SHHL31")
                     + String.format("%-10s", userName) + String.format("%-10s", password)
-                    + String.format("%-10s", list_group.get(select_group)) + "*";
-            // 设置需调用WebService接口需要传入的参数
+                    + String.format("%-10s", list_group.get(select_group).getId())
+                    + String.format("%-1s", "A") + "*";
+
             Log.i("params", data);
+            // 设置需调用WebService接口需要传入的参数
             rpc.addProperty("date", data);
 
             // 生成调用WebService方法的SOAP请求信息,并指定SOAP的版本
@@ -211,7 +231,6 @@ public class LoginActivity extends AppCompatActivity {
             // 设置是否调用的是dotNet开发的WebService
             envelope.dotNet = false;
             envelope.setOutputSoapObject(rpc);
-
             HttpTransportSE transport = new HttpTransportSE(endPoint);
             mHandler.sendEmptyMessage(-1);
             try {
@@ -221,17 +240,24 @@ public class LoginActivity extends AppCompatActivity {
                 // 获取返回的结果
                 result = object.toString();
                 Log.i("login", result);
+                String result1 = result.substring(10, 11).trim();
+                if ("F".equals(result1)) {
+                    mHandler.sendEmptyMessage(0);
+                } else {
+                    mHandler.sendEmptyMessage(1);
+                }
+
 
                 // 如果有数据返回，通知handler 1
-                Message msg = mHandler.obtainMessage();
-                msg.what = 1;
-                Bundle bundle = new Bundle();
-                bundle.putString("data", result);
-                msg.setData(bundle);
-                msg.sendToTarget();
+//                Message msg = mHandler.obtainMessage();
+//                msg.what = 1;
+//                Bundle bundle = new Bundle();
+//                bundle.putString("data", result);
+//                msg.setData(bundle);
+//                msg.sendToTarget();
             } catch (Exception e) {
                 // 如果捕获异常，通知handler 0
-                mHandler.sendEmptyMessage(0);
+                mHandler.sendEmptyMessage(-2);
                 e.printStackTrace();
             }
         }
