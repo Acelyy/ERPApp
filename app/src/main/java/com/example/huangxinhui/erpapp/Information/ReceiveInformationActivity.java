@@ -225,7 +225,7 @@ public class ReceiveInformationActivity extends AppCompatActivity {
             SoapObject rpc = new SoapObject(nameSpace, methodName);
 
             String data = String.format("%-10s", "GPIS07")
-                    + String.format("%-12s", "A180210462") + String.format("%-10s", "18B701820")
+                    + String.format("%-12s", chgLocRptNo) + String.format("%-10s", heatNo)
                     + String.format("%-10s", areaNo) + String.format("%-10s", rowNo)
                     + "*";
             // 设置需调用WebService接口需要传入的参数
