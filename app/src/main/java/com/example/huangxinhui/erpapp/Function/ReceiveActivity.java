@@ -1,12 +1,16 @@
 package com.example.huangxinhui.erpapp.Function;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -23,6 +27,8 @@ import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.R;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
 import com.example.huangxinhui.erpapp.Util.JsonUtil;
+import com.uuzuche.lib_zxing.activity.CaptureActivity;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 import org.ksoap2.SoapEnvelope;
@@ -105,7 +111,7 @@ public class ReceiveActivity extends AppCompatActivity {
         dialog.setMessage("查询中");
     }
 
-    @OnClick({R.id.back, R.id.producedDate, R.id.query})
+    @OnClick({R.id.back, R.id.producedDate, R.id.query, R.id.img_qr})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -138,6 +144,38 @@ public class ReceiveActivity extends AppCompatActivity {
             case R.id.query:
                 new Thread(new ReceiverThread(furnaceCode.getText().toString().trim(), brevityCode.getText().toString().trim(), deviceNumber.getText().toString().trim(), qualityBooks.getText().toString().trim())).start();
                 break;
+            case R.id.img_qr:
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    //如果应用之前请求过此权限但用户拒绝了请求，此方法将返回 true。
+                    //申请权限，字符串数组内是一个或多个要申请的权限，1是申请权限结果的返回参数，在onRequestPermissionsResult可以得知申请结果
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.CAMERA,}, 1);
+                } else {
+                    Intent intent = new Intent(this, CaptureActivity.class);
+                    startActivityForResult(intent, 0x666);
+                }
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0x666) {
+            //处理扫描结果（在界面上显示）
+            if (null != data) {
+                Bundle bundle = data.getExtras();
+                if (bundle == null) {
+                    return;
+                }
+                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                    String result = bundle.getString(CodeUtils.RESULT_STRING);
+                    qualityBooks.setText(result);
+//                    Toast.makeText(this, "解析结果:" + result, Toast.LENGTH_LONG).show();
+                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                    Toast.makeText(this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                }
+            }
         }
     }
 

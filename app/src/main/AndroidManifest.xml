@@ -3,6 +3,17 @@
     package="com.example.huangxinhui.erpapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
 
     <application
         android:name=".App"
@@ -43,7 +54,7 @@
         <activity android:name=".Information.IntoInformationActivity" />
         <activity android:name=".Function.MoveActivity" />
         <activity android:name=".Information.MoveInformationActivity" />
-        <activity android:name=".Information.WarrantyActivity"/>
+        <activity android:name=".Information.WarrantyActivity" />
     </application>
 
 </manifest>

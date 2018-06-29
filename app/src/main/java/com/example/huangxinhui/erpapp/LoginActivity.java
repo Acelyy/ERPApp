@@ -15,14 +15,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.example.huangxinhui.erpapp.JavaBean.GroupBean;
-import com.kcode.lib.UpdateWrapper;
-import com.kcode.lib.bean.VersionModel;
-import com.kcode.lib.net.CheckUpdateTask;
+import com.example.huangxinhui.erpapp.Util.IpConfig;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 import org.ksoap2.SoapEnvelope;
@@ -78,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
             remember.setChecked(true);
         }
         team.setText(list_group.get(select_group).getName());
-//        checkUpdate(0);
+        new Thread(new UpdateThread()).start();
     }
 
     @SuppressLint("HandlerLeak")
@@ -103,35 +100,6 @@ public class LoginActivity extends AppCompatActivity {
                     break;
 
                 case 1:
-                    // 处理服务器返回的数据
-//                    String data = msg.getData().getString("data");
-//                    if (JsonUtil.isJson(data)) {// 判断是否为json
-//                        LoginResult result = JSON.parseObject(data, LoginResult.class);
-//                        if (result != null && !result.getResult().equals("F")) {
-//                            // 记住密码
-//                            if (remember.isChecked()) {
-//                                SharedPreferences.Editor editor = sp.edit();
-//                                editor.putString("username", user.getText().toString());
-//                                editor.putString("password", pwd.getText().toString());
-//                                editor.putBoolean("remember", true);
-//                                editor.apply();
-//                            } else {
-//                                SharedPreferences.Editor editor = sp.edit();
-//                                editor.putString("username", "");
-//                                editor.putString("password", "");
-//                                editor.putBoolean("remember", false);
-//                                editor.apply();
-//                            }
-//                            app.setGroup(list_group.get(select_group));
-//                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-//                            startActivity(intent);
-//                            finish();
-//                        } else {
-//                            Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
-//                        }
-//                    } else {
-//                        Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
-//                    }
                     // 记住密码
                     if (remember.isChecked()) {
                         SharedPreferences.Editor editor = sp.edit();
@@ -153,6 +121,10 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (dialog.isShowing())
                         dialog.dismiss();
+                    break;
+                case 3:
+                    String data = msg.getData().getString("data");
+
                     break;
             }
         }
@@ -263,27 +235,58 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    class UpdateThread implements Runnable {
 
-    /**
-     * 检查更新
-     *
-     * @param time
-     */
-    private void checkUpdate(final long time) {
+        @Override
+        public void run() {
+            String result = "";
+            String nameSpace = "http://service.sh.icsc.com";
+            // 调用的方法名称
+            String methodName = "run";
+            // EndPoint
+            //String endPoint = "http://10.10.4.210:9081/erp/sh/Scanning.ws";//测试
+            String endPoint = "http://" + IpConfig.IP + "/erp/sh/Scanning.ws";//正式
+            // SOAP Action
+            String soapAction = "http://service.sh.icsc.com/run";
 
-        UpdateWrapper.Builder builder = new UpdateWrapper.Builder(getApplicationContext())
-                .setTime(time)
-                .setNotificationIcon(R.mipmap.app_icon)
-                .setUrl("http://45.78.52.169/app/update.json")
-                .setIsShowToast(false)
-                .setCallback(new CheckUpdateTask.Callback() {
-                    @Override
-                    public void callBack(VersionModel versionModel) {
-                        Log.i("versionModel", JSON.toJSONString(versionModel));
-                    }
-                });
-        builder.build().start();
+            // 指定WebService的命名空间和调用的方法名
+            SoapObject rpc = new SoapObject(nameSpace, methodName);
 
+            String data = String.format("%-10s", "GPIS12") + "*";
+            // 设置需调用WebService接口需要传入的参数
+            Log.i("params", data);
+            rpc.addProperty("date", data);
 
+            // 生成调用WebService方法的SOAP请求信息,并指定SOAP的版本
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
+                    SoapEnvelope.VER10);
+
+            envelope.bodyOut = rpc;
+            // 设置是否调用的是dotNet开发的WebService
+            envelope.dotNet = false;
+            envelope.setOutputSoapObject(rpc);
+
+            HttpTransportSE transport = new HttpTransportSE(endPoint);
+            try {
+                // 调用WebService
+                transport.call(soapAction, envelope);
+                Object object = (Object) envelope.getResponse();
+                // 获取返回的结果
+                result = object.toString();
+                Log.i("Receiver", result);
+
+                Message msg = mHandler.obtainMessage();
+                msg.what = 3;
+                Bundle bundle = new Bundle();
+                bundle.putString("data", result);
+                msg.setData(bundle);
+                msg.sendToTarget();
+            } catch (Exception e) {
+                // 如果捕获异常，通知handler 0
+                mHandler.sendEmptyMessage(0);
+                e.printStackTrace();
+            }
+        }
     }
+
 }
