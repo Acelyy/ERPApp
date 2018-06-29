@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.res.Configuration;
 
 import com.example.huangxinhui.erpapp.JavaBean.GroupBean;
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 public class App extends Application {
@@ -21,6 +22,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         ScreenAdapterTools.init(this);
+        ZXingLibrary.initDisplayOpinion(this);
     }
 
     //旋转适配,如果应用屏幕固定了某个方向不旋转的话(比如qq和微信),下面可不写.
@@ -28,6 +30,5 @@ public class App extends Application {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         ScreenAdapterTools.getInstance().reset(this);
-
     }
 }

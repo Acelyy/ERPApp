@@ -4,6 +4,17 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -25,38 +36,25 @@
             android:name="unit"
             android:value="dp" />
 
-        <activity android:name=".LoginActivity"
-            android:screenOrientation="portrait">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Function.QueryActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Information.QueryInformationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Function.ReceiveActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Information.ReceiveInformationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Function.OutActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Information.OutInformationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Function.IntoActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Information.IntoInformationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Function.MoveActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Information.MoveInformationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Information.WarrantyActivity"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".Function.QueryActivity" />
+        <activity android:name=".Information.QueryInformationActivity" />
+        <activity android:name=".Function.ReceiveActivity" />
+        <activity android:name=".Information.ReceiveInformationActivity" />
+        <activity android:name=".Function.OutActivity" />
+        <activity android:name=".Information.OutInformationActivity" />
+        <activity android:name=".Function.IntoActivity" />
+        <activity android:name=".Information.IntoInformationActivity" />
+        <activity android:name=".Function.MoveActivity" />
+        <activity android:name=".Information.MoveInformationActivity" />
+        <activity android:name=".Information.WarrantyActivity"/>
     </application>
 
 </manifest>
