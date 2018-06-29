@@ -1,12 +1,26 @@
 package com.example.huangxinhui.erpapp;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -15,11 +29,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.example.huangxinhui.erpapp.JavaBean.GroupBean;
+import com.example.huangxinhui.erpapp.JavaBean.Version;
+import com.example.huangxinhui.erpapp.Permission.PermissionsActivity;
+import com.example.huangxinhui.erpapp.Permission.PermissionsChecker;
+import com.example.huangxinhui.erpapp.Util.DownLoadRunnable;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
+import com.example.huangxinhui.erpapp.Util.MyProvide;
+import com.example.huangxinhui.erpapp.Util.MyUtils;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 import org.ksoap2.SoapEnvelope;
@@ -27,6 +48,7 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,11 +78,37 @@ public class LoginActivity extends AppCompatActivity {
 
     App app;
 
+    // 所需的全部权限
+    static final String[] PERMISSIONS = new String[]{
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    private PermissionsChecker mPermissionsChecker; // 权限检测器
+    private static final int REQUEST_CODE = 0x999; // 请求码
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 缺少权限时, 进入权限配置页面
+        if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
+            startPermissionsActivity();
+        }
+    }
+
+    /**
+     *
+     */
+    private void startPermissionsActivity() {
+        PermissionsActivity.startActivityForResult(this, REQUEST_CODE, PERMISSIONS);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        mPermissionsChecker = new PermissionsChecker(this);
         ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
         app = (App) getApplication();
         list_group.add(new GroupBean("A", "甲"));
@@ -76,6 +124,19 @@ public class LoginActivity extends AppCompatActivity {
         }
         team.setText(list_group.get(select_group).getName());
         new Thread(new UpdateThread()).start();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
+        if (requestCode == REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
+            finish();
+        }
+        Log.i("onActivityResult", "requestCode=" + requestCode + "resultCode" + resultCode);
+        if (requestCode == 26) {
+            checkO();
+        }
     }
 
     @SuppressLint("HandlerLeak")
@@ -124,7 +185,24 @@ public class LoginActivity extends AppCompatActivity {
                     break;
                 case 3:
                     String data = msg.getData().getString("data");
+                    final Version version = JSON.parseObject(data, Version.class);
+                    if (version.getVersionCode() > getVersion(LoginActivity.this)) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                        builder.setTitle("检测到有新版本更新，是否下载最新版本？")
+                                .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        String url = version.getUrl();
+//                                        String url = "gdown.baidu.com/data/wisegame/fd84b7f6746f0b18/baiduyinyue_4802.apk";
+                                        new Thread(new DownLoadRunnable(LoginActivity.this, "http://" + url, "产销ERP", 0, handler)).start();
+                                    }
+                                }).setNegativeButton("否", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
+                            }
+                        }).create().show();
+                    }
                     break;
             }
         }
@@ -287,6 +365,103 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+
+    //handler更新ui
+    private Handler handler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case DownloadManager.STATUS_SUCCESSFUL:
+                    Toast.makeText(LoginActivity.this, "下载完成", Toast.LENGTH_SHORT).show();
+                    checkO();
+                    break;
+                case DownloadManager.STATUS_RUNNING:
+                    break;
+                case DownloadManager.STATUS_FAILED:
+                    Toast.makeText(LoginActivity.this, "更新出错", Toast.LENGTH_SHORT).show();
+                    break;
+                case DownloadManager.STATUS_PENDING:
+                    break;
+            }
+            return false;
+        }
+    });
+
+
+    // 取得版本号
+    public static int getVersion(Context context) {
+        try {
+            PackageInfo manager = context.getPackageManager().getPackageInfo(
+                    context.getPackageName(), 0);
+            return manager.versionCode;
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
+    /**
+     * 检查安卓8.0
+     */
+    private void checkO() {
+        boolean haveInstallPermission;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            haveInstallPermission = getPackageManager().canRequestPackageInstalls();
+            if (haveInstallPermission) {//有权限
+                install();
+            } else { // 没有权限
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.REQUEST_INSTALL_PACKAGES}, 10010);
+            }
+        } else {
+            install();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 10010:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    install();
+                } else {
+                    startInstallPermissionSettingActivity();
+                }
+                break;
+        }
+
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void startInstallPermissionSettingActivity() {
+        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+        startActivityForResult(intent, 26);
+    }
+
+    public void install() {
+        File file = new File(Environment.getExternalStorageDirectory() + "/" + MyUtils.PACKAGE_NAME + "/" + MyUtils.APP_NAME);
+        if (file == null || !file.exists()) {
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        // 在Boradcast中启动活动需要添加Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        // 判断版本大于等于7.0
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Uri data = MyProvide.getUriForFile(this, "com.example.huangxinhui.erpapp.fileprovider", file);
+            // 给目标应用一个临时授权
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setDataAndType(data, "application/vnd.android.package-archive");
+        } else {
+            intent.setDataAndType(Uri.fromFile(file),
+                    "application/vnd.android.package-archive");
+        }
+        startActivity(intent);
+        Log.i("install", "finish");
     }
 
 }

@@ -14,6 +14,10 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
         android:name=".App"
@@ -54,7 +58,21 @@
         <activity android:name=".Information.IntoInformationActivity" />
         <activity android:name=".Function.MoveActivity" />
         <activity android:name=".Information.MoveInformationActivity" />
-        <activity android:name=".Information.WarrantyActivity"/>
+        <activity android:name=".Information.WarrantyActivity" />
+
+        <activity android:name=".Permission.PermissionsActivity" />
+
+        <!-- 安装apk 7.0所需 -->
+        <provider
+            android:name=".Util.MyProvide"
+            android:authorities="com.example.huangxinhui.erpapp.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
     </application>
 
 </manifest>
