@@ -18,10 +18,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.example.huangxinhui.erpapp.Information.QueryInformationActivity;
+import com.example.huangxinhui.erpapp.JavaBean.Machine;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
+import com.example.huangxinhui.erpapp.JavaBean.Wear;
 import com.example.huangxinhui.erpapp.R;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
+import com.example.huangxinhui.erpapp.Util.JsonReader;
 import com.example.huangxinhui.erpapp.Util.JsonUtil;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
@@ -32,6 +38,9 @@ import org.ksoap2.transport.HttpTransportSE;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +51,7 @@ public class QueryActivity extends AppCompatActivity {
     @BindView(R.id.furnaceCode)
     EditText furnaceCode;
     @BindView(R.id.deviceNumber)
-    EditText deviceNumber;
+    TextView deviceNumber;
     @BindView(R.id.producedDate)
     TextView producedDate;
 
@@ -51,6 +60,10 @@ public class QueryActivity extends AppCompatActivity {
     ProgressDialog dialog;
 
     AlertDialog data_dialog;
+
+    List<Machine> machine;
+
+    String machineNum = "";
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -101,9 +114,10 @@ public class QueryActivity extends AppCompatActivity {
         ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
         dialog = new ProgressDialog(this);
         dialog.setMessage("查询中");
+        machine = JSON.parseArray(JsonReader.getJson("machine.json", QueryActivity.this), Machine.class);
     }
 
-    @OnClick({R.id.back, R.id.query, R.id.producedDate})
+    @OnClick({R.id.back, R.id.query, R.id.producedDate,R.id.deviceNumber})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -114,7 +128,7 @@ public class QueryActivity extends AppCompatActivity {
                     Toast.makeText(this, "请选择查询日期", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                new Thread(new QueryThread(furnaceCode.getText().toString(), deviceNumber.getText().toString())).start();
+                new Thread(new QueryThread(furnaceCode.getText().toString(), machineNum)).start();
                 break;
             case R.id.producedDate:
                 if (data_dialog == null) {
@@ -138,6 +152,20 @@ public class QueryActivity extends AppCompatActivity {
                     data_dialog = builder.create();
                 }
                 data_dialog.show();
+                break;
+            case R.id.deviceNumber:
+                OptionsPickerView pvOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+                    @Override
+                    public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                        deviceNumber.setText(machine.get(options1).getKey());
+                        machineNum = machine.get(options1).getValue();
+                    }
+                }).setOutSideCancelable(false)
+                        .setContentTextSize(25)
+                        .build();
+                pvOptions.setPicker(machine);
+                pvOptions.setTitleText("请选择连铸机号");
+                pvOptions.show();
                 break;
         }
     }

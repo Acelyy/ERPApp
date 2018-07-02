@@ -301,8 +301,8 @@ public class OutFragment extends Fragment {
         data = (List<Query.DataBean.Info>) getArguments().getSerializable("data");
         list_wear = JSON.parseArray(JsonReader.getJson("wear.json", getActivity()), Wear.class);
         data_map = exchange(data);
-        types.add(new BusinessType("热输", "A"));
-        types.add(new BusinessType("冷送", "B"));
+        types.add(new BusinessType("热送", "A"));
+        types.add(new BusinessType("冷发", "B"));
 
         list_banci.add(new Banci("1", "夜"));
         list_banci.add(new Banci("2", "白"));
