@@ -26,8 +26,10 @@ import com.alibaba.fastjson.JSON;
 import com.example.huangxinhui.erpapp.Adapter.IntoAdapter;
 import com.example.huangxinhui.erpapp.JavaBean.LoginResult;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
+import com.example.huangxinhui.erpapp.JavaBean.Wear;
 import com.example.huangxinhui.erpapp.R;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
+import com.example.huangxinhui.erpapp.Util.JsonReader;
 import com.example.huangxinhui.erpapp.Util.JsonUtil;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
@@ -37,7 +39,9 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +58,8 @@ public class IntoFragment extends Fragment {
     EditText code, information;
     Button btn;
     ProgressDialog dialog;
+    private Map<String, String> status;
+    private Map<String, String> wear;
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -103,8 +109,29 @@ public class IntoFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        status = JSON.parseObject(JsonReader.getJson("status.json", getActivity()), Map.class);
+        wear = getWear(JSON.parseArray(JsonReader.getJson("wear.json", getActivity()), Wear.class));
         data = (List<Query.DataBean.Info>) getArguments().getSerializable("data");
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).getKey().equals("钢坯状态")) data.get(i).setValue(status.get(data.get(i).getValue()));
+            if(data.get(i).getKey().equals("移出库别")) data.get(i).setValue(wear.get(data.get(i).getValue()));
+            if(data.get(i).getKey().equals("移入库别")) data.get(i).setValue(wear.get(data.get(i).getValue()));
+        }
         WarrantyBook = getArguments().getString("title");
+    }
+
+    /**
+     * 将Wear集合转化为Map，便于取值
+     *
+     * @param wears
+     * @return
+     */
+    private Map<String, String> getWear(List<Wear> wears) {
+        Map<String, String> result = new HashMap<>();
+        for (Wear bean : wears) {
+            result.put(bean.getValue(),bean.getKey());
+        }
+        return result;
     }
 
     @Nullable

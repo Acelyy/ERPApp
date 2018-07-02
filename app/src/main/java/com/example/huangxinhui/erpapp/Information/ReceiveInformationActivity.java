@@ -27,8 +27,10 @@ import com.alibaba.fastjson.JSON;
 import com.example.huangxinhui.erpapp.Adapter.ReceiverAdapter;
 import com.example.huangxinhui.erpapp.JavaBean.LoginResult;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
+import com.example.huangxinhui.erpapp.JavaBean.Wear;
 import com.example.huangxinhui.erpapp.R;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
+import com.example.huangxinhui.erpapp.Util.JsonReader;
 import com.example.huangxinhui.erpapp.Util.JsonUtil;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
@@ -58,6 +60,8 @@ public class ReceiveInformationActivity extends AppCompatActivity {
     ReceiverAdapter adapter;
 
     ArrayList<Query.DataBean> data;
+
+    private Map<String, String> wear;
 
     PopupWindow pop;
 
@@ -113,6 +117,14 @@ public class ReceiveInformationActivity extends AppCompatActivity {
         listReceiver.setLayoutManager(new LinearLayoutManager(this));
         titleName.setText(getIntent().getExtras().getString("title") == null ? "" : getIntent().getExtras().getString("title"));
         data = (ArrayList<Query.DataBean>) getIntent().getExtras().getSerializable("data");
+        wear = getWear(JSON.parseArray(JsonReader.getJson("wear.json", this), Wear.class));
+        for (int i=0;i<data.size();i++){
+            for(int j=0;j<data.get(i).getList_info().size();j++){
+                if(data.get(i).getList_info().get(j).getKey().equals("移出库别")){
+                    data.get(i).getList_info().get(j).setValue(wear.get(data.get(i).getList_info().get(j).getValue()));
+                }
+            }
+        }
         if (data != null && !data.isEmpty() && data.get(0).getName().equals("data")) {
             data_map = exchange(data.get(0).getList_info());
             FurnaceCode = data_map.get("出库炉号");
@@ -133,6 +145,19 @@ public class ReceiveInformationActivity extends AppCompatActivity {
         initPopupWindow();
         dialog = new ProgressDialog(this);
         dialog.setMessage("查询中");
+    }
+    /**
+     * 将Wear集合转化为Map，便于取值
+     *
+     * @param wears
+     * @return
+     */
+    private Map<String, String> getWear(List<Wear> wears) {
+        Map<String, String> result = new HashMap<>();
+        for (Wear bean : wears) {
+            result.put(bean.getValue(),bean.getKey());
+        }
+        return result;
     }
 
     /**

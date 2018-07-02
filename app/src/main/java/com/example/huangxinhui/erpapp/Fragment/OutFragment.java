@@ -381,7 +381,6 @@ public class OutFragment extends Fragment {
         private String driver;
         private String inWarehouseNo;
         private String bz;
-
         private String heatNo;
         private String length;
         private String weight;
@@ -401,7 +400,6 @@ public class OutFragment extends Fragment {
                                 String driver,
                                 String inWarehouseNo,
                                 String bz,
-
                                 String heatNo,
                                 String length,
                                 String weight,
@@ -461,7 +459,7 @@ public class OutFragment extends Fragment {
                     + String.format("%-10s", length)
                     + String.format("%-10s", weight)
                     + String.format("%-20s", spec)
-                    + String.format("%-5s", "12")
+                    + String.format("%-5s", status)
                     + String.format("%-3s", qty)
                     + String.format("%-10s", warehouseNo)
                     + String.format("%-10s", areaNo)

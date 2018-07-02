@@ -26,8 +26,10 @@ import com.example.huangxinhui.erpapp.Adapter.IntoAdapter;
 import com.example.huangxinhui.erpapp.Adapter.MoveAdapter;
 import com.example.huangxinhui.erpapp.JavaBean.LoginResult;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
+import com.example.huangxinhui.erpapp.JavaBean.Wear;
 import com.example.huangxinhui.erpapp.R;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
+import com.example.huangxinhui.erpapp.Util.JsonReader;
 import com.example.huangxinhui.erpapp.Util.JsonUtil;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
@@ -53,7 +55,8 @@ public class MoveFragment extends Fragment {
     MoveAdapter adapter;
     PopupWindow pop;
     ProgressDialog dialog;
-
+    private Map<String, String> status;
+    private Map<String, String> wear;
     EditText qty, modiAreaNo, modiRowNo;
 
     Map<String, String> data_map;
@@ -106,6 +109,12 @@ public class MoveFragment extends Fragment {
         super.onCreate(savedInstanceState);
         this.data = (List<Query.DataBean.Info>) getArguments().getSerializable("data");
         data_map = exchange(data);
+        status = JSON.parseObject(JsonReader.getJson("status.json", getActivity()), Map.class);
+        wear = getWear(JSON.parseArray(JsonReader.getJson("wear.json", getActivity()), Wear.class));
+        for (int i=0;i<data.size();i++){
+            if (data.get(i).getKey().equals("钢坯状态")) data.get(i).setValue(status.get(data.get(i).getValue()));
+            if(data.get(i).getKey().equals("当前库")) data.get(i).setValue(wear.get(data.get(i).getValue()));
+        }
     }
 
     /**
@@ -115,6 +124,20 @@ public class MoveFragment extends Fragment {
         Map<String, String> result = new HashMap<>();
         for (Query.DataBean.Info bean : data) {
             result.put(bean.getKey(), bean.getValue());
+        }
+        return result;
+    }
+
+    /**
+     * 将Wear集合转化为Map，便于取值
+     *
+     * @param wears
+     * @return
+     */
+    private Map<String, String> getWear(List<Wear> wears) {
+        Map<String, String> result = new HashMap<>();
+        for (Wear bean : wears) {
+            result.put(bean.getValue(),bean.getKey());
         }
         return result;
     }
@@ -165,8 +188,8 @@ public class MoveFragment extends Fragment {
                         data_map.get("炉号"),
                         data_map.get("长度"),
                         data_map.get("钢种"),
-                        data_map.get("状态"),
-                        data_map.get("库别"),
+                        data_map.get("钢坯状态"),
+                        data_map.get("当前库"),
                         data_map.get("当前跨"),
                         data_map.get("当前储序"),
                         qty.getText().toString().trim(),
@@ -202,7 +225,17 @@ public class MoveFragment extends Fragment {
         private String modiAreaNo;
         private String modiRowNo;
 
-        public moceLibThread(String heatNo, String lenght, String spec, String status, String warehouseNo, String areaNo, String rowNo, String qty, String modiAreaNo, String modiRowNo) {
+        public moceLibThread(
+                String heatNo,
+                String lenght,
+                String spec,
+                String status,
+                String warehouseNo,
+                String areaNo,
+                String rowNo,
+                String qty,
+                String modiAreaNo,
+                String modiRowNo) {
             this.heatNo = heatNo;
             this.lenght = lenght;
             this.spec = spec;
@@ -230,17 +263,17 @@ public class MoveFragment extends Fragment {
             // 指定WebService的命名空间和调用的方法名
             SoapObject rpc = new SoapObject(nameSpace, methodName);
 
-            String data = String.format("%-10s", "GPIS10")
-                    + String.format("%-12s", heatNo)
-                    + String.format("%-12s", lenght)
+            String data = String.format("%-10s", "GPIS11")
+                    + String.format("%-10s", heatNo)
+                    + String.format("%-10s", lenght)
                     + String.format("%-20s", spec)
                     + String.format("%-5s", status)
-                    + String.format("%-12s", warehouseNo)
-                    + String.format("%-12s", areaNo)
-                    + String.format("%-12s", rowNo)
+                    + String.format("%-10s", warehouseNo)
+                    + String.format("%-10s", areaNo)
+                    + String.format("%-10s", rowNo)
                     + String.format("%-3s", qty)
-                    + String.format("%-12s", modiAreaNo)
-                    + String.format("%-12s", modiRowNo)
+                    + String.format("%-10s", modiAreaNo)
+                    + String.format("%-10s", modiRowNo)
                     + "*";
             // 设置需调用WebService接口需要传入的参数
             Log.i("params", data);
