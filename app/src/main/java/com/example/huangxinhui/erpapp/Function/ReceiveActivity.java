@@ -22,10 +22,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.example.huangxinhui.erpapp.Information.ReceiveInformationActivity;
+import com.example.huangxinhui.erpapp.JavaBean.Machine;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.R;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
+import com.example.huangxinhui.erpapp.Util.JsonReader;
 import com.example.huangxinhui.erpapp.Util.JsonUtil;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
@@ -38,6 +43,7 @@ import org.ksoap2.transport.HttpTransportSE;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,7 +57,7 @@ public class ReceiveActivity extends AppCompatActivity {
     @BindView(R.id.brevityCode)
     EditText brevityCode;
     @BindView(R.id.deviceNumber)
-    EditText deviceNumber;
+    TextView deviceNumber;
     @BindView(R.id.qualityBooks)
     EditText qualityBooks;
 
@@ -60,6 +66,10 @@ public class ReceiveActivity extends AppCompatActivity {
     ProgressDialog dialog;
 
     AlertDialog date_dialog;
+
+    List<Machine> machine;
+
+    String device_id = "";
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -109,9 +119,11 @@ public class ReceiveActivity extends AppCompatActivity {
         ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
         dialog = new ProgressDialog(this);
         dialog.setMessage("查询中");
+        machine = JSON.parseArray(JsonReader.getJson("machine.json", ReceiveActivity.this), Machine.class);
+
     }
 
-    @OnClick({R.id.back, R.id.producedDate, R.id.query, R.id.img_qr})
+    @OnClick({R.id.back, R.id.producedDate, R.id.query, R.id.img_qr,R.id.deviceNumber})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:
@@ -142,7 +154,7 @@ public class ReceiveActivity extends AppCompatActivity {
                 date_dialog.show();
                 break;
             case R.id.query:
-                new Thread(new ReceiverThread(furnaceCode.getText().toString().trim(), brevityCode.getText().toString().trim(), deviceNumber.getText().toString().trim(), qualityBooks.getText().toString().trim())).start();
+                new Thread(new ReceiverThread(furnaceCode.getText().toString().trim(), brevityCode.getText().toString().trim(), device_id, qualityBooks.getText().toString().trim())).start();
                 break;
             case R.id.img_qr:
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -154,6 +166,20 @@ public class ReceiveActivity extends AppCompatActivity {
                     Intent intent = new Intent(this, CaptureActivity.class);
                     startActivityForResult(intent, 0x666);
                 }
+                break;
+            case R.id.deviceNumber:
+                OptionsPickerView pvOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+                    @Override
+                    public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                        deviceNumber.setText(machine.get(options1).getKey());
+                        device_id = machine.get(options1).getValue();
+                    }
+                }).setOutSideCancelable(false)
+                        .setContentTextSize(25)
+                        .build();
+                pvOptions.setPicker(machine);
+                pvOptions.setTitleText("请选择连铸机号");
+                pvOptions.show();
                 break;
         }
     }

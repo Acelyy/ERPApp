@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.example.huangxinhui.erpapp.Adapter.ReceiverAdapter;
 import com.example.huangxinhui.erpapp.JavaBean.LoginResult;
+import com.example.huangxinhui.erpapp.JavaBean.Machine;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.JavaBean.Wear;
 import com.example.huangxinhui.erpapp.R;
@@ -63,13 +64,18 @@ public class ReceiveInformationActivity extends AppCompatActivity {
 
     private Map<String, String> wear;
 
+    private Map<String, String> machine;
+
     PopupWindow pop;
 
     private Map<String, String> data_map;
 
     String WarrantyBook;
+
     String FurnaceCode;
+
     EditText code,information;
+
     ProgressDialog dialog;
 
     @SuppressLint("HandlerLeak")
@@ -118,10 +124,14 @@ public class ReceiveInformationActivity extends AppCompatActivity {
         titleName.setText(getIntent().getExtras().getString("title") == null ? "" : getIntent().getExtras().getString("title"));
         data = (ArrayList<Query.DataBean>) getIntent().getExtras().getSerializable("data");
         wear = getWear(JSON.parseArray(JsonReader.getJson("wear.json", this), Wear.class));
+        machine = getMachine(JSON.parseArray(JsonReader.getJson("machine.json", this), Machine.class));
         for (int i=0;i<data.size();i++){
             for(int j=0;j<data.get(i).getList_info().size();j++){
                 if(data.get(i).getList_info().get(j).getKey().equals("移出库别")){
                     data.get(i).getList_info().get(j).setValue(wear.get(data.get(i).getList_info().get(j).getValue()));
+                }
+                if(data.get(i).getList_info().get(j).getKey().equals("连铸机号")){
+                    data.get(i).getList_info().get(j).setValue(machine.get(data.get(i).getList_info().get(j).getValue()));
                 }
             }
         }
@@ -155,6 +165,20 @@ public class ReceiveInformationActivity extends AppCompatActivity {
     private Map<String, String> getWear(List<Wear> wears) {
         Map<String, String> result = new HashMap<>();
         for (Wear bean : wears) {
+            result.put(bean.getValue(),bean.getKey());
+        }
+        return result;
+    }
+
+    /**
+     * 将Machine集合转化为Map，便于取值
+     *
+     * @param machine
+     * @return
+     */
+    private Map<String, String> getMachine(List<Machine> machine) {
+        Map<String, String> result = new HashMap<>();
+        for (Machine bean : machine) {
             result.put(bean.getValue(),bean.getKey());
         }
         return result;

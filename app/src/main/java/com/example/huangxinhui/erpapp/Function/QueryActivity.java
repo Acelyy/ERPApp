@@ -63,7 +63,7 @@ public class QueryActivity extends AppCompatActivity {
 
     List<Machine> machine;
 
-    String machineNum = "";
+    String device_id = "";
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -128,7 +128,7 @@ public class QueryActivity extends AppCompatActivity {
                     Toast.makeText(this, "请选择查询日期", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                new Thread(new QueryThread(furnaceCode.getText().toString(), machineNum)).start();
+                new Thread(new QueryThread(furnaceCode.getText().toString(), device_id)).start();
                 break;
             case R.id.producedDate:
                 if (data_dialog == null) {
@@ -158,7 +158,7 @@ public class QueryActivity extends AppCompatActivity {
                     @Override
                     public void onOptionsSelect(int options1, int option2, int options3, View v) {
                         deviceNumber.setText(machine.get(options1).getKey());
-                        machineNum = machine.get(options1).getValue();
+                        device_id = machine.get(options1).getValue();
                     }
                 }).setOutSideCancelable(false)
                         .setContentTextSize(25)

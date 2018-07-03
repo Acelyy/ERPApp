@@ -11,12 +11,18 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.example.huangxinhui.erpapp.Fragment.QueryFragment;
+import com.example.huangxinhui.erpapp.JavaBean.Machine;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.R;
+import com.example.huangxinhui.erpapp.Util.JsonReader;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,10 +58,8 @@ public class QueryInformationActivity extends AppCompatActivity {
         }
         pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         tlTab.setTabMode(TabLayout.MODE_SCROLLABLE);
-
         tlTab.setTabTextColors(Color.parseColor("#000000"), Color.parseColor("#40a9ff"));
         tlTab.setupWithViewPager(pager);
-
     }
 
     class MyPagerAdapter extends FragmentPagerAdapter {
