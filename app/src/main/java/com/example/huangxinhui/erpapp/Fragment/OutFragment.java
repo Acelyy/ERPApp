@@ -71,6 +71,7 @@ public class OutFragment extends Fragment {
     RecyclerView listOut;
 
     private Map<String, String> status;
+
     private Map<String, String> wear;
 
     private PopupWindow pop;
@@ -86,6 +87,7 @@ public class OutFragment extends Fragment {
     private int selected_wear;
 
     private List<Banci> list_banci = new ArrayList<>();
+
     private int selected_banci;
 
     private App app;
@@ -264,7 +266,6 @@ public class OutFragment extends Fragment {
                         driver.getText().toString(),
                         list_wear.get(selected_wear).getValue(),
                         bz.getText().toString(),
-
                         data_map.get("炉号"),
                         data_map.get("长度"),
                         data_map.get("重量"),
@@ -272,7 +273,7 @@ public class OutFragment extends Fragment {
                         status.get(data_map.get("钢坯状态")),
                         //data_map.get("块数"),// 后面改
                         qty.getText().toString(),
-                        wear.get(data_map.get("当前库")),
+                        data_map.get("当前库"),
                         data_map.get("当前跨"),
                         data_map.get("当前储序")
                 )).start();
@@ -307,6 +308,11 @@ public class OutFragment extends Fragment {
         list_banci.add(new Banci("1", "夜"));
         list_banci.add(new Banci("2", "白"));
         list_banci.add(new Banci("3", "中"));
+
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).getKey().equals("钢坯状态")) data.get(i).setValue(status.get(data.get(i).getValue()));
+            if (data.get(i).getKey().equals("当前库")) data.get(i).setValue(wear.get(data.get(i).getValue()));
+        }
     }
 
     /**
@@ -329,7 +335,7 @@ public class OutFragment extends Fragment {
     private Map<String, String> getWear(List<Wear> wears) {
         Map<String, String> result = new HashMap<>();
         for (Wear bean : wears) {
-            result.put(bean.getKey(), bean.getValue());
+            result.put( bean.getValue(), bean.getKey());
         }
         return result;
     }
@@ -454,7 +460,6 @@ public class OutFragment extends Fragment {
                     + String.format("%-10s", driver)
                     + String.format("%-10s", inWarehouseNo)
                     + String.format("%-50s", bz)
-
                     + String.format("%-10s", heatNo)
                     + String.format("%-10s", length)
                     + String.format("%-10s", weight)
