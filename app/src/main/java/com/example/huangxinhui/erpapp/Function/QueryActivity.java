@@ -55,7 +55,7 @@ public class QueryActivity extends AppCompatActivity {
     @BindView(R.id.producedDate)
     TextView producedDate;
 
-    String date = "20180226";
+    String date = "";
 
     ProgressDialog dialog;
 

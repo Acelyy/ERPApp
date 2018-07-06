@@ -39,6 +39,7 @@ import com.example.huangxinhui.erpapp.Permission.PermissionsActivity;
 import com.example.huangxinhui.erpapp.Permission.PermissionsChecker;
 import com.example.huangxinhui.erpapp.Util.DownLoadRunnable;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
+import com.example.huangxinhui.erpapp.Util.JsonUtil;
 import com.example.huangxinhui.erpapp.Util.MyProvide;
 import com.example.huangxinhui.erpapp.Util.MyUtils;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
@@ -185,23 +186,25 @@ public class LoginActivity extends AppCompatActivity {
                     break;
                 case 3:
                     String data = msg.getData().getString("data");
-                    final Version version = JSON.parseObject(data, Version.class);
-                    if (version.getVersionCode() > getVersion(LoginActivity.this)) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                        builder.setTitle("检测到有新版本更新，是否下载最新版本？")
-                                .setPositiveButton("是", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        String url = version.getUrl();
+                    if (JsonUtil.isJson(data)){
+                        final Version version = JSON.parseObject(data, Version.class);
+                        if (version.getVersionCode() > getVersion(LoginActivity.this)) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                            builder.setTitle("检测到有新版本更新，是否下载最新版本？")
+                                    .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            String url = version.getUrl();
 //                                        String url = "gdown.baidu.com/data/wisegame/fd84b7f6746f0b18/baiduyinyue_4802.apk";
-                                        new Thread(new DownLoadRunnable(LoginActivity.this, "http://" + url, "产销ERP", 0, handler)).start();
-                                    }
-                                }).setNegativeButton("否", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                                            new Thread(new DownLoadRunnable(LoginActivity.this, "http://" + url, "产销ERP", 0, handler)).start();
+                                        }
+                                    }).setNegativeButton("否", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                            }
-                        }).create().show();
+                                }
+                            }).create().show();
+                        }
                     }
                     break;
             }

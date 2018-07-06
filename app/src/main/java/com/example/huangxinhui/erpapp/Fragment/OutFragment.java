@@ -256,27 +256,31 @@ public class OutFragment extends Fragment {
         view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread(new OutConfirmThread(
-                        types.get(select_lb).getValue(),
-                        outWarehouseNo.getText().toString(),
-                        selected_date,
-                        carNo.getText().toString(),
-                        list_banci.get(selected_banci).getCode(),
-                        app.getGroup().getId(),
-                        driver.getText().toString(),
-                        list_wear.get(selected_wear).getValue(),
-                        bz.getText().toString(),
-                        data_map.get("炉号"),
-                        data_map.get("长度"),
-                        data_map.get("重量"),
-                        data_map.get("钢种"),
-                        status.get(data_map.get("钢坯状态")),
-                        //data_map.get("块数"),// 后面改
-                        qty.getText().toString(),
-                        data_map.get("当前库"),
-                        data_map.get("当前跨"),
-                        data_map.get("当前储序")
-                )).start();
+                if(!qty.getText().toString().equals("")){
+                    new Thread(new OutConfirmThread(
+                            types.get(select_lb).getValue(),
+                            outWarehouseNo.getText().toString(),
+                            selected_date,
+                            carNo.getText().toString(),
+                            list_banci.get(selected_banci).getCode(),
+                            app.getGroup().getId(),
+                            driver.getText().toString(),
+                            list_wear.get(selected_wear).getValue(),
+                            bz.getText().toString(),
+                            data_map.get("炉号"),
+                            data_map.get("长度"),
+                            data_map.get("重量"),
+                            data_map.get("钢种"),
+                            data_map.get("钢坯状态"),
+                            //data_map.get("块数"),// 后面改
+                            qty.getText().toString(),
+                            data_map.get("当前库"),
+                            data_map.get("当前跨"),
+                            data_map.get("当前储序")
+                    )).start();
+                }else {
+                    Toast.makeText(app, "块数不能为空", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         pop = new PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -313,6 +317,7 @@ public class OutFragment extends Fragment {
             if (data.get(i).getKey().equals("钢坯状态")) data.get(i).setValue(status.get(data.get(i).getValue()));
             if (data.get(i).getKey().equals("当前库")) data.get(i).setValue(wear.get(data.get(i).getValue()));
         }
+
     }
 
     /**

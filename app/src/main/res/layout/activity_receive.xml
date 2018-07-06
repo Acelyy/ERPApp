@@ -69,7 +69,6 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:singleLine="true"
-                android:text="18B601149"
                 android:textColor="#000"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -223,7 +222,6 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:singleLine="true"
-                    android:text="A180110991"
                     android:textColor="#000"
                     android:textSize="16sp" />
 

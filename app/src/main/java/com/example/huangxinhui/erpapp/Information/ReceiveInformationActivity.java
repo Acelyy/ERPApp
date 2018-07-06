@@ -70,9 +70,9 @@ public class ReceiveInformationActivity extends AppCompatActivity {
 
     private Map<String, String> data_map;
 
-    String WarrantyBook;
+    String WarrantyBook = "";
 
-    String FurnaceCode;
+    String FurnaceCode = "";
 
     EditText code,information;
 
@@ -279,7 +279,7 @@ public class ReceiveInformationActivity extends AppCompatActivity {
                     + "*";
             // 设置需调用WebService接口需要传入的参数
             Log.i("params", data);
-            rpc.addProperty("date", data);
+            rpc.addProperty("data", data);
 
             // 生成调用WebService方法的SOAP请求信息,并指定SOAP的版本
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(

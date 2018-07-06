@@ -177,7 +177,6 @@ public class MoveFragment extends Fragment {
         qty = popView.findViewById(R.id.qty);
         modiAreaNo = popView.findViewById(R.id.modiAreaNo);
         modiRowNo = popView.findViewById(R.id.modiRowNo);
-        qty.setText(data_map.get("块数"));
         modiAreaNo.setText(data_map.get("当前跨"));
         modiRowNo.setText(data_map.get("当前储序"));
         popView.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {

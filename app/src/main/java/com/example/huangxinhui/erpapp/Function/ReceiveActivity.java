@@ -61,7 +61,7 @@ public class ReceiveActivity extends AppCompatActivity {
     @BindView(R.id.qualityBooks)
     EditText qualityBooks;
 
-    String date = "20180226";
+    String date = "";
 
     ProgressDialog dialog;
 
