@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.huangxinhui.erpapp.JavaBean.Query;
+import com.example.huangxinhui.erpapp.JavaBean.Receive;
 import com.example.huangxinhui.erpapp.R;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
@@ -29,7 +31,9 @@ public class WarrantyActivity extends AppCompatActivity {
     @BindView(R.id.list_warranty)
     RecyclerView listWarranty;
 
-    List<Query.DataBean> list_data;
+    List<Receive.DataBean.InfosBean.ZbsBean.ListInfoBeanXX> list_zbs;
+
+    List<Receive.DataBean.CfyBean.ListInfoBean> list_cfy;
 
     WarrantyAdapter adapter;
 
@@ -39,12 +43,21 @@ public class WarrantyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_warranty);
         ButterKnife.bind(this);
         ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
-        list_data = (List<Query.DataBean>) getIntent().getExtras().getSerializable("data");
-        if (list_data == null || list_data.size() < 3) {
+        list_zbs = (List<Receive.DataBean.InfosBean.ZbsBean.ListInfoBeanXX>) getIntent().getExtras().getSerializable("zbs");
+        list_cfy = (List<Receive.DataBean.CfyBean.ListInfoBean>) getIntent().getExtras().getSerializable("cfy");
+        Log.i("zbs",list_zbs.get(0).getValue());
+        Log.i("cfy",list_cfy.get(0).getValue());
+        if (list_zbs == null || list_cfy == null) {
             Toast.makeText(this, "数据有误，请联系管理员", Toast.LENGTH_SHORT).show();
         } else {
             listWarranty.setLayoutManager(new LinearLayoutManager(this));
-            adapter = new WarrantyAdapter(list_data.get(1).getList_info(), list_data.get(2).getList_info(), getBookCode(list_data.get(0).getList_info()), this);
+//            adapter = new WarrantyAdapter(list_data.get(1).getList_info(), list_data.get(2).getList_info(), getBookCode(list_data.get(0).getList_info()), this);
+            adapter = new WarrantyAdapter(
+                    list_zbs,
+                    list_cfy,
+                    list_zbs.get(0).getValue(),
+                    this
+            );
             listWarranty.setAdapter(adapter);
         }
     }
@@ -65,13 +78,13 @@ public class WarrantyActivity extends AppCompatActivity {
         private final int TYPE_LAYOUT = 1;
         private final int TYPE_GRID = 2;
 
-        List<Query.DataBean.Info> data;
-        List<Query.DataBean.Info> cell;
+        List<Receive.DataBean.InfosBean.ZbsBean.ListInfoBeanXX> data;
+        List<Receive.DataBean.CfyBean.ListInfoBean> cell;
         LayoutInflater inflater;
         String book_code;
 
 
-        public WarrantyAdapter(List<Query.DataBean.Info> data, List<Query.DataBean.Info> cell, String book_code, Context context) {
+        public WarrantyAdapter(List<Receive.DataBean.InfosBean.ZbsBean.ListInfoBeanXX> data, List<Receive.DataBean.CfyBean.ListInfoBean> cell, String book_code, Context context) {
             this.data = data;
             this.cell = cell;
             this.book_code = book_code;
@@ -159,10 +172,10 @@ public class WarrantyActivity extends AppCompatActivity {
 
     class CellAdapter extends RecyclerView.Adapter<CellAdapter.ViewHolder> {
 
-        List<Query.DataBean.Info> data;
+        List<Receive.DataBean.CfyBean.ListInfoBean> data;
         LayoutInflater inflater;
 
-        public CellAdapter(List<Query.DataBean.Info> data, LayoutInflater inflater) {
+        public CellAdapter(List<Receive.DataBean.CfyBean.ListInfoBean> data, LayoutInflater inflater) {
             this.data = data;
             this.inflater = inflater;
         }

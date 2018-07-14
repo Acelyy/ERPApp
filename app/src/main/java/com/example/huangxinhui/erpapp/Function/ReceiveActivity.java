@@ -27,7 +27,7 @@ import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.example.huangxinhui.erpapp.Information.ReceiveInformationActivity;
 import com.example.huangxinhui.erpapp.JavaBean.Machine;
-import com.example.huangxinhui.erpapp.JavaBean.Query;
+import com.example.huangxinhui.erpapp.JavaBean.Receive;
 import com.example.huangxinhui.erpapp.R;
 import com.example.huangxinhui.erpapp.Util.IpConfig;
 import com.example.huangxinhui.erpapp.Util.JsonReader;
@@ -41,6 +41,7 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -71,6 +72,330 @@ public class ReceiveActivity extends AppCompatActivity {
 
     String device_id = "";
 
+    String str = "{\n" +
+            "    \"formId\":\"GPIS02\",\n" +
+            "    \"inputCode\":\"Y\",\n" +
+            "    \"result\":\"S\",\n" +
+            "    \"msg\":\"成功\",\n" +
+            "    \"data\":{\n" +
+            "        \"infos\":[\n" +
+            "            {\n" +
+            "                \"tabs\":{\n" +
+            "                    \"name\":\"data\",\n" +
+            "                    \"list_info\":[\n" +
+            "                        {\n" +
+            "                            \"key\":\"质保书编号\",\n" +
+            "                            \"value\":\"A180700002\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"出库日期\",\n" +
+            "                            \"value\":\"20180704\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"移出库别\",\n" +
+            "                            \"value\":\"300\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"出库炉号\",\n" +
+            "                            \"value\":\"18B606163\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"块数\",\n" +
+            "                            \"value\":\"300\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"理重(t)\",\n" +
+            "                            \"value\":\"53.430\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"实际重量(t)\",\n" +
+            "                            \"value\":\"53.430\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"连铸机号\",\n" +
+            "                            \"value\":\"B6\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"毛重(t)\",\n" +
+            "                            \"value\":\"0.000\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"皮重(t)\",\n" +
+            "                            \"value\":\"53.430\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"过磅时间\",\n" +
+            "                            \"value\":\"20180704160423\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"运输方式\",\n" +
+            "                            \"value\":\"车运\"\n" +
+            "                        }\n" +
+            "                    ]\n" +
+            "                },\n" +
+            "                \"zbs\":{\n" +
+            "                    \"name\":\"chg\",\n" +
+            "                    \"list_info\":[\n" +
+            "                        {\n" +
+            "                            \"key\":\"质保书编号\",\n" +
+            "                            \"value\":\"A180700002\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"企业牌号\",\n" +
+            "                            \"value\":\"55CrMn\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"国标牌号\",\n" +
+            "                            \"value\":\"55CrMn\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"规格\",\n" +
+            "                            \"value\":\"160*160*9\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"发货分厂\",\n" +
+            "                            \"value\":\"炼钢三厂\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"接收分厂\",\n" +
+            "                            \"value\":\"棒5B\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"车号\",\n" +
+            "                            \"value\":\"2320\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"驾驶员\",\n" +
+            "                            \"value\":\"施卫兵\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"生成批号\",\n" +
+            "                            \"value\":\"18B606163\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"垮号\",\n" +
+            "                            \"value\":\"\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"定尺长度\",\n" +
+            "                            \"value\":\"9\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"支数\",\n" +
+            "                            \"value\":\"30\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"理论重量(t)\",\n" +
+            "                            \"value\":\"53.430\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"生产日期\",\n" +
+            "                            \"value\":\"20180704\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"班组\",\n" +
+            "                            \"value\":\"A\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"表面质量\",\n" +
+            "                            \"value\":\"合格\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"表面检验员\",\n" +
+            "                            \"value\":\"\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"审核人\",\n" +
+            "                            \"value\":\"管理员\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"结果判定\",\n" +
+            "                            \"value\":\"合格\"\n" +
+            "                        }\n" +
+            "                    ]\n" +
+            "                }\n" +
+            "            },\n" +
+            "            {\n" +
+            "                \"tabs\":{\n" +
+            "                    \"name\":\"data\",\n" +
+            "                    \"list_info\":[\n" +
+            "                        {\n" +
+            "                            \"key\":\"质保书编号\",\n" +
+            "                            \"value\":\"A180700002\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"出库日期\",\n" +
+            "                            \"value\":\"20180704\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"移出库别\",\n" +
+            "                            \"value\":\"300\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"出库炉号\",\n" +
+            "                            \"value\":\"18B606163\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"块数\",\n" +
+            "                            \"value\":\"30\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"理重(t)\",\n" +
+            "                            \"value\":\"53.430\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"实际重量(t)\",\n" +
+            "                            \"value\":\"53.430\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"连铸机号\",\n" +
+            "                            \"value\":\"B6\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"毛重(t)\",\n" +
+            "                            \"value\":\"0.000\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"皮重(t)\",\n" +
+            "                            \"value\":\"53.430\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"过磅时间\",\n" +
+            "                            \"value\":\"20180704160423\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"运输方式\",\n" +
+            "                            \"value\":\"车运\"\n" +
+            "                        }\n" +
+            "                    ]\n" +
+            "                },\n" +
+            "                \"zbs\":{\n" +
+            "                    \"name\":\"chg\",\n" +
+            "                    \"list_info\":[\n" +
+            "                        {\n" +
+            "                            \"key\":\"质保书编号\",\n" +
+            "                            \"value\":\"A180700002\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"企业牌号\",\n" +
+            "                            \"value\":\"55CrMn\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"国标牌号\",\n" +
+            "                            \"value\":\"55CrMn\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"规格\",\n" +
+            "                            \"value\":\"160*160*9\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"发货分厂\",\n" +
+            "                            \"value\":\"炼钢三厂\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"接收分厂\",\n" +
+            "                            \"value\":\"棒5B\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"车号\",\n" +
+            "                            \"value\":\"2320\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"驾驶员\",\n" +
+            "                            \"value\":\"施卫兵\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"生成批号\",\n" +
+            "                            \"value\":\"18B606163\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"垮号\",\n" +
+            "                            \"value\":\"\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"定尺长度\",\n" +
+            "                            \"value\":\"9\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"支数\",\n" +
+            "                            \"value\":\"30\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"理论重量(t)\",\n" +
+            "                            \"value\":\"53.430\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"生产日期\",\n" +
+            "                            \"value\":\"20180704\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"班组\",\n" +
+            "                            \"value\":\"A\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"表面质量\",\n" +
+            "                            \"value\":\"合格\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"表面检验员\",\n" +
+            "                            \"value\":\"\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"审核人\",\n" +
+            "                            \"value\":\"管理员\"\n" +
+            "                        },\n" +
+            "                        {\n" +
+            "                            \"key\":\"结果判定\",\n" +
+            "                            \"value\":\"合格\"\n" +
+            "                        }\n" +
+            "                    ]\n" +
+            "                }\n" +
+            "            }\n" +
+            "        ],\n" +
+            "        \"cfy\":{\n" +
+            "            \"name\":\"化学成分\",\n" +
+            "            \"list_info\":[\n" +
+            "                {\n" +
+            "                    \"key\":\"Mn\",\n" +
+            "                    \"value\":\"0.75\"\n" +
+            "                },\n" +
+            "                {\n" +
+            "                    \"key\":\"C\",\n" +
+            "                    \"value\":\"0.56\"\n" +
+            "                },\n" +
+            "                {\n" +
+            "                    \"key\":\"Al\",\n" +
+            "                    \"value\":\"0.010\"\n" +
+            "                },\n" +
+            "                {\n" +
+            "                    \"key\":\"Cr\",\n" +
+            "                    \"value\":\"0.78\"\n" +
+            "                },\n" +
+            "                {\n" +
+            "                    \"key\":\"P\",\n" +
+            "                    \"value\":\"0.010\"\n" +
+            "                },\n" +
+            "                {\n" +
+            "                    \"key\":\"Cu\",\n" +
+            "                    \"value\":\"0.10\"\n" +
+            "                },\n" +
+            "                {\n" +
+            "                    \"key\":\"S\",\n" +
+            "                    \"value\":\"0.011\"\n" +
+            "                },\n" +
+            "                {\n" +
+            "                    \"key\":\"Si\",\n" +
+            "                    \"value\":\"0.28\"\n" +
+            "                },\n" +
+            "                {\n" +
+            "                    \"key\":\"Ni\",\n" +
+            "                    \"value\":\"0.11\"\n" +
+            "                }\n" +
+            "            ]\n" +
+            "        }\n" +
+            "    },\n" +
+            "    \"endFlag\":\"*\"\n" +
+            "}\n";
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
@@ -90,12 +415,13 @@ public class ReceiveActivity extends AppCompatActivity {
                     // 处理服务器返回的数据
                     String data = msg.getData().getString("data");
                     if (JsonUtil.isJson(data)) {// 判断是否为json
-                        Query result = JSON.parseObject(data, Query.class);
+//                        Receive result = JSON.parseObject(data, Receive.class);
+                        Receive result = JSON.parseObject(str, Receive.class);
                         if (result != null && !result.getResult().equals("F")) {
                             Intent intent = new Intent(ReceiveActivity.this, ReceiveInformationActivity.class);
                             Bundle bundle = new Bundle();
-                            bundle.putString("title", furnaceCode.getText().toString());
-                            bundle.putSerializable("data", result.getData());
+                            bundle.putSerializable("data", (Serializable) result.getData().getInfos());
+                            bundle.putSerializable("cfy", (Serializable) result.getData().getCfy().getList_info());
                             intent.putExtras(bundle);
                             startActivity(intent);
                         } else {
@@ -120,10 +446,9 @@ public class ReceiveActivity extends AppCompatActivity {
         dialog = new ProgressDialog(this);
         dialog.setMessage("查询中");
         machine = JSON.parseArray(JsonReader.getJson("machine.json", ReceiveActivity.this), Machine.class);
-
     }
 
-    @OnClick({R.id.back, R.id.producedDate, R.id.query, R.id.img_qr,R.id.deviceNumber})
+    @OnClick({R.id.back, R.id.producedDate, R.id.query, R.id.img_qr, R.id.deviceNumber})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.back:

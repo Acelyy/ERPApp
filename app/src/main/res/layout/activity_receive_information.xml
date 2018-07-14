@@ -39,48 +39,24 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/imageButton"
         android:layout_below="@+id/imageTop"
-        android:background="#F2F2F2"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tl_tab"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:background="#b7d7fa"
-            android:gravity="center_vertical">
+            android:layout_height="50dp"
+            android:background="#f2f2f2">
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:text="基本信息"
-                android:textColor="#000000"
-                android:textSize="18sp" />
+        </android.support.design.widget.TabLayout>
 
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="15dp"
-                android:padding="10dp"
-                android:src="@mipmap/eyes" />
-
-        </RelativeLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_receiver"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 

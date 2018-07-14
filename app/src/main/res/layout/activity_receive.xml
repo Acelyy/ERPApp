@@ -223,6 +223,7 @@
                     android:paddingRight="10dp"
                     android:singleLine="true"
                     android:textColor="#000"
+                    android:text="A180700009"
                     android:textSize="16sp" />
 
                 <ImageView

@@ -153,6 +153,8 @@ public class OutFragment extends Fragment {
         final EditText qty = view.findViewById(R.id.qty);
         final EditText bz = view.findViewById(R.id.bz);
 
+        qty.setText(data_map.get("块数"));
+
         lb.setText(types.get(select_lb).getName());
         lb.setOnClickListener(new View.OnClickListener() {
             @Override

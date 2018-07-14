@@ -8,22 +8,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.huangxinhui.erpapp.JavaBean.Query;
+import com.example.huangxinhui.erpapp.JavaBean.Receive;
 import com.example.huangxinhui.erpapp.R;
 
 import java.util.List;
 
 public class ReceiverAdapter extends RecyclerView.Adapter<ReceiverAdapter.ViewHolder> {
     private static final int TYPE_LAYOUT = 1;
-    private static final int TYPE_BUTTON = 2;
+    private static final int TYPE_WATCH = 2;
+    private static final int TYPE_BUTTON = 3;
     private OnButtonClickListener onButtonClickListener;
+    private OnButtonClickListener onWatchClickListener;
 
-    private List<Query.DataBean.Info> data;
+    private List<Receive.DataBean.InfosBean.TabsBean.ListInfoBeanX> data;
     private LayoutInflater inflater;
 
-    public ReceiverAdapter(List<Query.DataBean.Info> data, Context context) {
+    public ReceiverAdapter(List<Receive.DataBean.InfosBean.TabsBean.ListInfoBeanX> data, Context context) {
         this.data = data;
         this.inflater = LayoutInflater.from(context);
     }
@@ -32,10 +35,16 @@ public class ReceiverAdapter extends RecyclerView.Adapter<ReceiverAdapter.ViewHo
         this.onButtonClickListener = onButtonClickListener;
     }
 
+    public void setOnWatchClickListener(OnButtonClickListener onWatchClickListener) {
+        this.onWatchClickListener = onWatchClickListener;
+    }
+
     @Override
     public int getItemViewType(int position) {
-        if (position == data.size()) {
+        if (position == data.size()+1) {
             return TYPE_BUTTON;
+        }else if(position == data.size()){
+            return TYPE_WATCH;
         } else {
             return TYPE_LAYOUT;
         }
@@ -47,6 +56,8 @@ public class ReceiverAdapter extends RecyclerView.Adapter<ReceiverAdapter.ViewHo
         if (type == TYPE_BUTTON) {
             Log.i("onCreateViewHolder", "TYPE_BUTTON");
             return new ViewHolder(inflater.inflate(R.layout.list_button, viewGroup, false));
+        }else if(type == TYPE_WATCH){
+            return new ViewHolder(inflater.inflate(R.layout.list_watch, viewGroup, false));
         } else {
             return new ViewHolder(inflater.inflate(R.layout.list_information, viewGroup, false));
         }
@@ -58,6 +69,16 @@ public class ReceiverAdapter extends RecyclerView.Adapter<ReceiverAdapter.ViewHo
             case TYPE_LAYOUT:
                 holder.name.setText(data.get(i).getKey());
                 holder.num.setText(data.get(i).getValue());
+                break;
+            case TYPE_WATCH:
+                if(onWatchClickListener != null){
+                    holder.watch.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            onWatchClickListener.onCLick(view,i);
+                        }
+                    });
+                }
                 break;
             case TYPE_BUTTON:
                 holder.button.setText("点击入库");
@@ -75,7 +96,7 @@ public class ReceiverAdapter extends RecyclerView.Adapter<ReceiverAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return data.size() + 1;
+        return data.size() + 2;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -86,11 +107,15 @@ public class ReceiverAdapter extends RecyclerView.Adapter<ReceiverAdapter.ViewHo
 
         Button button;
 
+        LinearLayout watch;
+
+
         ViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.name);
             num = view.findViewById(R.id.num);
             button = view.findViewById(R.id.button);
+            watch = view.findViewById(R.id.watch);
         }
     }
 
@@ -100,4 +125,5 @@ public class ReceiverAdapter extends RecyclerView.Adapter<ReceiverAdapter.ViewHo
     public interface OnButtonClickListener {
         void onCLick(View view, int position);
     }
+
 }
