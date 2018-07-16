@@ -10,7 +10,7 @@ public class Receive implements Serializable{
      * inputCode : Y
      * result : S
      * msg : 成功
-     * data : {"infos":[{"tabs":{"name":"data","list_info":[{"key":"质保书编号","value":"A180700002"},{"key":"出库日期","value":"20180704"},{"key":"移出库别","value":"300"},{"key":"出库炉号","value":"18B606163"},{"key":"块数","value":"30"},{"key":"理重(t)","value":"53.430"},{"key":"实际重量(t)","value":"53.430"},{"key":"连铸机号","value":"B6"},{"key":"毛重(t)","value":"0.000"},{"key":"皮重(t)","value":"53.430"},{"key":"过磅时间","value":"20180704160423"},{"key":"运输方式","value":"车运"}]},"zbs":{"name":"chg","list_info":[{"key":"质保书编号","value":"A180700002"},{"key":"企业牌号","value":"55CrMn"},{"key":"国标牌号","value":"55CrMn"},{"key":"规格","value":"160*160*9"},{"key":"发货分厂","value":"炼钢三厂"},{"key":"接收分厂","value":"棒5B"},{"key":"车号","value":"2320"},{"key":"驾驶员","value":"施卫兵"},{"key":"生成批号","value":"18B606163"},{"key":"垮号","value":""},{"key":"定尺长度","value":"9"},{"key":"支数","value":"30"},{"key":"理论重量(t)","value":"53.430"},{"key":"生产日期","value":"20180704"},{"key":"班组","value":"A"},{"key":"表面质量","value":"合格"},{"key":"表面检验员","value":""},{"key":"审核人","value":"管理员"},{"key":"结果判定","value":"合格"}]}},{"tabs":{"name":"data","list_info":[{"key":"质保书编号","value":"A180700002"},{"key":"出库日期","value":"20180704"},{"key":"移出库别","value":"300"},{"key":"出库炉号","value":"18B606163"},{"key":"块数","value":"30"},{"key":"理重(t)","value":"53.430"},{"key":"实际重量(t)","value":"53.430"},{"key":"连铸机号","value":"B6"},{"key":"毛重(t)","value":"0.000"},{"key":"皮重(t)","value":"53.430"},{"key":"过磅时间","value":"20180704160423"},{"key":"运输方式","value":"车运"}]},"zbs":{"name":"chg","list_info":[{"key":"质保书编号","value":"A180700002"},{"key":"企业牌号","value":"55CrMn"},{"key":"国标牌号","value":"55CrMn"},{"key":"规格","value":"160*160*9"},{"key":"发货分厂","value":"炼钢三厂"},{"key":"接收分厂","value":"棒5B"},{"key":"车号","value":"2320"},{"key":"驾驶员","value":"施卫兵"},{"key":"生成批号","value":"18B606163"},{"key":"垮号","value":""},{"key":"定尺长度","value":"9"},{"key":"支数","value":"30"},{"key":"理论重量(t)","value":"53.430"},{"key":"生产日期","value":"20180704"},{"key":"班组","value":"A"},{"key":"表面质量","value":"合格"},{"key":"表面检验员","value":""},{"key":"审核人","value":"管理员"},{"key":"结果判定","value":"合格"}]}}],"cfy":{"name":"化学成分","list_info":[{"key":"Mn","value":"0.75"},{"key":"C","value":"0.56"},{"key":"Al","value":"0.010"},{"key":"Cr","value":"0.78"},{"key":"P","value":"0.010"},{"key":"Cu","value":"0.10"},{"key":"S","value":"0.011"},{"key":"Si","value":"0.28"},{"key":"Ni","value":"0.11"}]}}
+     * data : [{"cfy":{"name":"化学成分","list_info":[{"key":"Mn","value":"0.75~0.75"},{"key":"C","value":"0.56~0.58"},{"key":"Al","value":"0.01~0.01"},{"key":"Cr","value":"0.78~0.78"},{"key":"P","value":"0.010~0.010"},{"key":"Cu","value":"0.01~0.10"},{"key":"S","value":"0.011~0.011"},{"key":"Si","value":"0.25~0.28"},{"key":"Ni","value":"0.01~0.11"}]},"infos":[{"tabs":{"name":"data","list_info":[{"key":"质保书编号","value":"A180700009"},{"key":"出库日期","value":"20180709"},{"key":"移出库别","value":"300"},{"key":"出库炉号","value":"P18000265"},{"key":"块数","value":"3"},{"key":"理重(t)","value":"5.343"},{"key":"实际重量(t)","value":"5.343"},{"key":"连铸机号","value":""},{"key":"毛重(t)","value":"0.000"},{"key":"皮重(t)","value":"5.343"},{"key":"过磅时间","value":"20180709111618"},{"key":"运输方式","value":"车运"}]},"zbs":{"name":"chg","list_info":[{"key":"质保书编号","value":"A180700009"},{"key":"企业牌号","value":"ZD35"},{"key":"国标牌号","value":"ZD35"},{"key":"规格","value":"160*160*9"},{"key":"发货分厂","value":"炼钢三厂"},{"key":"接收分厂","value":"棒5B"},{"key":"车号","value":"2320"},{"key":"驾驶员","value":"施卫兵"},{"key":"生成批号","value":"P18000265"},{"key":"垮号","value":""},{"key":"定尺长度","value":"9"},{"key":"支数","value":"3"},{"key":"理论重量(t)","value":"5.343"},{"key":"生产日期","value":""},{"key":"班组","value":""},{"key":"表面质量","value":"合格"},{"key":"表面检验员","value":""},{"key":"审核人","value":"管理员"},{"key":"结果判定","value":"合格"}]}}]}]
      * endFlag : *
      */
 
@@ -18,8 +18,8 @@ public class Receive implements Serializable{
     private String inputCode;
     private String result;
     private String msg;
-    private DataBean data;
     private String endFlag;
+    private List<DataBean> data;
 
     public String getFormId() {
         return formId;
@@ -53,14 +53,6 @@ public class Receive implements Serializable{
         this.msg = msg;
     }
 
-    public DataBean getData() {
-        return data;
-    }
-
-    public void setData(DataBean data) {
-        this.data = data;
-    }
-
     public String getEndFlag() {
         return endFlag;
     }
@@ -69,10 +61,18 @@ public class Receive implements Serializable{
         this.endFlag = endFlag;
     }
 
+    public List<DataBean> getData() {
+        return data;
+    }
+
+    public void setData(List<DataBean> data) {
+        this.data = data;
+    }
+
     public static class DataBean implements Serializable {
         /**
-         * infos : [{"tabs":{"name":"data","list_info":[{"key":"质保书编号","value":"A180700002"},{"key":"出库日期","value":"20180704"},{"key":"移出库别","value":"300"},{"key":"出库炉号","value":"18B606163"},{"key":"块数","value":"30"},{"key":"理重(t)","value":"53.430"},{"key":"实际重量(t)","value":"53.430"},{"key":"连铸机号","value":"B6"},{"key":"毛重(t)","value":"0.000"},{"key":"皮重(t)","value":"53.430"},{"key":"过磅时间","value":"20180704160423"},{"key":"运输方式","value":"车运"}]},"zbs":{"name":"chg","list_info":[{"key":"质保书编号","value":"A180700002"},{"key":"企业牌号","value":"55CrMn"},{"key":"国标牌号","value":"55CrMn"},{"key":"规格","value":"160*160*9"},{"key":"发货分厂","value":"炼钢三厂"},{"key":"接收分厂","value":"棒5B"},{"key":"车号","value":"2320"},{"key":"驾驶员","value":"施卫兵"},{"key":"生成批号","value":"18B606163"},{"key":"垮号","value":""},{"key":"定尺长度","value":"9"},{"key":"支数","value":"30"},{"key":"理论重量(t)","value":"53.430"},{"key":"生产日期","value":"20180704"},{"key":"班组","value":"A"},{"key":"表面质量","value":"合格"},{"key":"表面检验员","value":""},{"key":"审核人","value":"管理员"},{"key":"结果判定","value":"合格"}]}},{"tabs":{"name":"data","list_info":[{"key":"质保书编号","value":"A180700002"},{"key":"出库日期","value":"20180704"},{"key":"移出库别","value":"300"},{"key":"出库炉号","value":"18B606163"},{"key":"块数","value":"30"},{"key":"理重(t)","value":"53.430"},{"key":"实际重量(t)","value":"53.430"},{"key":"连铸机号","value":"B6"},{"key":"毛重(t)","value":"0.000"},{"key":"皮重(t)","value":"53.430"},{"key":"过磅时间","value":"20180704160423"},{"key":"运输方式","value":"车运"}]},"zbs":{"name":"chg","list_info":[{"key":"质保书编号","value":"A180700002"},{"key":"企业牌号","value":"55CrMn"},{"key":"国标牌号","value":"55CrMn"},{"key":"规格","value":"160*160*9"},{"key":"发货分厂","value":"炼钢三厂"},{"key":"接收分厂","value":"棒5B"},{"key":"车号","value":"2320"},{"key":"驾驶员","value":"施卫兵"},{"key":"生成批号","value":"18B606163"},{"key":"垮号","value":""},{"key":"定尺长度","value":"9"},{"key":"支数","value":"30"},{"key":"理论重量(t)","value":"53.430"},{"key":"生产日期","value":"20180704"},{"key":"班组","value":"A"},{"key":"表面质量","value":"合格"},{"key":"表面检验员","value":""},{"key":"审核人","value":"管理员"},{"key":"结果判定","value":"合格"}]}}]
-         * cfy : {"name":"化学成分","list_info":[{"key":"Mn","value":"0.75"},{"key":"C","value":"0.56"},{"key":"Al","value":"0.010"},{"key":"Cr","value":"0.78"},{"key":"P","value":"0.010"},{"key":"Cu","value":"0.10"},{"key":"S","value":"0.011"},{"key":"Si","value":"0.28"},{"key":"Ni","value":"0.11"}]}
+         * cfy : {"name":"化学成分","list_info":[{"key":"Mn","value":"0.75~0.75"},{"key":"C","value":"0.56~0.58"},{"key":"Al","value":"0.01~0.01"},{"key":"Cr","value":"0.78~0.78"},{"key":"P","value":"0.010~0.010"},{"key":"Cu","value":"0.01~0.10"},{"key":"S","value":"0.011~0.011"},{"key":"Si","value":"0.25~0.28"},{"key":"Ni","value":"0.01~0.11"}]}
+         * infos : [{"tabs":{"name":"data","list_info":[{"key":"质保书编号","value":"A180700009"},{"key":"出库日期","value":"20180709"},{"key":"移出库别","value":"300"},{"key":"出库炉号","value":"P18000265"},{"key":"块数","value":"3"},{"key":"理重(t)","value":"5.343"},{"key":"实际重量(t)","value":"5.343"},{"key":"连铸机号","value":""},{"key":"毛重(t)","value":"0.000"},{"key":"皮重(t)","value":"5.343"},{"key":"过磅时间","value":"20180709111618"},{"key":"运输方式","value":"车运"}]},"zbs":{"name":"chg","list_info":[{"key":"质保书编号","value":"A180700009"},{"key":"企业牌号","value":"ZD35"},{"key":"国标牌号","value":"ZD35"},{"key":"规格","value":"160*160*9"},{"key":"发货分厂","value":"炼钢三厂"},{"key":"接收分厂","value":"棒5B"},{"key":"车号","value":"2320"},{"key":"驾驶员","value":"施卫兵"},{"key":"生成批号","value":"P18000265"},{"key":"垮号","value":""},{"key":"定尺长度","value":"9"},{"key":"支数","value":"3"},{"key":"理论重量(t)","value":"5.343"},{"key":"生产日期","value":""},{"key":"班组","value":""},{"key":"表面质量","value":"合格"},{"key":"表面检验员","value":""},{"key":"审核人","value":"管理员"},{"key":"结果判定","value":"合格"}]}}]
          */
 
         private CfyBean cfy;
@@ -97,7 +97,7 @@ public class Receive implements Serializable{
         public static class CfyBean implements Serializable{
             /**
              * name : 化学成分
-             * list_info : [{"key":"Mn","value":"0.75"},{"key":"C","value":"0.56"},{"key":"Al","value":"0.010"},{"key":"Cr","value":"0.78"},{"key":"P","value":"0.010"},{"key":"Cu","value":"0.10"},{"key":"S","value":"0.011"},{"key":"Si","value":"0.28"},{"key":"Ni","value":"0.11"}]
+             * list_info : [{"key":"Mn","value":"0.75~0.75"},{"key":"C","value":"0.56~0.58"},{"key":"Al","value":"0.01~0.01"},{"key":"Cr","value":"0.78~0.78"},{"key":"P","value":"0.010~0.010"},{"key":"Cu","value":"0.01~0.10"},{"key":"S","value":"0.011~0.011"},{"key":"Si","value":"0.25~0.28"},{"key":"Ni","value":"0.01~0.11"}]
              */
 
             private String name;
@@ -122,7 +122,7 @@ public class Receive implements Serializable{
             public static class ListInfoBean implements Serializable{
                 /**
                  * key : Mn
-                 * value : 0.75
+                 * value : 0.75~0.75
                  */
 
                 private String key;
@@ -148,8 +148,8 @@ public class Receive implements Serializable{
 
         public static class InfosBean implements Serializable{
             /**
-             * tabs : {"name":"data","list_info":[{"key":"质保书编号","value":"A180700002"},{"key":"出库日期","value":"20180704"},{"key":"移出库别","value":"300"},{"key":"出库炉号","value":"18B606163"},{"key":"块数","value":"30"},{"key":"理重(t)","value":"53.430"},{"key":"实际重量(t)","value":"53.430"},{"key":"连铸机号","value":"B6"},{"key":"毛重(t)","value":"0.000"},{"key":"皮重(t)","value":"53.430"},{"key":"过磅时间","value":"20180704160423"},{"key":"运输方式","value":"车运"}]}
-             * zbs : {"name":"chg","list_info":[{"key":"质保书编号","value":"A180700002"},{"key":"企业牌号","value":"55CrMn"},{"key":"国标牌号","value":"55CrMn"},{"key":"规格","value":"160*160*9"},{"key":"发货分厂","value":"炼钢三厂"},{"key":"接收分厂","value":"棒5B"},{"key":"车号","value":"2320"},{"key":"驾驶员","value":"施卫兵"},{"key":"生成批号","value":"18B606163"},{"key":"垮号","value":""},{"key":"定尺长度","value":"9"},{"key":"支数","value":"30"},{"key":"理论重量(t)","value":"53.430"},{"key":"生产日期","value":"20180704"},{"key":"班组","value":"A"},{"key":"表面质量","value":"合格"},{"key":"表面检验员","value":""},{"key":"审核人","value":"管理员"},{"key":"结果判定","value":"合格"}]}
+             * tabs : {"name":"data","list_info":[{"key":"质保书编号","value":"A180700009"},{"key":"出库日期","value":"20180709"},{"key":"移出库别","value":"300"},{"key":"出库炉号","value":"P18000265"},{"key":"块数","value":"3"},{"key":"理重(t)","value":"5.343"},{"key":"实际重量(t)","value":"5.343"},{"key":"连铸机号","value":""},{"key":"毛重(t)","value":"0.000"},{"key":"皮重(t)","value":"5.343"},{"key":"过磅时间","value":"20180709111618"},{"key":"运输方式","value":"车运"}]}
+             * zbs : {"name":"chg","list_info":[{"key":"质保书编号","value":"A180700009"},{"key":"企业牌号","value":"ZD35"},{"key":"国标牌号","value":"ZD35"},{"key":"规格","value":"160*160*9"},{"key":"发货分厂","value":"炼钢三厂"},{"key":"接收分厂","value":"棒5B"},{"key":"车号","value":"2320"},{"key":"驾驶员","value":"施卫兵"},{"key":"生成批号","value":"P18000265"},{"key":"垮号","value":""},{"key":"定尺长度","value":"9"},{"key":"支数","value":"3"},{"key":"理论重量(t)","value":"5.343"},{"key":"生产日期","value":""},{"key":"班组","value":""},{"key":"表面质量","value":"合格"},{"key":"表面检验员","value":""},{"key":"审核人","value":"管理员"},{"key":"结果判定","value":"合格"}]}
              */
 
             private TabsBean tabs;
@@ -174,7 +174,7 @@ public class Receive implements Serializable{
             public static class TabsBean implements Serializable{
                 /**
                  * name : data
-                 * list_info : [{"key":"质保书编号","value":"A180700002"},{"key":"出库日期","value":"20180704"},{"key":"移出库别","value":"300"},{"key":"出库炉号","value":"18B606163"},{"key":"块数","value":"30"},{"key":"理重(t)","value":"53.430"},{"key":"实际重量(t)","value":"53.430"},{"key":"连铸机号","value":"B6"},{"key":"毛重(t)","value":"0.000"},{"key":"皮重(t)","value":"53.430"},{"key":"过磅时间","value":"20180704160423"},{"key":"运输方式","value":"车运"}]
+                 * list_info : [{"key":"质保书编号","value":"A180700009"},{"key":"出库日期","value":"20180709"},{"key":"移出库别","value":"300"},{"key":"出库炉号","value":"P18000265"},{"key":"块数","value":"3"},{"key":"理重(t)","value":"5.343"},{"key":"实际重量(t)","value":"5.343"},{"key":"连铸机号","value":""},{"key":"毛重(t)","value":"0.000"},{"key":"皮重(t)","value":"5.343"},{"key":"过磅时间","value":"20180709111618"},{"key":"运输方式","value":"车运"}]
                  */
 
                 private String name;
@@ -199,7 +199,7 @@ public class Receive implements Serializable{
                 public static class ListInfoBeanX implements Serializable{
                     /**
                      * key : 质保书编号
-                     * value : A180700002
+                     * value : A180700009
                      */
 
                     private String key;
@@ -226,7 +226,7 @@ public class Receive implements Serializable{
             public static class ZbsBean implements Serializable{
                 /**
                  * name : chg
-                 * list_info : [{"key":"质保书编号","value":"A180700002"},{"key":"企业牌号","value":"55CrMn"},{"key":"国标牌号","value":"55CrMn"},{"key":"规格","value":"160*160*9"},{"key":"发货分厂","value":"炼钢三厂"},{"key":"接收分厂","value":"棒5B"},{"key":"车号","value":"2320"},{"key":"驾驶员","value":"施卫兵"},{"key":"生成批号","value":"18B606163"},{"key":"垮号","value":""},{"key":"定尺长度","value":"9"},{"key":"支数","value":"30"},{"key":"理论重量(t)","value":"53.430"},{"key":"生产日期","value":"20180704"},{"key":"班组","value":"A"},{"key":"表面质量","value":"合格"},{"key":"表面检验员","value":""},{"key":"审核人","value":"管理员"},{"key":"结果判定","value":"合格"}]
+                 * list_info : [{"key":"质保书编号","value":"A180700009"},{"key":"企业牌号","value":"ZD35"},{"key":"国标牌号","value":"ZD35"},{"key":"规格","value":"160*160*9"},{"key":"发货分厂","value":"炼钢三厂"},{"key":"接收分厂","value":"棒5B"},{"key":"车号","value":"2320"},{"key":"驾驶员","value":"施卫兵"},{"key":"生成批号","value":"P18000265"},{"key":"垮号","value":""},{"key":"定尺长度","value":"9"},{"key":"支数","value":"3"},{"key":"理论重量(t)","value":"5.343"},{"key":"生产日期","value":""},{"key":"班组","value":""},{"key":"表面质量","value":"合格"},{"key":"表面检验员","value":""},{"key":"审核人","value":"管理员"},{"key":"结果判定","value":"合格"}]
                  */
 
                 private String name;
@@ -251,7 +251,7 @@ public class Receive implements Serializable{
                 public static class ListInfoBeanXX implements Serializable{
                     /**
                      * key : 质保书编号
-                     * value : A180700002
+                     * value : A180700009
                      */
 
                     private String key;

@@ -20,7 +20,7 @@
     <TextView
         android:id="@+id/value"
         android:layout_width="60dp"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:background="@drawable/back_cell_top"
         android:gravity="center"
         android:textColor="#000000"

@@ -146,8 +146,6 @@ public class ReceiveFragment extends Fragment {
         data = (List<Receive.DataBean.InfosBean.TabsBean.ListInfoBeanX>) getArguments().getSerializable("data");
         zbs = (List<Receive.DataBean.InfosBean.ZbsBean.ListInfoBeanXX>) getArguments().getSerializable("zbs");
         cfy = (List<Receive.DataBean.CfyBean.ListInfoBean>) getArguments().getSerializable("cfy");
-        Log.i("zbs",zbs.get(0).getValue());
-        Log.i("cfy",cfy.get(0).getValue());
         status = JSON.parseObject(JsonReader.getJson("status.json", getActivity()), Map.class);
         wear = getWear(JSON.parseArray(JsonReader.getJson("wear.json", getActivity()), Wear.class));
         machine = getMachine(JSON.parseArray(JsonReader.getJson("machine.json", getActivity()), Machine.class));
