@@ -72,6 +72,8 @@ public class LoginActivity extends AppCompatActivity {
 
     ProgressDialog dialog;
 
+    String code = "";
+
     // 班组信息
     List<GroupBean> list_group = new ArrayList<>();
 
@@ -120,7 +122,6 @@ public class LoginActivity extends AppCompatActivity {
         sp = this.getSharedPreferences("userinfo", MODE_PRIVATE);
         if (sp.getBoolean("remember", false)) {
             user.setText(sp.getString("username", null));
-            pwd.setText(sp.getString("password", null));
             remember.setChecked(true);
         }
         team.setText(list_group.get(select_group).getName());
@@ -166,20 +167,22 @@ public class LoginActivity extends AppCompatActivity {
                     if (remember.isChecked()) {
                         SharedPreferences.Editor editor = sp.edit();
                         editor.putString("username", user.getText().toString());
-                        editor.putString("password", pwd.getText().toString());
                         editor.putBoolean("remember", true);
                         editor.apply();
                     } else {
                         SharedPreferences.Editor editor = sp.edit();
                         editor.putString("username", "");
-                        editor.putString("password", "");
                         editor.putBoolean("remember", false);
                         editor.apply();
                     }
+                    code = user.getText().toString().trim();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("code",code);
                     app.setGroup(list_group.get(select_group));
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    intent.putExtras(bundle);
+                    pwd.setText("");
                     startActivity(intent);
-                    finish();
 
                     if (dialog.isShowing())
                         dialog.dismiss();

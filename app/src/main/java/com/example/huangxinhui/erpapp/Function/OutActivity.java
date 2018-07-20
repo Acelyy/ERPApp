@@ -41,6 +41,7 @@ public class OutActivity extends AppCompatActivity {
     EditText outCode;
     @BindView(R.id.brevityCode)
     EditText brevityCode;
+    private String code;
 
     ProgressDialog dialog;
     @SuppressLint("HandlerLeak")
@@ -67,13 +68,14 @@ public class OutActivity extends AppCompatActivity {
                             Bundle bundle = new Bundle();
                             bundle.putString("title", outCode.getText().toString());
                             bundle.putSerializable("data", query.getData());
+                            bundle.putString("code",code);
                             intent.putExtras(bundle);
                             startActivity(intent);
                         } else {
                             Toast.makeText(OutActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(OutActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OutActivity.this, data, Toast.LENGTH_SHORT).show();
                     }
                     if (dialog.isShowing()) dialog.dismiss();
                     break;
@@ -89,6 +91,8 @@ public class OutActivity extends AppCompatActivity {
         ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
         dialog = new ProgressDialog(this);
         dialog.setMessage("查询中");
+        code = getIntent().getExtras().getString("code");
+        Log.i("code",code);
     }
 
     @OnClick({R.id.back, R.id.query})

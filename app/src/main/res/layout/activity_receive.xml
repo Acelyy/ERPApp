@@ -50,6 +50,55 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="请输入保质书标号"
+                android:textColor="@color/colorPrimary"
+                android:textSize="8pt" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_border"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/qualityBooks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    android:textColor="#000"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/img_qr"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:padding="10dp"
+                    android:src="@mipmap/screan" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="12dp"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
@@ -187,56 +236,6 @@
                     android:layout_gravity="center_vertical"
                     android:src="@mipmap/drop" />
             </LinearLayout>
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="12dp"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="请输入保质书标号"
-                android:textColor="@color/colorPrimary"
-                android:textSize="8pt" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/bg_border"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/qualityBooks"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:singleLine="true"
-                    android:textColor="#000"
-                    android:text="A180700009"
-                    android:textSize="16sp" />
-
-                <ImageView
-                    android:id="@+id/img_qr"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_vertical"
-                    android:padding="10dp"
-                    android:src="@mipmap/screan" />
-
-            </LinearLayout>
-
-
         </LinearLayout>
 
         <Button

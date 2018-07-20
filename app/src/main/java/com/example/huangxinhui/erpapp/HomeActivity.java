@@ -3,6 +3,7 @@ package com.example.huangxinhui.erpapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -17,13 +18,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class HomeActivity extends AppCompatActivity {
-
+//A180700002      18B606163
+    private String code = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
+        code = getIntent().getExtras().getString("code");
     }
 
     @OnClick({R.id.query, R.id.receive, R.id.out, R.id.into, R.id.move})
@@ -37,7 +40,10 @@ public class HomeActivity extends AppCompatActivity {
                 intent = new Intent(this, ReceiveActivity.class);
                 break;
             case R.id.out:
+                Bundle bundle = new Bundle();
+                bundle.putString("code",code);
                 intent = new Intent(this, OutActivity.class);
+                intent.putExtras(bundle);
                 break;
             case R.id.into:
                 intent = new Intent(this, IntoActivity.class);
@@ -50,12 +56,12 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            moveTaskToBack(true);
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            moveTaskToBack(true);
+//            return true;
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 }

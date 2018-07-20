@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.example.huangxinhui.erpapp.Adapter.ReceiverAdapter;
 import com.example.huangxinhui.erpapp.Information.WarrantyActivity;
+import com.example.huangxinhui.erpapp.JavaBean.Err;
 import com.example.huangxinhui.erpapp.JavaBean.LoginResult;
 import com.example.huangxinhui.erpapp.JavaBean.Machine;
 import com.example.huangxinhui.erpapp.JavaBean.Receive;
@@ -88,6 +89,10 @@ public class ReceiveFragment extends Fragment {
 
     RecyclerView listReceiver;
 
+    private Map<String, String> bb;
+
+    private Map<String, String> bc;
+
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -113,7 +118,8 @@ public class ReceiveFragment extends Fragment {
                             Toast.makeText(getActivity(), "接收入库成功", Toast.LENGTH_SHORT).show();
                             getActivity().finish();
                         } else {
-                            Toast.makeText(getActivity(), "接收入库失败", Toast.LENGTH_SHORT).show();
+                            Err errResult = JSON.parseObject(data, Err.class);
+                            Toast.makeText(getActivity(), errResult.getMsg(), Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(getActivity(), "接收入库失败", Toast.LENGTH_SHORT).show();
@@ -149,6 +155,8 @@ public class ReceiveFragment extends Fragment {
         status = JSON.parseObject(JsonReader.getJson("status.json", getActivity()), Map.class);
         wear = getWear(JSON.parseArray(JsonReader.getJson("wear.json", getActivity()), Wear.class));
         machine = getMachine(JSON.parseArray(JsonReader.getJson("machine.json", getActivity()), Machine.class));
+        bb = JSON.parseObject(JsonReader.getJson("bb.json", getActivity()), Map.class);
+        bc = JSON.parseObject(JsonReader.getJson("bc.json", getActivity()), Map.class);
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i).getKey().equals("移出库别"))
                 data.get(i).setValue(wear.get(data.get(i).getValue()));
@@ -157,6 +165,8 @@ public class ReceiveFragment extends Fragment {
                     data.get(i).setValue(machine.get(data.get(i).getValue()));
                 }
             }
+            if(data.get(i).getKey().equals("班次")) data.get(i).setValue(bc.get(data.get(i).getValue()));
+            if(data.get(i).getKey().equals("班组")) data.get(i).setValue(bb.get(data.get(i).getValue()));
         }
     }
 

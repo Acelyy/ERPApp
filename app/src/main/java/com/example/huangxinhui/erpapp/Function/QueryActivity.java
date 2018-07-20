@@ -97,7 +97,7 @@ public class QueryActivity extends AppCompatActivity {
                             Toast.makeText(QueryActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(QueryActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(QueryActivity.this, data, Toast.LENGTH_SHORT).show();
                     }
                     if (dialog.isShowing())
                         dialog.dismiss();

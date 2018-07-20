@@ -60,7 +60,7 @@ public class ReceiveInformationActivity extends AppCompatActivity {
         ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
         list_data = (ArrayList<Receive.DataBean.InfosBean>) getIntent().getExtras().getSerializable("data");
         list_cfy = (ArrayList<Receive.DataBean.CfyBean.ListInfoBean>) getIntent().getExtras().getSerializable("cfy");
-        titleName.setText(list_data.get(0).getTabs().getList_info().get(0).getValue() == null ? "" : list_data.get(0).getTabs().getList_info().get(0).getValue() );
+        titleName.setText(list_data.get(0).getTabs().getList_info().get(3).getValue() == null ? "" : list_data.get(0).getTabs().getList_info().get(3).getValue() );
         fragments = new ReceiveFragment[list_data.size()];
         titles = new String[list_data.size()];
         for (int i = 0; i < list_data.size(); i++) {
@@ -69,7 +69,7 @@ public class ReceiveInformationActivity extends AppCompatActivity {
                     (ArrayList<Receive.DataBean.InfosBean.ZbsBean.ListInfoBeanXX>) list_data.get(i).getZbs().getList_info(),
                     list_cfy
             );
-            titles[i] = list_data.get(i).getTabs().getName();
+            titles[i] = list_data.get(i).getTabs().getList_info().get(0).getValue();
         }
         pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         tlTab.setTabMode(TabLayout.MODE_SCROLLABLE);

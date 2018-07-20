@@ -66,7 +66,7 @@ public class IntoActivity extends AppCompatActivity {
                             Toast.makeText(IntoActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(IntoActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(IntoActivity.this, data, Toast.LENGTH_SHORT).show();
                     }
                     if (dialog.isShowing()) dialog.dismiss();
                     break;

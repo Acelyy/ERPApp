@@ -33,6 +33,7 @@ public class OutInformationActivity extends AppCompatActivity {
 
     Fragment fragments[];
     String[] titles;
+    String code;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +42,12 @@ public class OutInformationActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
         ArrayList<Query.DataBean> list_data = (ArrayList<Query.DataBean>) getIntent().getExtras().getSerializable("data");
+        code = getIntent().getExtras().getString("code");
         titleName.setText(getIntent().getExtras().getString("title") == null ? "" : getIntent().getExtras().getString("title"));
         fragments = new OutFragment[list_data.size()];
         titles = new String[list_data.size()];
         for (int i = 0; i < list_data.size(); i++) {
-            fragments[i] = OutFragment.getInstance(list_data.get(i).getList_info());
+            fragments[i] = OutFragment.getInstance(list_data.get(i).getList_info(),code);
             titles[i] = list_data.get(i).getName();
         }
         pager.setAdapter(new OutInformationActivity.MyPagerAdapter(getSupportFragmentManager()));

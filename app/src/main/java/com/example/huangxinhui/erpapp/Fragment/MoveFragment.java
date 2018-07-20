@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.example.huangxinhui.erpapp.Adapter.IntoAdapter;
 import com.example.huangxinhui.erpapp.Adapter.MoveAdapter;
+import com.example.huangxinhui.erpapp.JavaBean.Err;
 import com.example.huangxinhui.erpapp.JavaBean.LoginResult;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.JavaBean.Wear;
@@ -49,14 +50,22 @@ import butterknife.Unbinder;
 
 public class MoveFragment extends Fragment {
     Unbinder unbinder;
+
     List<Query.DataBean.Info> data;
+
     @BindView(R.id.list_query)
     RecyclerView listMove;
+
     MoveAdapter adapter;
+
     PopupWindow pop;
+
     ProgressDialog dialog;
+
     private Map<String, String> status;
+
     private Map<String, String> wear;
+
     EditText qty, modiAreaNo, modiRowNo;
 
     Map<String, String> data_map;
@@ -87,7 +96,8 @@ public class MoveFragment extends Fragment {
                             Toast.makeText(getActivity(), "倒跺失败", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(getActivity(), "倒跺失败", Toast.LENGTH_SHORT).show();
+                        Err errResult = JSON.parseObject(data, Err.class);
+                        Toast.makeText(getActivity(), errResult.getMsg(), Toast.LENGTH_SHORT).show();
                     }
                     if (dialog.isShowing())
                         dialog.dismiss();

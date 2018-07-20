@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.example.huangxinhui.erpapp.Adapter.IntoAdapter;
+import com.example.huangxinhui.erpapp.JavaBean.Err;
 import com.example.huangxinhui.erpapp.JavaBean.LoginResult;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.JavaBean.Wear;
@@ -49,16 +50,26 @@ import butterknife.Unbinder;
 
 public class IntoFragment extends Fragment {
     List<Query.DataBean.Info> data;
+
     String WarrantyBook;
+
     @BindView(R.id.list_query)
     RecyclerView listInto;
+
     Unbinder unbinder;
+
     PopupWindow pop;
+
     IntoAdapter adapter;
+
     EditText code, information;
+
     Button btn;
+
     ProgressDialog dialog;
+
     private Map<String, String> status;
+
     private Map<String, String> wear;
 
     @SuppressLint("HandlerLeak")
@@ -85,7 +96,8 @@ public class IntoFragment extends Fragment {
                             Toast.makeText(getActivity(), "入库成功", Toast.LENGTH_SHORT).show();
                             getActivity().finish();
                         } else {
-                            Toast.makeText(getActivity(), "入库失败", Toast.LENGTH_SHORT).show();
+                            Err errResult = JSON.parseObject(data, Err.class);
+                            Toast.makeText(getActivity(), errResult.getMsg(), Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(getActivity(), "入库失败", Toast.LENGTH_SHORT).show();

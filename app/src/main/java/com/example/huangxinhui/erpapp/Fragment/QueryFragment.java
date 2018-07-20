@@ -45,6 +45,10 @@ public class QueryFragment extends Fragment {
 
     private Map<String, String> machine;
 
+    private Map<String, String> bb;
+
+    private Map<String, String> bc;
+
 
     public static QueryFragment getInstance(ArrayList<Query.DataBean.Info> data) {
         QueryFragment f = new QueryFragment();
@@ -61,11 +65,15 @@ public class QueryFragment extends Fragment {
         status = JSON.parseObject(JsonReader.getJson("status.json", getActivity()), Map.class);
         wear = getWear(JSON.parseArray(JsonReader.getJson("wear.json", getActivity()), Wear.class));
         machine = getMachine(JSON.parseArray(JsonReader.getJson("machine.json", getActivity()), Machine.class));
+        bb = JSON.parseObject(JsonReader.getJson("bb.json", getActivity()), Map.class);
+        bc = JSON.parseObject(JsonReader.getJson("bc.json", getActivity()), Map.class);
         for (int i=0;i<data.size();i++){
-            if (data.get(i).getKey().equals("状态")) data.get(i).setValue(status.get(data.get(i).getValue()));
+            if(data.get(i).getKey().equals("状态")) data.get(i).setValue(status.get(data.get(i).getValue()));
             if(data.get(i).getKey().equals("库位")) data.get(i).setValue(wear.get(data.get(i).getValue()));
             if(data.get(i).getKey().equals("去向")) data.get(i).setValue(wear.get(data.get(i).getValue()));
             if(data.get(i).getKey().equals("连铸机号")) data.get(i).setValue(machine.get(data.get(i).getValue()));
+            if(data.get(i).getKey().equals("班次")) data.get(i).setValue(bc.get(data.get(i).getValue()));
+            if(data.get(i).getKey().equals("班别")) data.get(i).setValue(bb.get(data.get(i).getValue()));
         }
     }
 

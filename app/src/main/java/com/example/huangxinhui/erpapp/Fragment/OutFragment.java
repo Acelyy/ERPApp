@@ -33,6 +33,7 @@ import com.example.huangxinhui.erpapp.Adapter.OutAdapter;
 import com.example.huangxinhui.erpapp.App;
 import com.example.huangxinhui.erpapp.JavaBean.Banci;
 import com.example.huangxinhui.erpapp.JavaBean.BusinessType;
+import com.example.huangxinhui.erpapp.JavaBean.Err;
 import com.example.huangxinhui.erpapp.JavaBean.LoginResult;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.JavaBean.Wear;
@@ -92,6 +93,8 @@ public class OutFragment extends Fragment {
 
     private App app;
 
+    private String code;
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
@@ -116,7 +119,8 @@ public class OutFragment extends Fragment {
                             Toast.makeText(getActivity(), "出库成功", Toast.LENGTH_SHORT).show();
                             getActivity().finish();
                         } else {
-                            Toast.makeText(getActivity(), "出库失败", Toast.LENGTH_SHORT).show();
+                            Err errResult = JSON.parseObject(data, Err.class);
+                            Toast.makeText(getActivity(), errResult.getMsg(), Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(getActivity(), "出库失败", Toast.LENGTH_SHORT).show();
@@ -129,10 +133,11 @@ public class OutFragment extends Fragment {
     };
 
 
-    public static OutFragment getInstance(ArrayList<Query.DataBean.Info> data) {
+    public static OutFragment getInstance(ArrayList<Query.DataBean.Info> data,String code) {
         OutFragment qf = new OutFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("data", data);
+        bundle.putString("code",code);
         qf.setArguments(bundle);
         return qf;
     }
@@ -176,7 +181,7 @@ public class OutFragment extends Fragment {
                 pvOptions.show();
             }
         });
-        outWarehouseNo.setText(data_map.get("当前库"));
+        outWarehouseNo.setText(wear.get(data_map.get("当前库")));
 
         selected_date = new SimpleDateFormat("yyyyMMdd").format(new Date());
         chgLocDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
@@ -258,10 +263,10 @@ public class OutFragment extends Fragment {
         view.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!qty.getText().toString().equals("")){
+                if (!qty.getText().toString().equals("")) {
                     new Thread(new OutConfirmThread(
                             types.get(select_lb).getValue(),
-                            outWarehouseNo.getText().toString(),
+                            data_map.get("当前库"),
                             selected_date,
                             carNo.getText().toString(),
                             list_banci.get(selected_banci).getCode(),
@@ -278,9 +283,10 @@ public class OutFragment extends Fragment {
                             qty.getText().toString(),
                             data_map.get("当前库"),
                             data_map.get("当前跨"),
-                            data_map.get("当前储序")
+                            data_map.get("当前储序"),
+                            code
                     )).start();
-                }else {
+                } else {
                     Toast.makeText(app, "块数不能为空", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -306,6 +312,7 @@ public class OutFragment extends Fragment {
         status = JSON.parseObject(JsonReader.getJson("status.json", getActivity()), Map.class);
         wear = getWear(JSON.parseArray(JsonReader.getJson("wear.json", getActivity()), Wear.class));
         data = (List<Query.DataBean.Info>) getArguments().getSerializable("data");
+        code = getArguments().getString("code");
         list_wear = JSON.parseArray(JsonReader.getJson("wear.json", getActivity()), Wear.class);
         data_map = exchange(data);
         types.add(new BusinessType("热送", "A"));
@@ -316,8 +323,10 @@ public class OutFragment extends Fragment {
         list_banci.add(new Banci("3", "中"));
 
         for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).getKey().equals("钢坯状态")) data.get(i).setValue(status.get(data.get(i).getValue()));
-            if (data.get(i).getKey().equals("当前库")) data.get(i).setValue(wear.get(data.get(i).getValue()));
+            if (data.get(i).getKey().equals("钢坯状态"))
+                data.get(i).setValue(status.get(data.get(i).getValue()));
+            if (data.get(i).getKey().equals("当前库"))
+                data.get(i).setValue(wear.get(data.get(i).getValue()));
         }
 
     }
@@ -342,7 +351,7 @@ public class OutFragment extends Fragment {
     private Map<String, String> getWear(List<Wear> wears) {
         Map<String, String> result = new HashMap<>();
         for (Wear bean : wears) {
-            result.put( bean.getValue(), bean.getKey());
+            result.put(bean.getValue(), bean.getKey());
         }
         return result;
     }
@@ -403,6 +412,7 @@ public class OutFragment extends Fragment {
         private String warehouseNo;
         private String areaNo;
         private String rowNo;
+        private String code;
 
         public OutConfirmThread(String lb,
                                 String outWarehouseNo,
@@ -421,7 +431,9 @@ public class OutFragment extends Fragment {
                                 String qty,
                                 String warehouseNo,
                                 String areaNo,
-                                String rowNo) {
+                                String rowNo,
+                                String code
+        ) {
             this.lb = lb;
             this.outWarehouseNo = outWarehouseNo;
             this.chgLocDate = chgLocDate;
@@ -440,6 +452,7 @@ public class OutFragment extends Fragment {
             this.warehouseNo = warehouseNo;
             this.areaNo = areaNo;
             this.rowNo = rowNo;
+            this.code = code;
         }
 
         @Override
@@ -476,6 +489,7 @@ public class OutFragment extends Fragment {
                     + String.format("%-10s", warehouseNo)
                     + String.format("%-10s", areaNo)
                     + String.format("%-10s", rowNo)
+                    + String.format("%-10s", code)
                     + "*";
             // 设置需调用WebService接口需要传入的参数
             Log.i("params", data);

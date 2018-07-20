@@ -1,6 +1,7 @@
 package com.example.huangxinhui.erpapp.Information;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,12 +17,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.example.huangxinhui.erpapp.JavaBean.Query;
 import com.example.huangxinhui.erpapp.JavaBean.Receive;
 import com.example.huangxinhui.erpapp.R;
+import com.example.huangxinhui.erpapp.Util.JsonReader;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +42,11 @@ public class WarrantyActivity extends AppCompatActivity {
 
     WarrantyAdapter adapter;
 
+
+    private Map<String, String> bb;
+
+    private Map<String, String> bc;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +55,7 @@ public class WarrantyActivity extends AppCompatActivity {
         ScreenAdapterTools.getInstance().loadView(getWindow().getDecorView());
         list_zbs = (List<Receive.DataBean.InfosBean.ZbsBean.ListInfoBeanXX>) getIntent().getExtras().getSerializable("zbs");
         list_cfy = (List<Receive.DataBean.CfyBean.ListInfoBean>) getIntent().getExtras().getSerializable("cfy");
-        Log.i("zbs",list_zbs.get(0).getValue());
-        Log.i("cfy",list_cfy.get(0).getValue());
+        bb = JSON.parseObject(JsonReader.getJson("bb.json", this), Map.class);
         if (list_zbs == null || list_cfy == null) {
             Toast.makeText(this, "数据有误，请联系管理员", Toast.LENGTH_SHORT).show();
         } else {
@@ -189,8 +198,17 @@ public class WarrantyActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull CellAdapter.ViewHolder holder, int position) {
-            holder.key.setText(data.get(position).getKey());
-            holder.value.setText(data.get(position).getValue());
+            if(Pattern.compile("(?i)[A-z]").matcher(data.get(position).getValue()).find()){//如果字符串中有Y
+                //去除字符串的最后两位  ,Y
+                data.get(position).setValue(data.get(position).getValue().substring(0,data.get(position).getValue().length()-2));
+                holder.key.setTextColor(Color.parseColor("#FF0000"));
+                holder.value.setTextColor(Color.parseColor("#FF0000"));
+                holder.key.setText(data.get(position).getKey());
+                holder.value.setText(data.get(position).getValue());
+            }else {
+                holder.key.setText(data.get(position).getKey());
+                holder.value.setText(data.get(position).getValue());
+            }
         }
 
         @Override

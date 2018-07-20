@@ -82,7 +82,7 @@ public class MoveActivity extends AppCompatActivity {
                             Toast.makeText(MoveActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(MoveActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MoveActivity.this, data, Toast.LENGTH_SHORT).show();
                     }
                     if (dialog.isShowing()) dialog.dismiss();
                     break;
