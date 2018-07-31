@@ -39,8 +39,6 @@ dependencies {
     //下拉刷新上拉加载
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.3'
-    //图片加载
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
     //ScreenAdaptation屏幕ui适配
     implementation 'me.yatoooon:screenadaptation:1.1.1'
     implementation files('libs/ksoap2-android-assembly-2.5.4-jar-with-dependencies.jar')

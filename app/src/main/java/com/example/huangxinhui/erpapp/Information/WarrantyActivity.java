@@ -198,13 +198,11 @@ public class WarrantyActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull CellAdapter.ViewHolder holder, int position) {
-            if(Pattern.compile("(?i)[A-z]").matcher(data.get(position).getValue()).find()){//如果字符串中有Y
-                //去除字符串的最后两位  ,Y
-                data.get(position).setValue(data.get(position).getValue().substring(0,data.get(position).getValue().length()-2));
+            if(Pattern.compile("(?i)[A-z]").matcher(data.get(position).getValue()).find()){
                 holder.key.setTextColor(Color.parseColor("#FF0000"));
                 holder.value.setTextColor(Color.parseColor("#FF0000"));
                 holder.key.setText(data.get(position).getKey());
-                holder.value.setText(data.get(position).getValue());
+                holder.value.setText(data.get(position).getValue().substring(0,data.get(position).getValue().length()-2));
             }else {
                 holder.key.setText(data.get(position).getKey());
                 holder.value.setText(data.get(position).getValue());
